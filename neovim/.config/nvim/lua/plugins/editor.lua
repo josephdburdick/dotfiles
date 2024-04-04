@@ -1,7 +1,6 @@
 return {
   {
     "folke/flash.nvim",
-    ---@type Flash.Config
     opts = {
       search = {
         forward = true,
@@ -10,6 +9,12 @@ return {
         incremental = true,
       },
     },
+  },
+
+  {
+    "numToStr/Comment.nvim",
+    opts = {},
+    lazy = false,
   },
 
   {
