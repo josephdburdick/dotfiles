@@ -3,4 +3,4 @@
 -- Add any additional keymaps here
 
 -- NeoTree
-vim.keymap.set("n", "<C-b>", "<Cmd>Neotree toggle<CR>")
+vim.keymap.set("n", "<C-\\>", "<Cmd>Neotree toggle<CR>")
