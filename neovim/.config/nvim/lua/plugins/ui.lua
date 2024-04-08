@@ -1,5 +1,16 @@
 return {
   {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "famiu/bufdelete.nvim", -- for autocmd
+      {
+        "echasnovski/mini.visits", -- oldfiles alternative
+      },
+    },
+  },
+  {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
       filesystem = {
