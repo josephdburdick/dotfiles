@@ -6,7 +6,7 @@ set -e
 # from the scripts/ directory where this script
 cd "$(dirname "$0")/../.."
 
-REPO="https://github.com/numToStr/dotfiles.git"
+REPO="https://github.com/josephdburdick/dotfiles.git"
 
 # ssh would not work under cron, add a https one
 echo "~ Setting up update channel"
