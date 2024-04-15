@@ -1,13 +1,9 @@
 return {
   {
     "echasnovski/mini.nvim",
+    version = "*",
     config = function()
-      require("mini.ai").setup({
-        n_lines = 500,
-        custom_textobjects = {
-          a = nil,
-        },
-      })
+      require("mini.ai").setup()
 
       -- Autohighlight word under cursor
       require("mini.cursorword").setup()
@@ -19,7 +15,9 @@ return {
       require("mini.bufremove").setup()
 
       -- Move any selection in any direction
-      require("mini.move").setup()
+      require("mini.move").setup({
+        lazy = false,
+      })
 
       -- Handling pairing characters
       require("mini.pairs").setup()
