@@ -6,6 +6,12 @@ return {
     lazy = false,
   },
 
+  -- sorting
+  {
+    "sQVe/sort.nvim",
+    lazy = false,
+  },
+
   -- Disable default tab
   {
     "L3MON4D3/LuaSnip",
