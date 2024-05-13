@@ -9,7 +9,7 @@ map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>")
 
 -- Copy the current line or selection and paste it above/below
 map("n", "<A-S-Up>", ":t-1<CR>", { silent = true })
-map("n", "<A-S-Down>", ":t+<CR>", { silent = true })
+map("n", "<A-S-Down>", ":t+1<CR>", { silent = true })
 map("v", "<A-S-Up>", ":t-1<CR>gv=gv", { silent = true })
 map("v", "<A-S-Down>", ":t'>+<CR>gv=gv", { silent = true })
 
