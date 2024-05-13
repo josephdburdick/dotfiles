@@ -27,7 +27,9 @@ return {
     event = "VeryLazy",
 
     ---@type Flash.Config
-    opts = { enable = true },
+    opts = { enable = true, highlight = {
+      backdrop = false,
+    } },
   -- stylua: ignore
     keys = {
       { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
