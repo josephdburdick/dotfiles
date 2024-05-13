@@ -59,4 +59,51 @@ return {
       })
     end,
   },
+
+  -- Update imports when renaming files in nvim-tree
+  -- https://github.com/antosha417/nvim-lsp-file-operations
+  {
+    "antosha417/nvim-lsp-file-operations",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-tree.lua",
+    },
+    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    -- cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+    config = function()
+      require("lsp-file-operations").setup()
+    end,
+  },
+
+  -- Replacement for tsserver lsp config
+  -- https://github.com/pmizio/typescript-tools.nvim
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    ft = {
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+    },
+  },
+
+  -- tests
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-jest",
+      "zidhuss/neotest-minitest",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-jest"),
+        },
+      })
+    end,
+  },
 }
