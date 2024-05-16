@@ -1,11 +1,4 @@
 return {
-  -- commenting; remove when native to neovim
-  {
-    "numToStr/Comment.nvim",
-    opts = {},
-    lazy = false,
-  },
-
   -- sorting
   {
     "sQVe/sort.nvim",
