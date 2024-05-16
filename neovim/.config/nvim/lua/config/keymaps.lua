@@ -10,7 +10,8 @@ map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>")
 -- Control + s to save
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
-map({ "i", "x", "n", "s" }, "<Leader>w", "<cmd>w<cr><esc>", { desc = "Save file" })
+-- Command + s to save
+map({ "i", "x", "n", "s" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
 -- Copy the current line or selection and paste it above/below
 map("n", "<A-S-Up>", ":t-1<CR>", { silent = true })

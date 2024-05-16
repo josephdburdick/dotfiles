@@ -75,6 +75,15 @@ return {
     end,
   },
 
+  -- Prevent warning messages inline; use Shift K instead   {
+  "folke/noice.nvim",
+  opts = {
+    lsp = {
+      signature = { auto_open = {
+        enabled = false,
+      } },
+    },
+  },
   -- Replacement for tsserver lsp config
   -- https://github.com/pmizio/typescript-tools.nvim
   {
