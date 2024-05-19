@@ -4,8 +4,7 @@ return {
     "sQVe/sort.nvim",
     lazy = false,
   },
-
-  -- Disable default tab
+  --  Disable default tab
   {
     "L3MON4D3/LuaSnip",
     keys = function()
@@ -52,7 +51,7 @@ return {
       })
     end,
   },
-
+  --
   -- Update imports when renaming files in nvim-tree
   -- https://github.com/antosha417/nvim-lsp-file-operations
   {

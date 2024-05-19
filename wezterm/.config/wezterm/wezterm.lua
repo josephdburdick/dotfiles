@@ -13,8 +13,9 @@ return {
     enable_scroll_bar = false,
     enable_tab_bar = false,
     enable_csi_u_key_encoding = true,
+    hide_tab_bar_if_only_one_tab = true,
     audible_bell = 'Disabled',
-    check_for_updates = false,
+    -- check_for_updates = false,
     font_size = 11.5,
     font = W.font({
         family = 'Fira Code',
