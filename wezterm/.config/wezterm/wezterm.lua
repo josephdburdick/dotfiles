@@ -1,15 +1,6 @@
 local W = require('wezterm')
 
 return {
-    -- default_prog = { 'wsl.exe' },
-    -- default_domain = 'WSL:Arch',
-    -- wsl_domains = {
-    --     {
-    --         name = 'WSL:Arch',
-    --         distribution = 'Arch',
-    --         default_cwd = '~',
-    --     },
-    -- },
     enable_scroll_bar = false,
     enable_tab_bar = false,
     enable_csi_u_key_encoding = true,
@@ -39,7 +30,7 @@ return {
     },
     color_scheme = 'Tokyonight',
     keys = {
-        { key = '-', mods = 'SHIFT|ALT', action = W.action.SplitHorizontal({ domain = 'CurrentPaneDomain' }) },
-        { key = '+', mods = 'SHIFT|ALT', action = W.action.SplitVertical({ domain = 'CurrentPaneDomain' }) },
+        { key = '|', mods = 'SHIFT|ALT', action = W.action.SplitHorizontal({ domain = 'CurrentPaneDomain' }) },
+        { key = '_', mods = 'SHIFT|ALT', action = W.action.SplitVertical({ domain = 'CurrentPaneDomain' }) },
     },
 }
