@@ -37,12 +37,9 @@ return {
         top = 0,
         bottom = 0,
     },
-    colors = {
-        foreground = '#e0def4',
-        background = '#12121e',
-        cursor_bg = '#dddddd',
-        cursor_fg = '#12121e',
-        selection_fg = '#12121e',
-        selection_bg = '#FFFACD',
+    color_scheme = 'Tokyonight',
+    keys = {
+        { key = '-', mods = 'SHIFT|ALT', action = W.action.SplitHorizontal({ domain = 'CurrentPaneDomain' }) },
+        { key = '+', mods = 'SHIFT|ALT', action = W.action.SplitVertical({ domain = 'CurrentPaneDomain' }) },
     },
 }
