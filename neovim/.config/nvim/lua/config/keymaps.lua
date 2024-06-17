@@ -4,6 +4,10 @@
 
 local map = vim.keymap.set
 
+-- Select all
+map("n", "<Leader>a", "gg0vG$", { desc = "Select all" })
+map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
+
 -- NeoTree
 map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>")
 

@@ -66,6 +66,16 @@ return {
       require("lsp-file-operations").setup()
     end,
   },
+  -- Precognition shows key hints in gutter
+  {
+    "tris203/precognition.nvim",
+    event = "BufRead",
+    config = {
+      highlightColor = {
+        fg = "#666666",
+      },
+    },
+  },
 
   -- Prevent warning messages inline; use Shift K instead   {
   "folke/noice.nvim",
@@ -76,6 +86,7 @@ return {
       } },
     },
   },
+
   -- Replacement for tsserver lsp config
   -- https://github.com/pmizio/typescript-tools.nvim
   {

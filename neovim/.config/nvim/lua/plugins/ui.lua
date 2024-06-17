@@ -1,8 +1,22 @@
 return {
+  -- image preview
+  {
+    "adelarsq/image_preview.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("image_preview").setup()
+    end,
+  },
+  -- neo tree
   {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
       filesystem = {
+        window = {
+          mappings = {
+            ["<leader>i"] = "image_wezterm",
+          },
+        },
         filtered_items = {
           visible = true,
           show_hidden_count = true,
@@ -15,6 +29,14 @@ return {
           },
           never_show = {},
         },
+      },
+      commands = {
+        image_wezterm = function(state)
+          local node = state.tree:get_node()
+          if node.type == "file" then
+            require("image_preview").PreviewImage(node.path)
+          end
+        end,
       },
     },
   },
@@ -29,9 +51,9 @@ return {
     ---@type Flash.Config
     opts = {
       enable = true,
-      highlight = {
-        backdrop = false,
-      },
+      -- highlight = {
+      --   -- backdrop = false,
+      -- },
     },
   -- stylua: ignore
     keys = {
@@ -73,16 +95,16 @@ __/\\\\\_____/\\\__/\\\\\\\\\\\\\\\_______/\\\\\_______/\\\________/\\\__/\\\\\\
           header = vim.split(logo, "\n"),
         -- stylua: ignore
         center = {
-          { action = LazyVim.telescope("files"),                                    desc = " Find File",       icon = " ", key = "f" },
-          { action = "ene | startinsert",                                        desc = " New File",        icon = " ", key = "n" },
-          { action = "Telescope oldfiles",                                       desc = " Recent Files",    icon = " ", key = "r" },
-          { action = "Telescope live_grep",                                      desc = " Find Text",       icon = " ", key = "g" },
-          { action = [[lua LazyVim.telescope.config_files()()]], desc = " Config",          icon = " ", key = "c" },
-          { action = 'lua require("persistence").load()',                        desc = " Restore Session", icon = " ", key = "s" },
-          { action = "LazyExtras",                                               desc = " Lazy Extras",     icon = " ", key = "x" },
-          { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },
-          { action = "qa",                                                       desc = " Quit",            icon = " ", key = "q" },
-        },
+            { action = LazyVim.pick(),                                   desc = " Find File",       icon = " ", key = "f" },
+            { action = "ene | startinsert",                              desc = " New File",        icon = " ", key = "n" },
+            { action = LazyVim.pick("oldfiles"),                         desc = " Recent Files",    icon = " ", key = "r" },
+            { action = LazyVim.pick("live_grep"),                        desc = " Find Text",       icon = " ", key = "g" },
+            { action = LazyVim.pick.config_files(),                      desc = " Config",          icon = " ", key = "c" },
+            { action = 'lua require("persistence").load()',              desc = " Restore Session", icon = " ", key = "s" },
+            { action = "LazyExtras",                                     desc = " Lazy Extras",     icon = " ", key = "x" },
+            { action = "Lazy",                                           desc = " Lazy",            icon = "󰒲 ", key = "l" },
+            { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit",            icon = " ", key = "q" },
+          },
           footer = function()
             local stats = require("lazy").stats()
             local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
