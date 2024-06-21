@@ -4,6 +4,9 @@
 
 local map = vim.keymap.set
 
+-- escape
+map("i", "jk", "<Esc>", { desc = "Escape" })
+
 -- Select all
 map("n", "<Leader>a", "gg0vG$", { desc = "Select all" })
 map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
