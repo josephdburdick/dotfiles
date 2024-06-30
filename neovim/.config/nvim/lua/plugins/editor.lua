@@ -4,12 +4,15 @@ return {
     "sQVe/sort.nvim",
     lazy = false,
   },
-  --  Disable default tab
   {
-    "L3MON4D3/LuaSnip",
-    keys = function()
-      return {}
-    end,
+    "OlegGulevskyy/better-ts-errors.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    config = {
+      keymaps = {
+        toggle = "<leader>dd", -- default '<leader>dd'
+        go_to_definition = "<leader>dx", -- default '<leader>dx'
+      },
+    },
   },
   {
     "hrsh7th/nvim-cmp",
