@@ -2,7 +2,7 @@
 
 <p align='center'><sub>~~ Little things that you can't live without ~~</sub></p>
 
-### ⚠️ Requirements
+<!-- ### ⚠️ Requirements -->
 
 #### Commands
 
@@ -31,7 +31,7 @@ These dotfiles doesn't contains any font installation so you have install them b
 git clone https://github.com/josephdburdick/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 ```
-
+- Brew install everything with `$ ./migrate.sh`
 - Now run `make setup`
 
 > NOTE: After the installation, when you'll open your terminal, or a different tab then `zinit` will start downloading some command line tools that are used inside the dotfiles.

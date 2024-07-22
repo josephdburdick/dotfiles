@@ -1,4 +1,27 @@
 return {
+  -- -- Replacement for tsserver lsp config
+  -- -- https://github.com/pmizio/typescript-tools.nvim
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    ft = {
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+    },
+  },
+
+  {
+    "OlegGulevskyy/better-ts-errors.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    config = {
+      keymaps = {
+        toggle = "<leader>dd", -- default '<leader>dd'
+        go_to_definition = "<leader>dx", -- default '<leader>dx'
+      },
+    },
+  },
   {
     "neovim/nvim-lspconfig",
     dependencies = {

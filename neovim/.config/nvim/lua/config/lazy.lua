@@ -7,6 +7,13 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
+  -- Github link integration
+  -- {
+  --   "mistweaverco/ndoo.nvim",
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  -- },
   spec = {
     -- add LazyVim and import its plugins
     {

@@ -1,10 +1,10 @@
 #!/bin/zsh
 
 alias v=nvim
+alias vi=nvim
 alias vim=nvim
-alias sysinfo="inxi -Fxxxz"
-# alias cat=bat
-alias open=xdg-open
+alias cat=bat
+alias top=btop
 
 # git amend commit without edit
 alias gcan="git commit -v -a --no-edit --amend"
