@@ -45,11 +45,13 @@ export TERM=${TERM:-xterm-256color}
 export COLORTERM=${COLORTERM:-truecolor}
 export EDITOR=$(which nvim)
 # export MANPAGER="nvim --clean +Man! +'setl noma' +'nn q :q!<CR>'"
-# export PAGER=bat
+export PAGER=bat
 
 # Update locales (Also fixes powerline fonts rendering inside tmux)
-export LC_ALL=en_IN.UTF-8
-export LANG=en_IN.UTF-8
+# export LANG=en_IN.UTF-8
+# export LC_ALL=en_IN.UTF-8
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 
 # For enabling buildkit backend in docker and docker-compose
 export DOCKER_BUILDKIT=1
@@ -67,4 +69,23 @@ export DISABLE_MAGIC_FUNCTIONS=true     # make pasting into terminal faster
 export LSP_BIN_PATH="$HOME/.local/lsp/bin"
 export GOPATH="$HOME/go/"
 export GOBIN="$GOPATH/bin"
+
+# nvm
+export NVM_COMPLETION=true
+export NVM_SYMLINK_CURRENT="true"
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
+
+# pnpm
+export PNPM_HOME="/Users/jb/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# bun completions
+[ -s "/Users/jb/.bun/_bun" ] && source "/Users/jb/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:/opt/homebrew/opt/tpm/:$PATH"
 export PATH="$LSP_BIN_PATH:$GOBIN:$PATH"

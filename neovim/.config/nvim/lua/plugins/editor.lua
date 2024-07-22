@@ -4,16 +4,56 @@ return {
     "sQVe/sort.nvim",
     lazy = false,
   },
+
+  -- use AI to generate code
+  -- {
+  --   "dpayne/CodeGPT.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --   },
+  --
+  --   config = function()
+  --     require("codegpt.config")
+  --   end,
+  -- },
+  --
+  -- -- Use AI to debug
+  -- {
+  --   "piersolenski/wtf.nvim",
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --   },
+  -- },
+  --
   {
-    "OlegGulevskyy/better-ts-errors.nvim",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    config = {
-      keymaps = {
-        toggle = "<leader>dd", -- default '<leader>dd'
-        go_to_definition = "<leader>dx", -- default '<leader>dx'
-      },
+    "mg979/vim-visual-multi",
+    lazy = false,
+  },
+
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+
+    ---@type Flash.Config
+    opts = {
+      enable = true,
+    },
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" },
+        function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" },
+        function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o",
+        function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" },
+        function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },
+        function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+
   {
     "hrsh7th/nvim-cmp",
     ---@param opts cmp.ConfigSchema
@@ -54,6 +94,7 @@ return {
       })
     end,
   },
+
   --
   -- Update imports when renaming files in nvim-tree
   -- https://github.com/antosha417/nvim-lsp-file-operations
@@ -63,12 +104,16 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-tree.lua",
     },
+
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
+
     -- cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+
     config = function()
       require("lsp-file-operations").setup()
     end,
   },
+
   -- Precognition shows key hints in gutter
   {
     "tris203/precognition.nvim",
@@ -90,19 +135,6 @@ return {
     },
   },
 
-  -- Replacement for tsserver lsp config
-  -- https://github.com/pmizio/typescript-tools.nvim
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    ft = {
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact",
-    },
-  },
-
   -- tests
   {
     "nvim-neotest/neotest",
@@ -113,6 +145,7 @@ return {
       "nvim-neotest/neotest-jest",
       "zidhuss/neotest-minitest",
     },
+
     config = function()
       require("neotest").setup({
         adapters = {
@@ -120,5 +153,13 @@ return {
         },
       })
     end,
+  },
+
+  -- Github link integration
+  {
+    "mistweaverco/ndoo.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
   },
 }

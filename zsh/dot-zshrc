@@ -1,11 +1,11 @@
-#!/bin/zsh
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+#!/bin/zsh
 
 ### Added by Zinit's installer
 ZINIT_DIR="$HOME/.local/share/zinit"
@@ -23,11 +23,6 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-# Load environment variables from ~/.env if the file exists
-if [ -f ~/.env ]; then
-  export $(grep -v '^#' ~/.env | xargs)
-fi
-
 # Load .zsh_pre if available
 zinit is-snippet for \
     if"[[ -f $HOME/.zsh_pre ]]" $HOME/.zsh_pre \
@@ -36,34 +31,59 @@ zinit is-snippet for \
 #####################
 # PROMPT            #
 #####################
-zinit ice as"command" from"gh-r" atload"eval '$(starship init zsh)'" \
-  zinit light starship/starship
+zinit lucid light-mode from"gh-r" as"command" bpick'*apple-darwin.tar.gz' for \
+    atload'eval "$(starship init zsh)"'    \
+    starship/starship \
+
+
+
 
 #####################
 # PROGRAMS          #
 #####################
 
-zinit lucid light-mode from"gh-r" as"command" bpick'gitui-macos.tar.gz' for @extrawurst/gitui
+zinit wait lucid light-mode for lukechilds/zsh-nvm
+zinit lucid light-mode from"gh-r" as"command" bpick'*apple-darwin*' for \
+    @numToStr/snm \
+    @ajeetdsouza/zoxide \
+    @junegunn/fzf \
+    @BurntSushi/ripgrep \
+    @sharkdp/fd \
+    @sharkdp/bat \
+    @dandavison/delta \
+    @ogham/exa \
+    @JohnnyMorganz/StyLua \
+    @extrawurst/gitui \
+    yarnpkg/yarn 
 
-zinit lucid light-mode from"gh-r" as"command" bpick'*macos*' for atload'
-    eval "$(zoxide init --no-aliases zsh)"
-    alias z="__zoxide_z"
-' pick'zoxide/zoxide' @ajeetdsouza/zoxide
+zinit ice bpick'*apple-darwin*' \
+    atload'eval "$(snm env zsh)"; alias n="snm"' \
+    mv'snm* -> snm' pick'snm/snm' for @numToStr/snm
 
-zinit lucid light-mode from"gh-r" as"command" bpick'*macos*' for @junegunn/fzf
+zinit ice bpick'*apple-darwin*' \
+    atload'eval "$(zoxide init --no-aliases zsh)"; alias z="__zoxide_z"' \
+    pick'zoxide/zoxide' for @ajeetdsouza/zoxide
 
-zinit lucid light-mode from"gh-r" as"command" bpick'rg/rg' mv'ripgrep* -> rg' for @BurntSushi/ripgrep
+zinit ice bpick'*darwin_arm64*' for @junegunn/fzf
 
-zinit lucid light-mode from"gh-r" as"command" bpick'fd/fd' mv'fd* -> fd' for @sharkdp/fd
+zinit ice bpick'rg/rg' mv'ripgrep* -> rg' for @BurntSushi/ripgrep
 
-zinit lucid light-mode from"gh-r" as"command" bpick'bat/bat' mv'bat* -> bat' for @sharkdp/bat 
+zinit ice bpick'fd/fd' mv'fd* -> fd' for @sharkdp/fd
 
-zinit lucid light-mode from"gh-r" as"command" bpick'delta/delta' mv'delta* -> delta' for @dandavison/delta
+zinit ice bpick'bat/bat' mv'bat* -> bat' \
+    atload'export MANPAGER="bat --plain"' for @sharkdp/bat
 
-zinit lucid light-mode from"gh-r" as"command" bpick'bin/exa' for @ogham/exa 
-zinit lucid light-mode from"gh-r" as"command" bpick'*macos*' for @JohnnyMorganz/StyLua
+zinit ice bpick'delta/delta' mv'delta* -> delta' for @dandavison/delta
 
-# zinit lucid light-mode from"gh-r" as"command" bpick'*macos*' for @extrawurst/gitui atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" for yarnpkg/yarn
+zinit ice bpick'*macos*' atload'alias l="exa -abghHlS --git --group-directories-first"' \
+    pick'bin/exa' for @ogham/exa
+
+zinit ice bpick'*macos-aarch64*' for @JohnnyMorganz/StyLua
+
+zinit ice bpick'*gitui-mac.tar.gz*' for @extrawurst/gitui
+
+zinit ice bpick'*.tar.gz' atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
+    mv'yarn* -> yarn' pick"yarn/bin/yarn" for yarnpkg/yarn \
 
 ##########################
 # OMZ Libs and Plugins   #
@@ -79,22 +99,12 @@ setopt promptsubst
 # Explanation:
 # - Loading tmux first, to prevent jumps when tmux is loaded after .zshrc
 # - History plugin is loaded early (as it has some defaults) to prevent empty history stack for other plugins
-# zinit lucid for \
-#     atinit'
-#         export ZSH_TMUX_FIXTERM=false
-#         export ZSH_TMUX_AUTOSTART=true
-#         export ZSH_TMUX_AUTOCONNECT=true
-#         export ZSH_TMUX_DEFAULT_SESSION_NAME="</>"
-#     ' \
-#     OMZP::tmux \
-#     atinit"HIST_STAMPS=dd.mm.yyyy" \
-#     OMZL::history.zsh \
 
 zinit wait lucid for \
-    OMZL::clipboard.zsh \
-    OMZL::compfix.zsh \
-    OMZL::completion.zsh \
-    OMZL::correction.zsh \
+	OMZL::clipboard.zsh \
+	OMZL::compfix.zsh \
+	OMZL::completion.zsh \
+	OMZL::correction.zsh \
     atload'
         alias ..="cd .."
         alias ...="cd ../.."
@@ -107,24 +117,24 @@ zinit wait lucid for \
 
         alias rm="rm -rf"
     ' \
-    OMZL::directories.zsh \
-    OMZL::git.zsh \
-    OMZL::grep.zsh \
-    OMZL::key-bindings.zsh \
-    OMZL::spectrum.zsh \
-    OMZL::functions.zsh \
-    OMZL::termsupport.zsh \
-    atload'
-        alias gcd="git checkout dev"
-        alias gce="git commit -a -e"
-    ' \
-    OMZP::git \
-    djui/alias-tips \
-    https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh \
-    https://github.com/junegunn/fzf/blob/master/shell/completion.zsh \
+	OMZL::directories.zsh \
+	OMZL::git.zsh \
+	OMZL::grep.zsh \
+	OMZL::key-bindings.zsh \
+	OMZL::spectrum.zsh \
+	OMZL::functions.zsh \
+	OMZL::termsupport.zsh \
+    atload"
+        alias gcd='git checkout dev'
+        alias gce='git commit -a -e'
+    " \
+	OMZP::git \
+  djui/alias-tips \
+  https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh \
+  https://github.com/junegunn/fzf/blob/master/shell/completion.zsh \
     hlissner/zsh-autopair \
     chriskempson/base16-shell \
-    OMZP::fzf \
+	OMZP::fzf \
 
 #####################
 # PLUGINS           #
@@ -136,45 +146,45 @@ zinit wait lucid for \
 
 zinit wait lucid for \
     light-mode blockf atpull'zinit creinstall -q .' \
-    atinit'
-        zstyle ":completion:*" completer _expand _complete _ignored _approximate
-        zstyle ":completion:*" matcher-list "m:{a-z}={A-Z}"
-        zstyle ":completion:*" menu select=2
-        zstyle ":completion:*" select-prompt "%SScrolling active: current selection at %p%s"
-        zstyle ":completion:*:descriptions" format "-- %d --"
-        zstyle ":completion:*:processes" command "ps -au$USER"
-        zstyle ":completion:complete:*:options" sort false
-        zstyle ":fzf-tab:complete:_zlua:*" query-string input
-        zstyle ":completion:*:*:*:*:processes" command "ps -u $USER -o pid,user,comm,cmd -w -w"
-        zstyle ":fzf-tab:complete:kill:argument-rest" extra-opts --preview=$extract"ps --pid=$in[(w)1] -o cmd --no-headers -w -w" --preview-window=down:3:wrap
-        zstyle ":fzf-tab:complete:cd:*" extra-opts --preview=$extract"exa -1 --color=always ${~ctxt[hpre]}$in"
+    atinit' \
+        zstyle ":completion:*" completer _expand _complete _ignored _approximate \
+        zstyle ":completion:*" matcher-list "m:{a-z}={A-Z}" \
+        zstyle ":completion:*" menu select=2 \
+        zstyle ":completion:*" select-prompt "%SScrolling active: current selection at %p%s" \
+        zstyle ":completion:*:descriptions" format "-- %d --" \
+        zstyle ":completion:*:processes" command "ps -au$USER" \
+        zstyle ":completion:complete:*:options" sort false \
+        zstyle ":fzf-tab:complete:_zlua:*" query-string input \
+        zstyle ":completion:*:*:*:*:processes" command "ps -u $USER -o pid,user,comm,cmd -w -w" \
+        zstyle ":fzf-tab:complete:kill:argument-rest" extra-opts --preview=$extract"ps --pid=$in[(w)1] -o cmd --no-headers -w -w" --preview-window=down:3:wrap \
+        zstyle ":fzf-tab:complete:cd:*" extra-opts --preview=$extract"exa -1 --color=always ${~ctxt[hpre]}$in" \
     ' \
-        zsh-users/zsh-completions \
-    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
-    light-mode atinit'
-        typeset -gA FAST_HIGHLIGHT;
-        FAST_HIGHLIGHT[git-cmsg-len]=100;
-        zpcompinit;
-        zpcdreplay;
+    zsh-users/zsh-completions \
+    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload'_zsh_autosuggest_start' \
+    zsh-users/zsh-autosuggestions \
+    light-mode atinit' \
+        typeset -gA FAST_HIGHLIGHT; \
+        FAST_HIGHLIGHT[git-cmsg-len]=100; \
+        zpcompinit; \
+        zpcdreplay; \
     ' \
-        zdharma-continuum/fast-syntax-highlighting \
+    zdharma-continuum/fast-syntax-highlighting \
     reset \
-    atclone'local P=${${(M)OSTYPE:#*darwin*}:+g}
-            \${P}sed -i \
-            "/DIR/c\DIR 38;5;63;1" LS_COLORS; \
-            \${P}dircolors -b LS_COLORS > c.zsh' \
-    atpull'%atclone' pick"c.zsh" nocompile'!' \
+    atclone'local P=${${(M)OSTYPE:#*darwin*}:+g} \
+            ${P}sed -i \
+            "/DIR/c\\DIR 38;5;63;1" LS_COLORS; \
+            ${P}dircolors -b LS_COLORS > c.zsh' \
+    atpull'%atclone' pick'c.zsh' nocompile'!' \
     atload'zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"' \
-        trapd00r/LS_COLORS
+    trapd00r/LS_COLORS
 
-    # bindmap"^R -> ^H" atinit'
-    #     zstyle :history-search-multi-word page-size 10
-    #     zstyle :history-search-multi-word highlight-color fg=red,bold
-    #     zstyle :plugin:history-search-multi-word reset-prompt-protect 1
+    # bindmap"^R -> ^H" atinit' \
+    #     zstyle :history-search-multi-word page-size 10 \
+    #     zstyle :history-search-multi-word highlight-color fg=red,bold \
+    #     zstyle :plugin:history-search-multi-word reset-prompt-protect 1 \
     # ' \
-    #     zdharma-continuum/history-search-multi-word \
-
+    # zdharma-continuum/history-search-multi-word
+    #
 
 #####################
 # MANUAL CONFIG     #
@@ -186,6 +196,6 @@ zinit wait lucid for \
 zinit wait'0a' lucid is-snippet for \
     $HOME/.dotrc/extra/*.zsh \
     if"[[ -f $HOME/.localrc ]]" $HOME/.localrc
-
-
-eval "$(starship init zsh)"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# source ~/powerlevel10k/powerlevel10k.zsh-theme
