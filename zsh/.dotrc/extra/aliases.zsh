@@ -6,6 +6,17 @@ alias sysinfo="inxi -Fxxxz"
 # alias cat=bat
 alias open=xdg-open
 
+# git amend commit without edit
+alias gcan="git commit -v -a --no-edit --amend"
+alias p="pnpm"
+alias y="yarn"
+alias sb="npx supabase"
+alias vim="/opt/homebrew/bin/nvim"
+
+# python
+alias python="python3"
+alias pip="pip3"
+
 # go to root git dir
 cdr() {
     cd "$(git rev-parse --show-toplevel)" || return
