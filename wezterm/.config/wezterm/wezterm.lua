@@ -8,6 +8,7 @@ return {
     audible_bell = 'Disabled',
     -- check_for_updates = false,
     font_size = 13,
+    line_height = 1.1,
     font = W.font({
         family = 'Fira Code',
         harfbuzz_features = {
