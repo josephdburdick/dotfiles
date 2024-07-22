@@ -7,6 +7,13 @@ fi
 
 #!/bin/zsh
 
+## Load environment variables from ~/.env if the file exists
+if [ -f ~/.env ]; then
+  export $(cat ~/.env | xargs)
+fi
+
+export LC_ALL=en_US.UTF-8
+
 ### Added by Zinit's installer
 ZINIT_DIR="$HOME/.local/share/zinit"
 ZINIT_HOME="$ZINIT_DIR/zinit.git"
@@ -28,6 +35,8 @@ zinit is-snippet for \
     if"[[ -f $HOME/.zsh_pre ]]" $HOME/.zsh_pre \
     $HOME/.dotrc/config.zsh \
 
+ZSH_THEME="robbyrussell"
+
 #####################
 # PROMPT            #
 #####################
@@ -42,20 +51,10 @@ zinit lucid light-mode from"gh-r" as"command" bpick'*apple-darwin.tar.gz' for \
 # PROGRAMS          #
 #####################
 
+zinit ice bpick'*macos-arm64*' for jqlang/jq
 zinit wait lucid light-mode for lukechilds/zsh-nvm
-zinit lucid light-mode from"gh-r" as"command" bpick'*apple-darwin*' for \
-    @numToStr/snm \
-    @ajeetdsouza/zoxide \
-    @junegunn/fzf \
-    @BurntSushi/ripgrep \
-    @sharkdp/fd \
-    @sharkdp/bat \
-    @dandavison/delta \
-    @ogham/exa \
-    @JohnnyMorganz/StyLua \
-    @extrawurst/gitui \
-    yarnpkg/yarn 
 
+zinit pack for ls_colors
 zinit ice bpick'*apple-darwin*' \
     atload'eval "$(snm env zsh)"; alias n="snm"' \
     mv'snm* -> snm' pick'snm/snm' for @numToStr/snm
@@ -81,6 +80,7 @@ zinit ice bpick'*macos*' atload'alias l="exa -abghHlS --git --group-directories-
 zinit ice bpick'*macos-aarch64*' for @JohnnyMorganz/StyLua
 
 zinit ice bpick'*gitui-mac.tar.gz*' for @extrawurst/gitui
+
 
 zinit ice bpick'*.tar.gz' atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
     mv'yarn* -> yarn' pick"yarn/bin/yarn" for yarnpkg/yarn \
@@ -143,7 +143,6 @@ zinit wait lucid for \
 
 # IMPORTANT:
 # These plugins should be loaded after ohmyzsh plugins
-
 zinit wait lucid for \
     light-mode blockf atpull'zinit creinstall -q .' \
     atinit' \

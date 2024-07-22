@@ -47,12 +47,12 @@ export EDITOR=$(which nvim)
 # export MANPAGER="nvim --clean +Man! +'setl noma' +'nn q :q!<CR>'"
 export PAGER=bat
 
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
 # Update locales (Also fixes powerline fonts rendering inside tmux)
-# export LANG=en_IN.UTF-8
-# export LC_ALL=en_IN.UTF-8
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-
+# export LANG="en_US.UTF-8"
+# export LC_ALL="en_US.UTF-8"
+#
 # For enabling buildkit backend in docker and docker-compose
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
@@ -86,6 +86,7 @@ export PATH="$PNPM_HOME:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export CARGO_PATH="$HOME/.cargo/bin"
+export PATH="$CARGO_PATH:$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:/opt/homebrew/opt/tpm/:$PATH"
 export PATH="$LSP_BIN_PATH:$GOBIN:$PATH"
