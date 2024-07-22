@@ -38,5 +38,5 @@ map("n", "<Leader>gl", "<Cmd>lua require('ndoo').open()<CR>", { desc = "Open Git
 map("v", "<Leader>gl", "<Cmd>lua require('ndoo').open({ v = true })<CR>", { desc = "Open Git link" })
 
 -- Debug with OpenAI
-map({ "n", "x" }, "<Leader>gw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
-map("n", "<Leader>gW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
+map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
+map("n", "<Leader>cW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
