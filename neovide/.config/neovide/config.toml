@@ -1,0 +1,17 @@
+fork = false
+frame = "buttonless"
+idle = true
+maximized = false
+no-multigrid = false
+neovim-bin = '/opt/homebrew/bin/nvim'
+theme = "auto"
+srgb = false
+tabs = false
+title-hidden = true
+vsync = false
+wsl = false
+
+[font]
+size = 13
+hinting = "full"
+normal = ["FiraCode Nerd Font Propo"]

@@ -40,3 +40,10 @@ map("v", "<Leader>gl", "<Cmd>lua require('ndoo').open({ v = true })<CR>", { desc
 -- Debug with OpenAI
 map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
 map("n", "<Leader>cW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
+
+-- Obsidian
+map("n", "<leader>Od", "<cmd>ObsidianToday<CR>", { desc = "Obsidian: Open today's daily note" })
+map("n", "<leader>Oo", "<cmd>ObsidianOpen<CR>", { desc = "Obsidian: Open in Obsidian" })
+map("n", "<leader>On", "<cmd>ObsidianNew<CR>", { desc = "Obsidian: Open New Note" })
+map("n", "<leader>Ofp", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Obsidian: Search Files" })
+map("n", "<leader>Ofa", "<cmd>ObsidianSearch<CR>", { desc = "Obsidian: Search In Files" })
