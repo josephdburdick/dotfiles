@@ -1,7 +1,7 @@
 fork = false
 frame = "buttonless"
 idle = true
-maximized = false
+maximized = true
 no-multigrid = false
 neovim-bin = '/opt/homebrew/bin/nvim'
 theme = "auto"
@@ -10,8 +10,8 @@ tabs = false
 title-hidden = true
 vsync = false
 wsl = false
+linespace = 1.2
 
 [font]
 size = 13
-hinting = "full"
-normal = ["FiraCode Nerd Font Propo"]
+normal = "FiraCode Nerd Font"

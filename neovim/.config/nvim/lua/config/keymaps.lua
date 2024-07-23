@@ -22,15 +22,15 @@ map({ "i", "x", "n", "s" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
 -- Copy the current line or selection and paste it above/below
 map("n", "<A-S-Up>", ":t-1<CR>", { silent = true })
-map("n", "<A-S-Down>", ":t+1<CR>", { silent = true })
 map("v", "<A-S-Up>", ":t-1<CR>gv=gv", { silent = true })
+map("n", "<A-S-Down>", ":t+1<CR>", { silent = true })
 map("v", "<A-S-Down>", ":t'>+<CR>gv=gv", { silent = true })
 
 -- Move lines up / down
 -- Ensure these don't conflict with copy operations
 map("n", "<A-Up>", ":m .-2<CR>==", { silent = true })
-map("n", "<A-Down>", ":m .+1<CR>==", { silent = true })
 map("v", "<A-Up>", ":m '<-2<CR>gv=gv", { silent = true })
+map("n", "<A-Down>", ":m .+1<CR>==", { silent = true })
 map("v", "<A-Down>", ":m '>+1<CR>gv=gv", { silent = true })
 
 -- Link to Git repo
@@ -47,3 +47,12 @@ map("n", "<leader>Oo", "<cmd>ObsidianOpen<CR>", { desc = "Obsidian: Open in Obsi
 map("n", "<leader>On", "<cmd>ObsidianNew<CR>", { desc = "Obsidian: Open New Note" })
 map("n", "<leader>Ofp", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Obsidian: Search Files" })
 map("n", "<leader>Ofa", "<cmd>ObsidianSearch<CR>", { desc = "Obsidian: Search In Files" })
+
+if vim.g.neovide == true then
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>wf",
+    ":let g:neovide_fullscreen = !g:neovide_fullscreen<CR>",
+    { desc = "Toggle Fullscreen" }
+  )
+end
