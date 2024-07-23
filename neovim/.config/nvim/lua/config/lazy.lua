@@ -1,4 +1,38 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+-- neovide config
+if vim.g.neovide then
+  vim.o.guifont = "FiraCode Nerd Font:h13:#e-subpixelantialias"
+
+  -- vim.g.neovide_padding_top = 20
+  -- vim.g.neovide_padding_bottom = 20
+  -- vim.g.neovide_padding_right = 10
+  -- vim.g.neovide_padding_left = 10
+
+  vim.g.neovide_scroll_animation_length = 0.2
+
+  vim.g.neovide_floating_shadow = true
+
+  vim.g.neovide_hide_mouse_when_typing = true
+
+  vim.g.neovide_remember_window_size = true
+  vim.g.neovide_confirm_quit = true
+
+  vim.g.neovide_fullscreen = true
+
+  vim.g.neovide_input_use_logo = true
+
+  -- vim.g.neovide_cursor_antialiasing = false
+  vim.g.neovide_cursor_animate_in_insert_mode = false
+  vim.g.neovide_cursor_animate_command_line = false
+  -- vim.g.neovide_cursor_animation_length = 0
+  -- vim.g.neovide_cursor_trail_size = 0
+  -- vim.g.neovide_transparency = 0.92
+  -- vim.g.neovide_window_blurred = true
+  -- vim.g.neovide_floating_blur_amount_x = 0.1
+  -- vim.g.neovide_floating_blur_amount_y = 0.1
+end
+
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
   -- stylua: ignore
