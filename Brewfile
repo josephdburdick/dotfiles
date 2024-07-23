@@ -25,8 +25,8 @@ brew "wget2"
 brew "wifi-password"
 
 brew "zinit"
-brew "felixkratz/formulae/sketchybar", args: ["HEAD"]
-brew "koekeishiya/formulae/skhd"
+# brew "felixkratz/formulae/sketchybar", args: ["HEAD"]
+# brew "koekeishiya/formulae/skhd"
 
 cask "1password-cli"
 cask "amethyst"
