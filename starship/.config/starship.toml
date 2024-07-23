@@ -29,7 +29,7 @@ modified = " \uf459 "
 staged = " \uf457 "
 renamed = " \uf45a "
 deleted = " \uf014 "
-stashed = " ≡"
+stashed = " ≡ "
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '

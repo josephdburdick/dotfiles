@@ -40,72 +40,77 @@ return {
       },
     },
   },
+  -- smooth scrolling
   {
-    "nvimdev/dashboard-nvim",
-    lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
-    opts = function()
-      local logo = [[
-      
-__/\\\\\_____/\\\__/\\\\\\\\\\\\\\\_______/\\\\\_______/\\\________/\\\__/\\\\\\\\\\\__/\\\\____________/\\\\_        
- _\/\\\\\\___\/\\\_\/\\\///////////______/\\\///\\\____\/\\\_______\/\\\_\/////\\\///__\/\\\\\\________/\\\\\\_       
-  _\/\\\/\\\__\/\\\_\/\\\_______________/\\\/__\///\\\__\//\\\______/\\\______\/\\\_____\/\\\//\\\____/\\\//\\\_      
-   _\/\\\//\\\_\/\\\_\/\\\\\\\\\\\______/\\\______\//\\\__\//\\\____/\\\_______\/\\\_____\/\\\\///\\\/\\\/_\/\\\_     
-    _\/\\\\//\\\\/\\\_\/\\\///////______\/\\\_______\/\\\___\//\\\__/\\\________\/\\\_____\/\\\__\///\\\/___\/\\\_    
-     _\/\\\_\//\\\/\\\_\/\\\_____________\//\\\______/\\\_____\//\\\/\\\_________\/\\\_____\/\\\____\///_____\/\\\_   
-      _\/\\\__\//\\\\\\_\/\\\______________\///\\\__/\\\________\//\\\\\__________\/\\\_____\/\\\_____________\/\\\_  
-       _\/\\\___\//\\\\\_\/\\\\\\\\\\\\\\\____\///\\\\\/__________\//\\\________/\\\\\\\\\\\_\/\\\_____________\/\\\_ 
-        _\///_____\/////__\///////////////_______\/////_____________\///________\///////////__\///______________\///__
-
-     ]]
-
-      logo = string.rep("\n", 8) .. logo .. "\n\n"
-
-      local opts = {
-        theme = "doom",
-        hide = {
-          -- this is taken care of by lualine
-          -- enabling this messes up the actual laststatus setting after loading a file
-          statusline = false,
-        },
-        config = {
-          header = vim.split(logo, "\n"),
-        -- stylua: ignore
-        center = {
-            { action = LazyVim.pick(),                                   desc = " Find File",       icon = " ", key = "f" },
-            { action = "ene | startinsert",                              desc = " New File",        icon = " ", key = "n" },
-            { action = LazyVim.pick("oldfiles"),                         desc = " Recent Files",    icon = " ", key = "r" },
-            { action = LazyVim.pick("live_grep"),                        desc = " Find Text",       icon = " ", key = "g" },
-            { action = LazyVim.pick.config_files(),                      desc = " Config",          icon = " ", key = "c" },
-            { action = 'lua require("persistence").load()',              desc = " Restore Session", icon = " ", key = "s" },
-            { action = "LazyExtras",                                     desc = " Lazy Extras",     icon = " ", key = "x" },
-            { action = "Lazy",                                           desc = " Lazy",            icon = "󰒲 ", key = "l" },
-            { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit",            icon = " ", key = "q" },
-          },
-          footer = function()
-            local stats = require("lazy").stats()
-            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-            return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
-          end,
-        },
+    "karb94/neoscroll.nvim",
+    config = function()
+      local neoscroll = require("neoscroll")
+      neoscroll.setup({
+        -- Default easing function used in any animation where
+        -- the `easing` argument has not been explicitly supplied
+        hide_cursor = false, -- Hide cursor while scrolling
+        stop_eof = true, -- Stop at <EOF> when scrolling downwards
+        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        easing = "quadratic", -- Default easing function
+        pre_hook = nil, -- Function to run before the scrolling animation starts
+        post_hook = nil, -- Function to run after the scrolling animation ends
+        performance_mode = false, -- Disable "Performance Mode" on all buffers.
+      })
+      local keymap = {
+        ["<C-u>"] = function()
+          neoscroll.ctrl_u({ duration = 150 })
+        end,
+        ["<C-d>"] = function()
+          neoscroll.ctrl_d({ duration = 150 })
+        end,
+        ["<C-b>"] = function()
+          neoscroll.ctrl_b({ duration = 250 })
+        end,
+        ["<C-f>"] = function()
+          neoscroll.ctrl_f({ duration = 250 })
+        end,
+        ["<C-y>"] = function()
+          neoscroll.scroll(-0.1, { move_cursor = false, duration = 100 })
+        end,
+        ["<C-e>"] = function()
+          neoscroll.scroll(0.1, { move_cursor = false, duration = 100 })
+        end,
+        ["zt"] = function()
+          neoscroll.zt({ half_win_duration = 150 })
+        end,
+        ["zz"] = function()
+          neoscroll.zz({ half_win_duration = 150 })
+        end,
+        ["zb"] = function()
+          neoscroll.zb({ half_win_duration = 150 })
+        end,
       }
-
-      for _, button in ipairs(opts.config.center) do
-        button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
-        button.key_format = "  %s"
+      local modes = { "n", "v", "x" }
+      for key, func in pairs(keymap) do
+        vim.keymap.set(modes, key, func)
       end
+    end,
+  },
+  -- Colored marks in scrollbar
+  {
+    "petertriho/nvim-scrollbar",
+    config = function()
+      local colors = require("tokyonight.colors").setup()
 
-      -- close Lazy and re-open when the dashboard is ready
-      if vim.o.filetype == "lazy" then
-        vim.cmd.close()
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "DashboardLoaded",
-          callback = function()
-            require("lazy").show()
-          end,
-        })
-      end
-
-      return opts
+      require("scrollbar").setup({
+        handle = {
+          color = colors.bg_highlight,
+        },
+        marks = {
+          Search = { color = colors.orange },
+          Error = { color = colors.error },
+          Warn = { color = colors.warning },
+          Info = { color = colors.info },
+          Hint = { color = colors.hint },
+          Misc = { color = colors.purple },
+        },
+      })
     end,
   },
 }
