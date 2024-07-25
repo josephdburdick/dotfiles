@@ -198,3 +198,5 @@ zinit wait'0a' lucid is-snippet for \
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+PATH=~/.console-ninja/.bin:$PATH

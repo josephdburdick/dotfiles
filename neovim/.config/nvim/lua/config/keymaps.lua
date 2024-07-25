@@ -12,7 +12,7 @@ map("n", "<Leader>a", "gg0vG$", { desc = "Select all" })
 map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
 
 -- NeoTree
-map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>")
+map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>", { silent = true })
 
 -- Control + s to save
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
@@ -36,6 +36,9 @@ map("v", "<A-Down>", ":m '>+1<CR>gv=gv", { silent = true })
 -- Link to Git repo
 map("n", "<Leader>gl", "<Cmd>lua require('ndoo').open()<CR>", { desc = "Open Git link" })
 map("v", "<Leader>gl", "<Cmd>lua require('ndoo').open({ v = true })<CR>", { desc = "Open Git link" })
+
+-- Code Action
+map("n", "<leader>ca", "<Cmd>lua require('tiny-code-action').code_action()<CR>")
 
 -- Debug with OpenAI
 map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
