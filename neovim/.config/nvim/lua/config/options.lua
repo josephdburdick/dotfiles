@@ -2,7 +2,7 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 if vim.g.neovide then
-  vim.o.guifont = "FiraCode Nerd Font:h14"
+  vim.o.guifont = "FiraCode Nerd Font Mono:h13"
   vim.o.visualbell = true
   vim.opt.linespace = 2
   -- vim.g.neovide_padding_top = 20
