@@ -7,9 +7,15 @@ local map = vim.keymap.set
 -- escape
 map("i", "jk", "<Esc>", { desc = "Escape" })
 
--- Select all
-map("n", "<Leader>a", "gg0vG$", { desc = "Select all" })
+-- Select all / Copy all
+map("n", "<Leader>a", "gg<S-v>G", { desc = "Select all" })
 map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
+-- map("n", "<C-a>", "gg<S-v>G", { desc = "Select all" })
+-- map("n", "<C-A>", "gg<S-v>Gy", { desc = "Copy all" })
+
+-- Increment/decrement
+map("n", "+", "<C-a>", { desc = "Increment" })
+map("n", "-", "<C-x>", { desc = "Decrement" })
 
 -- NeoTree
 map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>", { silent = true })
