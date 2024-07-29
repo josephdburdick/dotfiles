@@ -32,6 +32,14 @@ return {
         function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+  -- Github link integration
+  {
+    "mistweaverco/ndoo.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    lazy = false,
+  },
 
   --
   --

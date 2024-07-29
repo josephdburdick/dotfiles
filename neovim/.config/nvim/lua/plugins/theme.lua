@@ -7,4 +7,5 @@ return {
       colorscheme = "nightfox",
     },
   },
+  {},
 }
