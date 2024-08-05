@@ -1,7 +1,16 @@
 return {
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   event = "BufEnter",
+  -- },
   {
-    "Exafunction/codeium.vim",
-    event = "BufEnter",
+    "monkoose/neocodeium",
+    event = "VeryLazy",
+    opts = function()
+      require("neocodeium").setup({
+        silent = true,
+      })
+    end,
   },
   -- use AI to generate code
   {
@@ -10,7 +19,6 @@ return {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
     },
-
     config = function()
       require("codegpt.config")
     end,

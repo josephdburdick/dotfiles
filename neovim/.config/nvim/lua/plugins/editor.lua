@@ -56,7 +56,7 @@ return {
 
     -- cmd = { "NvimTreeToggle", "NvimTreeFocus" },
 
-    config = function()
+    opts = function()
       require("lsp-file-operations").setup()
     end,
   },
@@ -65,7 +65,7 @@ return {
   {
     "tris203/precognition.nvim",
     event = "BufRead",
-    config = {
+    opts = {
       highlightColor = {
         fg = "#666666",
       },
@@ -93,7 +93,7 @@ return {
       "zidhuss/neotest-minitest",
     },
 
-    config = function()
+    opts = function()
       require("neotest").setup({
         adapters = {
           require("neotest-jest"),
@@ -141,66 +141,77 @@ return {
       buftypes = {},
     },
   },
+
   -- Add Tailwind context window for definitions
   {
     "luckasRanarison/tailwind-tools.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {}, -- your configuration
   },
+
   -- code actions
   {
-    "rachartier/tiny-code-action.nvim",
-    lazy = false,
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope.nvim" },
-    },
-    event = "LspAttach",
+    "aznhe21/actions-preview.nvim",
     config = function()
-      require("tiny-code-action").setup()
+      require("actions-preview").setup({
+        telescope = {
+          sorting_strategy = "ascending",
+          layout_strategy = "vertical",
+          layout_config = {
+            width = 0.8,
+            height = 0.9,
+            prompt_position = "top",
+            preview_cutoff = 20,
+            preview_height = function(_, _, max_lines)
+              return max_lines - 15
+            end,
+          },
+        },
+      })
     end,
   },
+
   -- allow TAB for code completion and snippets
-  -- {
-  --   "hrsh7th/nvim-cmp",
-  --   ---@param opts cmp.ConfigSchema
-  --   opts = function(_, opts)
-  --     local has_words_before = function()
-  --       unpack = unpack or table.unpack
-  --       local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  --       return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-  --     end
-  --
-  --     local cmp = require("cmp")
-  --
-  --     opts.mapping = vim.tbl_extend("force", opts.mapping, {
-  --       ["<Tab>"] = cmp.mapping(function(fallback)
-  --         if cmp.visible() then
-  --           -- You could replace select_next_item() with confirm({ select = true }) to get VS Code autocompletion behavior
-  --           -- cmp.select_next_item()
-  --           cmp.confirm({ select = true })
-  --         elseif vim.snippet.active({ direction = 1 }) then
-  --           vim.schedule(function()
-  --             vim.snippet.jump(1)
-  --           end)
-  --         elseif has_words_before() then
-  --           cmp.complete()
-  --         else
-  --           fallback()
-  --         end
-  --       end, { "i", "s" }),
-  --       ["<S-Tab>"] = cmp.mapping(function(fallback)
-  --         if cmp.visible() then
-  --           cmp.select_prev_item()
-  --         elseif vim.snippet.active({ direction = -1 }) then
-  --           vim.schedule(function()
-  --             vim.snippet.jump(-1)
-  --           end)
-  --         else
-  --           fallback()
-  --         end
-  --       end, { "i", "s" }),
-  --     })
-  --   end,
-  -- },
+  {
+    "hrsh7th/nvim-cmp",
+    ---@param opts cmp.ConfigSchema
+    opts = function(_, opts)
+      local has_words_before = function()
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
+
+      local cmp = require("cmp")
+
+      opts.mapping = vim.tbl_extend("force", opts.mapping, {
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            -- You could replace select_next_item() with confirm({ select = true }) to get VS Code autocompletion behavior
+            -- cmp.select_next_item()
+            cmp.confirm({ select = true })
+          elseif vim.snippet.active({ direction = 1 }) then
+            vim.schedule(function()
+              vim.snippet.jump(1)
+            end)
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif vim.snippet.active({ direction = -1 }) then
+            vim.schedule(function()
+              vim.snippet.jump(-1)
+            end)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+      })
+    end,
+  },
 }
