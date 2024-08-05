@@ -57,11 +57,6 @@ map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
 map("n", "<Leader>gl", "<Cmd>lua require('ndoo').open()<CR>", { desc = "Open Git link" })
 map("v", "<Leader>gl", "<Cmd>lua require('ndoo').open({ v = true })<CR>", { desc = "Open Git link" })
 
--- Code Action
-map("n", "<leader>ca", function()
-  require("tiny-code-action").code_action()
-end, { desc = "(tiny) Code action", noremap = true, silent = true })
-
 -- Better TS Errors
 map(
   { "n", "v" },
@@ -69,36 +64,51 @@ map(
   "<Cmd>lua require('better-ts-errors').toggle()<CR>",
   { desc = "Toggle Better TS Error" }
 )
+
 map(
   { "n", "v" },
   "<Leader>cX",
   "<Cmd>lua require('better-ts-errors').go_to_definition()<CR>",
   { desc = "Toggle Better TS Definition" }
 )
+
 -- Debug with OpenAI
 map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
 map("n", "<Leader>cW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
 
--- Obsidian
--- map("n", "<leader>Od", "<cmd>ObsidianToday<CR>", { desc = "Obsidian: Open today's daily note" })
--- map("n", "<leader>Oo", "<cmd>ObsidianOpen<CR>", { desc = "Obsidian: Open in Obsidian" })
--- map("n", "<leader>On", "<cmd>ObsidianNew<CR>", { desc = "Obsidian: Open New Note" })
--- map("n", "<leader>Ofp", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Obsidian: Search Files" })
--- map("n", "<leader>Ofa", "<cmd>ObsidianSearch<CR>", { desc = "Obsidian: Search In Files" })
-
 -- Codeium
-map("i", "<C-A-Tab>", function()
-  return vim.api.nvim_input(vim.fn["codeium#Accept"]())
-end, { expr = true, silent = true })
-map("i", "<C-A-]>", function()
-  return vim.fn["codeium#CycleCompletions"](1)
-end, { expr = true, silent = true })
-map("i", "<C-A-[>", function()
-  return vim.fn["codeium#CycleCompletions"](-1)
-end, { expr = true, silent = true })
-map("i", "<c-x>", function()
-  return vim.fn["codeium#Clear"]()
-end, { expr = true, silent = true })
+-- map("i", "<C-a>", function()
+--   return vim.api.nvim_input(vim.fn["codeium#Accept"]())
+-- end, { expr = true, silent = true })
+-- map("i", "<C-A-]>", function()
+--   return vim.fn["codeium#CycleCompletions"](1)
+-- end, { expr = true, silent = true })
+-- map("i", "<C-A-[>", function()
+--   return vim.fn["codeium#CycleCompletions"](-1)
+-- end, { expr = true, silent = true })
+-- map("i", "<c-x>", function()
+--   return vim.fn["codeium#Clear"]()
+-- end, { expr = true, silent = true })
+
+-- NeoCodeium
+map("i", "<C-A-a>", function()
+  require("neocodeium").accept()
+end)
+map("i", "<C-A-w>", function()
+  require("neocodeium").accept_word()
+end)
+map("i", "<C-A-l>", function()
+  require("neocodeium").accept_line()
+end)
+map("i", "<C-A-e>", function()
+  require("neocodeium").cycle_or_complete()
+end)
+map("i", "<C-A-r>", function()
+  require("neocodeium").cycle_or_complete(-1)
+end)
+map("i", "<C-A-c>", function()
+  require("neocodeium").clear()
+end)
 
 -- Neovide
 if vim.g.neovide == true then
