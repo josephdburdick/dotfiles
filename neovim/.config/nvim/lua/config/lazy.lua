@@ -31,10 +31,7 @@ require("lazy").setup({
     -- { import = "lazyvim.plugins.extras.coding.copilot" },
     { import = "lazyvim.plugins.extras.dap.core" },
     { import = "lazyvim.plugins.extras.vscode" },
-    {
-      "Exafunction/codeium.vim",
-      event = "BufEnter",
-    },
+
     { import = "lazyvim.plugins.extras.test.core" },
     { import = "lazyvim.plugins.extras.coding.yanky" },
     { import = "lazyvim.plugins.extras.editor.mini-files" },
