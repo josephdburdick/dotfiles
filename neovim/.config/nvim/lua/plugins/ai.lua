@@ -1,4 +1,9 @@
-return { -- use AI to generate code
+return {
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+  },
+  -- use AI to generate code
   {
     "dpayne/CodeGPT.nvim",
     dependencies = {
