@@ -1,8 +1,13 @@
 return {
-  -- {
-  --   "Exafunction/codeium.vim",
-  --   event = "BufEnter",
-  -- },
+  {
+    "robitx/gp.nvim",
+    config = function()
+      local conf = {
+        -- For customization, refer to Install > Configuration in the Documentation/Readme
+      }
+      require("gp").setup(conf)
+    end,
+  },
   {
     "monkoose/neocodeium",
     event = "VeryLazy",
