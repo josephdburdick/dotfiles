@@ -9,7 +9,6 @@ return {
     "mg979/vim-visual-multi",
     lazy = false,
   },
-
   {
     "folke/flash.nvim",
     event = "VeryLazy",
