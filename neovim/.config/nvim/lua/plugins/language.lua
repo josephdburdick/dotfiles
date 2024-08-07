@@ -16,10 +16,10 @@ return {
     "OlegGulevskyy/better-ts-errors.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
     opts = {
-      keymaps = {
-        toggle = "<leader>cD", -- default '<leader>dd'
-        go_to_definition = "<leader>cX", -- default '<leader>dx'
-      },
+      -- keymaps = {
+      --   toggle = "<leader>cD", -- default '<leader>dd'
+      --   go_to_definition = "<leader>cX", -- default '<leader>dx'
+      -- },
     },
   },
   {
@@ -33,6 +33,18 @@ return {
           vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File", buffer = buffer })
         end)
       end,
+    },
+  },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        -- Use a sub-list to run only the first available formatter
+        -- javascript = { { "prettier" } },
+        -- typescript = { { "prettier" } },
+        -- typescriptreact = { { "prettier" } },
+        css = { { "prettier" } },
+      },
     },
   },
 }

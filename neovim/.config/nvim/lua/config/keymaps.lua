@@ -10,8 +10,6 @@ map("i", "jk", "<Esc>", { desc = "Escape" })
 -- Select all / Copy all
 map("n", "<Leader>a", "gg<S-v>G", { desc = "Select all" })
 map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
--- map("n", "<C-a>", "gg<S-v>G", { desc = "Select all" })
--- map("n", "<C-A>", "gg<S-v>Gy", { desc = "Copy all" })
 
 -- Increment/decrement
 map("n", "+", "<C-a>", { desc = "Increment" })
@@ -21,10 +19,8 @@ map("n", "-", "<C-x>", { desc = "Decrement" })
 map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>", { silent = true })
 
 -- Control + s to save
-map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
-
--- Command + s to save
-map({ "i", "x", "n", "s" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+map({ "i", "x", "n", "s" }, "<C-s>", "<Cmd>w<CR><Esc>", { desc = "Save file" })
+map({ "i", "x", "n", "s" }, "<D-s>", "<Cmd>w<CR><Esc>", { desc = "Save file" })
 
 -- Copy the current line or selection and paste it above/below
 -- directional keys
@@ -58,37 +54,25 @@ map("n", "<Leader>gl", "<Cmd>lua require('ndoo').open()<CR>", { desc = "Open Git
 map("v", "<Leader>gl", "<Cmd>lua require('ndoo').open({ v = true })<CR>", { desc = "Open Git link" })
 
 -- Better TS Errors
-map(
-  { "n", "v" },
-  "<Leader>cx",
-  "<Cmd>lua require('better-ts-errors').toggle()<CR>",
-  { desc = "Toggle Better TS Error" }
-)
+map({ "n", "v" }, "<Leader>cx", function()
+  require("better-ts-errors").toggle()
+end, { desc = "Toggle Better TS Error" })
 
-map(
-  { "n", "v" },
-  "<Leader>cX",
-  "<Cmd>lua require('better-ts-errors').go_to_definition()<CR>",
-  { desc = "Toggle Better TS Definition" }
-)
+map({ "n", "v" }, "<Leader>cX", function()
+  require("better-ts-errors").go_to_definition()
+end, { desc = "Toggle Better TS Definition" })
+
+-- map(
+--   { "n", "v" },
+--   "<Leader>cX",
+--   "<Cmd>lua require('better-ts-errors').go_to_definition()<CR>",
+--   { desc = "Toggle Better TS Definition" }
+-- )
+--
 
 -- Debug with OpenAI
 map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
 map("n", "<Leader>cW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
-
--- Codeium
--- map("i", "<C-a>", function()
---   return vim.api.nvim_input(vim.fn["codeium#Accept"]())
--- end, { expr = true, silent = true })
--- map("i", "<C-A-]>", function()
---   return vim.fn["codeium#CycleCompletions"](1)
--- end, { expr = true, silent = true })
--- map("i", "<C-A-[>", function()
---   return vim.fn["codeium#CycleCompletions"](-1)
--- end, { expr = true, silent = true })
--- map("i", "<c-x>", function()
---   return vim.fn["codeium#Clear"]()
--- end, { expr = true, silent = true })
 
 -- NeoCodeium
 map("i", "<C-A-a>", function()
