@@ -3,7 +3,7 @@
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
-alias cat=bat
+alias cat='bat --theme=--theme=Monokai Extended'
 alias top=btop
 
 # git amend commit without edit
@@ -14,7 +14,8 @@ alias sb="npx supabase"
 alias vim="/opt/homebrew/bin/nvim"
 
 # python
-alias python="python3"
+alias python="$(which python3)"
+alias PYTHON="$(which python3)"
 alias pip="pip3"
 
 # go to root git dir
