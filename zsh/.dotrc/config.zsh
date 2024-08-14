@@ -28,6 +28,7 @@ setopt inc_append_history     # add commands to HISTFILE in order of execution
 #####################
 # HISTORY           #
 #####################
+
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
 HISTSIZE=290000
 SAVEHIST=$HISTSIZE
@@ -35,58 +36,54 @@ SAVEHIST=$HISTSIZE
 ############
 # DOTFILES #
 ############
+
 export DOTFILES=${DOTFILES:-$HOME/.dotfiles}
 
 #####################
 # ENV               #
 #####################
+
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export TERM=${TERM:-xterm-256color}
 export COLORTERM=${COLORTERM:-truecolor}
 export EDITOR=$(which nvim)
-# export MANPAGER="nvim --clean +Man! +'setl noma' +'nn q :q!<CR>'"
 export PAGER=bat
-
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-# Update locales (Also fixes powerline fonts rendering inside tmux)
-# export LANG="en_US.UTF-8"
-# export LC_ALL="en_US.UTF-8"
-#
-# For enabling buildkit backend in docker and docker-compose
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
-
 export CGO_ENABLED=1
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
-
-export ZSH_AUTOSUGGEST_MANUAL_REBIND=1  # make prompt faster
-export DISABLE_MAGIC_FUNCTIONS=true     # make pasting into terminal faster
-
+export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+export DISABLE_MAGIC_FUNCTIONS=true
 #####################
 # PATH              #
 #####################
-export LSP_BIN_PATH="$HOME/.local/lsp/bin"
-export GOPATH="$HOME/go/"
-export GOBIN="$GOPATH/bin"
-
 # nvm
-export NVM_COMPLETION=true
-export NVM_SYMLINK_CURRENT="true"
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
-
-# pnpm
-export PNPM_HOME="/Users/jb/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  source "$NVM_DIR/nvm.sh"
+fi
+if [ -s "$NVM_DIR/bash_completion" ]; then
+  source "$NVM_DIR/bash_completion"
+fi
 
 # bun completions
-[ -s "/Users/jb/.bun/_bun" ] && source "/Users/jb/.bun/_bun"
+if [ -s "$HOME/.bun/_bun" ]; then
+  source "$HOME/.bun/_bun"
+fi
 
-# bun
+export PYTHON_PATH="$HOME/.pyenv/shims" 
+export LSP_BIN_PATH="$HOME/.local/lsp/bin"
+export GOPATH="$HOME/go"
+export GOBIN="$GOPATH/bin"
+export PNPM_HOME="$HOME/Library/pnpm"
 export BUN_INSTALL="$HOME/.bun"
+export BUN_PATH="$BUN_INSTALL/bin"
 export CARGO_PATH="$HOME/.cargo/bin"
-export PATH="$CARGO_PATH:$BUN_INSTALL/bin:$PATH"
-export PATH="/opt/homebrew/opt/libpq/bin:/opt/homebrew/opt/tpm/:$PATH"
-export PATH="$LSP_BIN_PATH:$GOBIN:$PATH"
+export LIB_PQ_BIN_PATH="/opt/homebrew/opt/libpq/bin"
+export TPM_PATH="/opt/homebrew/opt/tpm"
+
+# Adding all paths to PATH variable
+export PATH="$PYTHON_PATH:$LSP_BIN_PATH:$GOBIN:$CARGO_PATH:$BUN_PATH:$PNPM_HOME:$LIB_PQ_BIN_PATH:$TPM_PATH:$PATH"
+

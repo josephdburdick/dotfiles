@@ -13,6 +13,6 @@ wsl = false
 linespace = 1.2
 
 [font]
-size = 13
+size = 14
 normal = "FiraCode Nerd Font"
 style = "Regular"
