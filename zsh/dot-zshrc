@@ -146,3 +146,4 @@ zinit wait'0a' lucid is-snippet for \
 
 PATH=~/.console-ninja/.bin:$PATH
 
+eval "$(fnm env)"
