@@ -1,6 +1,6 @@
 
 # toggle macOS VSCode press and hold
-toggle_vscode_apple_press_and_hold() {
+osx_toggle_vscode_apple_press_and_hold() {
   if [[ $1 == "off" ]]; then
     defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
     echo "ApplePressAndHoldEnabled is now OFF for VSCode."
@@ -13,7 +13,7 @@ toggle_vscode_apple_press_and_hold() {
 }
 
 # toggle verbose boot mode
-toggle_verbose_boot() {
+osx_toggle_verbose_boot() {
   if [[ $1 == "on" ]]; then
     sudo nvram boot-args="-v"
     echo "Verbose boot mode enabled."
@@ -26,7 +26,7 @@ toggle_verbose_boot() {
 }
 
 # toggle macOS dark theme
-toggle_dark_mode() {
+osx_toggle_dark_mode() {
   if [[ $1 == "on" ]]; then
     osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
     echo "Dark mode enabled."
@@ -39,7 +39,7 @@ toggle_dark_mode() {
 }
 
 # toggle hidden Finder files visibility
-toggle_hidden_files() {
+osx_toggle_hidden_files() {
   if [[ $1 == "on" ]]; then
     defaults write com.apple.finder AppleShowAllFiles -bool true
     killall Finder

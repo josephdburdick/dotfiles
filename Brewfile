@@ -28,6 +28,7 @@ brew "tree"
 brew "webp"
 brew "wget2"
 brew "wifi-password"
+brew "yarn"
 
 brew "zinit"
 # brew "felixkratz/formulae/sketchybar", args: ["HEAD"]
