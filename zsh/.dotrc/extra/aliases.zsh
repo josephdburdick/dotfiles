@@ -3,7 +3,7 @@
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
-alias cat='bat --theme=--theme=Monokai Extended'
+alias cat='bat --theme=TwoDark'
 alias top=btop
 
 # git amend commit without edit
