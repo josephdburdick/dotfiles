@@ -48,6 +48,7 @@ export TERM=${TERM:-xterm-256color}
 export COLORTERM=${COLORTERM:-truecolor}
 export EDITOR=$(which nvim)
 export PAGER=bat
+export BAT_THEME="TwoDark"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export DOCKER_BUILDKIT=1
