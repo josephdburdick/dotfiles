@@ -12,6 +12,22 @@ osx_toggle_vscode_apple_press_and_hold() {
   fi
 }
 
+
+
+# toggle macOS Cursor IDE press and hold
+osx_toggle_cursor_apple_press_and_hold() {
+  if [[ $1 == "off" ]]; then
+defaults write "$(osascript -e 'id of app "Cursor"')" ApplePressAndHoldEnabled -bool false
+    echo "ApplePressAndHoldEnabled is now OFF for Cursor IDE."
+  elif [[ $1 == "on" ]]; then
+defaults write "$(osascript -e 'id of app "Cursor"')" ApplePressAndHoldEnabled -bool true
+    echo "ApplePressAndHoldEnabled is now ON for Cursor IDE."
+  else
+    echo "Usage: osx_toggle_cursor_apple_press_and_hold [on|off]"
+  fi
+}
+
+
 # toggle verbose boot mode
 osx_toggle_verbose_boot() {
   if [[ $1 == "on" ]]; then
