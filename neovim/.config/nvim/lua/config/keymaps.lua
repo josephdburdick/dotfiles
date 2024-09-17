@@ -22,6 +22,14 @@ map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>", { silent = true })
 map({ "i", "x", "n", "s" }, "<C-s>", "<Cmd>w<CR><Esc>", { desc = "Save file" })
 map({ "i", "x", "n", "s" }, "<D-s>", "<Cmd>w<CR><Esc>", { desc = "Save file" })
 
+-- Command + z to undo
+map({ "i", "x", "n", "s" }, "<D-z>", "<Cmd>undo<CR><Esc>", { desc = "Undo" })
+-- Shift + Command + z to redo
+map({ "i", "x", "n", "s" }, "<S-D-z>", "<Cmd>redo<CR><Esc>", { desc = "Redo" })
+
+-- Command + w to close buffer
+map({ "i", "x", "n", "s" }, "<D-w>", "<Cmd>bd<CR><Esc>", { desc = "Close buffer" })
+
 -- Copy the current line or selection and paste it above/below
 -- directional keys
 map("n", "<A-S-Up>", ":t-1<CR>", { silent = true })
