@@ -144,7 +144,7 @@ zinit wait'0a' lucid is-snippet for \
     $HOME/.dotrc/extra/*.zsh \
     if"[[ -f $HOME/.localrc ]]" $HOME/.localrc
 
-PATH=~/.console-ninja/.bin:$PATH
+
 
 eval "$(fnm env)"
 
