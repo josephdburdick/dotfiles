@@ -1,0 +1,84 @@
+{
+  "editor.inlineSuggest.enabled": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.indentSize": 2,
+  "editor.insertSpaces": true,
+  "editor.formatOnSave": true,
+  "prettier.semi": false,
+  "workbench.editor.enablePreview": true,
+  "github.copilot.advanced": {},
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "yaml": false
+  },
+  "editor.inlayHints.enabled": "off",
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#1073cf2d",
+    "editor.lineHighlightBorder": "#9fced11f"
+  },
+  "editor.wordWrap": "off",
+  "diffEditor.wordWrap": "off",
+  "editor.guides.bracketPairs": false,
+  "zenMode.hideActivityBar": false,
+  "editor.tabSize": 2,
+  "workbench.colorTheme": "Ayu Mirage Bordered",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "diffEditor.codeLens": true,
+  "gitlens.codeLens.includeSingleLineSymbols": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "html.format.extraLiners": "",
+  "editor.fontFamily": "FireCode Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.stickyScroll.enabled": true,
+  "terminal.integrated.env.osx": {},
+  "console-ninja.featureSet": "Community",
+  "git.autofetch": true,
+  "[sql]": {
+    "editor.defaultFormatter": "bradymholt.pgformatter"
+  },
+  "[postgres]": {
+    "editor.defaultFormatter": "uniquevision.vscode-plpgsql-lsp"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "window.commandCenter": false,
+  "editor.accessibilitySupport": "off",
+  "window.customTitleBarVisibility": "windowed",
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua"
+  },
+  "apc.electron": {},
+  "codium.codeCompletion.enable": true,
+  "workbench.activityBar.location": "hidden",
+  "workbench.statusBar.visible": false,
+  "editor.minimap.enabled": false,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "breadcrumbs.enabled": false,
+  "redhat.telemetry.enabled": true,
+  "cursor.cpp.disabledLanguages": ["plaintext", "markdown", "scminput", "yaml"],
+  "apc.stylesheet": {
+    ".title-label": "color: transparent;"
+  },
+  "http.proxyAuthorization": null
+}
