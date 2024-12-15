@@ -93,6 +93,8 @@ return {
       end
     end,
   },
+  -- blur cursor on move
+  { "sphamba/smear-cursor.nvim" },
   -- Colored marks in scrollbar
   {
     "petertriho/nvim-scrollbar",
