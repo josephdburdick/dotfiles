@@ -1,7 +1,4 @@
 # Fonts first to get user password input immediately 
-cask "font-fira-code"
-cask "font-fira-code-nerd-font"
-
 tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/services"
@@ -42,6 +39,9 @@ brew "zinit"
 cask "1password-cli"
 cask "amethyst"
 cask "docker"
+cask "font-fira-code"
+cask "font-fira-code-nerd-font"
+cask "ghostty"
 cask "google-chrome"
 cask "kitty"
 cask "mark-text"
