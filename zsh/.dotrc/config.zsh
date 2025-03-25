@@ -86,5 +86,5 @@ export LIB_PQ_BIN_PATH="/opt/homebrew/opt/libpq/bin"
 export TPM_PATH="/opt/homebrew/opt/tpm"
 
 # Adding all paths to PATH variable
-export PATH="$PYTHON_PATH:$LSP_BIN_PATH:$GOBIN:$CARGO_PATH:$BUN_PATH:$PNPM_HOME:$LIB_PQ_BIN_PATH:$TPM_PATH:$PATH"
+export PATH="$EDITOR:$PYTHON_PATH:$LSP_BIN_PATH:$GOBIN:$CARGO_PATH:$BUN_PATH:$PNPM_HOME:$LIB_PQ_BIN_PATH:$TPM_PATH:$PATH"
 
