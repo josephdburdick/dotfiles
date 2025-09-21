@@ -1,49 +1,27 @@
-# Compiled Lua sources
-luac.out
+# Environment files with sensitive information
+.env
+.env.local
+.env.*.local
 
-# luarocks build files
-*.src.rock
-*.zip
-*.tar.gz
+# API keys and secrets
+*API_KEY*
+*SECRET*
+*TOKEN*
 
-# Object files
-*.o
-*.os
-*.ko
-*.obj
-*.elf
+# SSH keys
+id_rsa
+id_ed25519
+*.pem
 
-# Precompiled Headers
-*.gch
-*.pch
+# Password files
+*.password
+*.passwd
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-*.def
-*.exp
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-**/tmp/**
-
-# after linking, packer.nvim and tpm will install their plugins in the following directories
-neovim/.config/nvim/plugin
-tmux/.config/tmux/plugins
-
-**/.local/share/
-!konsole/.local/share/konsole
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
