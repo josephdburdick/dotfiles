@@ -1,5 +1,14 @@
 return {
   {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- Required for git operations
+    },
+    config = function()
+      require("claude-code").setup()
+    end,
+  },
+  {
     "robitx/gp.nvim",
     config = function()
       local conf = {
@@ -62,13 +71,6 @@ return {
         },
         ft = { "markdown", "Avante" },
       },
-    },
-  },
-  -- Use AI to debug
-  {
-    "piersolenski/wtf.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
     },
   },
 }
