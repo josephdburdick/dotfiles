@@ -17,6 +17,9 @@ id_ed25519
 *.password
 *.passwd
 
+# Tmux plugin manager plugins (managed locally by TPM)
+tmux/.config/tmux/plugins/
+
 # OS generated files
 .DS_Store
 .DS_Store?
