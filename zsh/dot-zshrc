@@ -153,8 +153,7 @@ compinit
 
 # bun completions
 [ -s "/Users/jb/.bun/_bun" ] && source "/Users/jb/.bun/_bun"
-<<<<<<< Updated upstream
-||||||| Stash base
+
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/jb/.docker/completions $fpath)
 autoload -Uz compinit
