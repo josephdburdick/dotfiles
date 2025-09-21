@@ -153,18 +153,3 @@ compinit
 
 # bun completions
 [ -s "/Users/jb/.bun/_bun" ] && source "/Users/jb/.bun/_bun"
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/jb/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
-
-# Added by Windsurf
-export PATH="/Users/jb/.codeium/windsurf/bin:$PATH"
-export GEMINI_API_KEY="AIzaSyAep0UcbjGcgMNRgosjREkSrrdx6g717TM"
-
-PATH=~/.console-ninja/.bin:$PATH
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
-
-alias claude="/Users/jb/.claude/local/claude"

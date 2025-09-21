@@ -19,36 +19,16 @@ return {
     },
     -- stylua: ignore
     keys = {
-      {
-        "s",
-        mode = { "n", "x", "o" },
-        function() require("flash").jump() end,
-        desc = "Flash"
-      },
-      {
-        "S",
-        mode = { "n", "x", "o" },
-        function() require("flash").treesitter() end,
-        desc = "Flash Treesitter"
-      },
-      {
-        "r",
-        mode = "o",
-        function() require("flash").remote() end,
-        desc = "Remote Flash"
-      },
-      {
-        "R",
-        mode = { "o", "x" },
-        function() require("flash").treesitter_search() end,
-        desc = "Treesitter Search"
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function() require("flash").toggle() end,
-        desc = "Toggle Flash Search"
-      },
+      { "s", mode = { "n", "x", "o" },
+        function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" },
+        function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o",
+        function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" },
+        function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },
+        function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
   -- Github link integration
@@ -91,39 +71,43 @@ return {
     },
   },
 
-  -- Prevent warning messages inline; use Shift K instead
-  {
-    "folke/noice.nvim",
-    opts = {
-      lsp = {
-        signature = {
-          auto_open = {
-            enabled = false,
-          }
-        },
-      },
+  -- Prevent warning messages inline; use Shift K instead   {
+  "folke/noice.nvim",
+  opts = {
+    lsp = {
+      signature = { auto_open = {
+        enabled = false,
+      } },
     },
   },
 
   -- tests
-  -- {
-  --   "nvim-neotest/neotest",
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-treesitter/nvim-treesitter",
-  --     "antoinemadec/FixCursorHold.nvim",
-  --     "nvim-neotest/neotest-jest",
-  --     "zidhuss/neotest-minitest",
-  --   },
-  --
-  --   opts = function()
-  --     require("neotest").setup({
-  --       adapters = {
-  --         require("neotest-jest"),
-  --       },
-  --     })
-  --   end,
-  -- },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-jest",
+      "zidhuss/neotest-minitest",
+    },
+
+    opts = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-jest"),
+        },
+      })
+    end,
+  },
+
+  -- Github link integration
+  {
+    "mistweaverco/ndoo.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+  },
 
   -- Colorize codes
   {
@@ -131,20 +115,20 @@ return {
     opts = {
       filetypes = { "*" },
       user_default_options = {
-        RGB = true,          -- #RGB hex codes
-        RRGGBB = true,       -- #RRGGBB hex codes
-        names = true,        -- "Name" codes like Blue or blue
-        RRGGBBAA = true,     -- #RRGGBBAA hex codes
-        AARRGGBB = false,    -- 0xAARRGGBB hex codes
-        rgb_fn = false,      -- CSS rgb() and rgba() functions
-        hsl_fn = false,      -- CSS hsl() and hsla() functions
-        css = true,          -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = false,      -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = true, -- "Name" codes like Blue or blue
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        AARRGGBB = false, -- 0xAARRGGBB hex codes
+        rgb_fn = false, -- CSS rgb() and rgba() functions
+        hsl_fn = false, -- CSS hsl() and hsla() functions
+        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Available modes for `mode`: foreground, background,  virtualtext
         mode = "background", -- Set the display mode.
         -- Available methods are false / true / "normal" / "lsp" / "both"
         -- True is same as normal
-        tailwind = true,                                -- Enable tailwind colors
+        tailwind = true, -- Enable tailwind colors
         -- parsers can contain values used in |user_default_options|
         sass = { enable = false, parsers = { "css" } }, -- Enable sass colors
         virtualtext = "■",
