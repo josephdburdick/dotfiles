@@ -64,11 +64,4 @@ return {
       },
     },
   },
-  -- Use AI to debug
-  {
-    "piersolenski/wtf.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-  },
 }

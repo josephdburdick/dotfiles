@@ -4,6 +4,11 @@
 
 <!-- ### ⚠️ Requirements -->
 
+### AI & Agent Guides
+
+- See [WARP.md](WARP.md) for terminal usage and repo operations.
+- See [AI.md](AI.md) for repo-wide agent conventions and safety checklist.
+
 #### Commands
 
 - sudo (maybe)
@@ -31,6 +36,7 @@ These dotfiles doesn't contains any font installation so you have install them b
 git clone https://github.com/josephdburdick/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 ```
+
 - Brew install everything with `$ ./migrate.sh`
 - Now run `make setup`
 

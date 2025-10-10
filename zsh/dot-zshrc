@@ -11,6 +11,54 @@ if [ -f ~/.env ]; then
 fi
 
 
+# Ensure baseline PATH so core utilities are available before any plugins
+if ! command -v uname >/dev/null 2>&1; then
+  export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+fi
+
+# Safe mode: skip plugin managers and only load minimal config
+if [[ -f "$HOME/.zsh_safe_mode" ]]; then
+  echo "SAFE MODE: Loading minimal config..." >&2
+
+  # Ensure baseline PATH first
+  if ! command -v uname >/dev/null 2>&1; then
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+  fi
+
+  if [[ -f "$HOME/.dotrc/config.zsh" ]]; then
+    echo "SAFE MODE: Sourcing config.zsh" >&2
+    source "$HOME/.dotrc/config.zsh"
+  fi
+
+  # Load aliases and other extras (but skip tui.zsh which has zinit calls)
+  if [[ -f "$HOME/.dotrc/extra/aliases.zsh" ]]; then
+    echo "SAFE MODE: Sourcing aliases.zsh" >&2
+    source "$HOME/.dotrc/extra/aliases.zsh"
+    echo "SAFE MODE: aliases.zsh loaded, checking l alias: $(type l 2>/dev/null | head -1)" >&2
+  fi
+
+  [[ -f "$HOME/.dotrc/extra/functions.zsh" ]] && source "$HOME/.dotrc/extra/functions.zsh"
+  [[ -f "$HOME/.dotrc/extra/fzf.zsh" ]] && source "$HOME/.dotrc/extra/fzf.zsh"
+  # Skip tui.zsh in safe mode as it has zinit calls
+
+  # Set up minimal prompt and return
+  echo "SAFE MODE: Setting prompt and returning" >&2
+  PS1='%n@%m %~ %(!.#.$) '
+  return
+fi
+
+
+# Hard-disable any lingering alias-tips hooks early to prevent preexec errors
+disable_alias_tips() {
+  typeset -f _alias_tips__preexec >/dev/null 2>&1 && unset -f _alias_tips__preexec
+  typeset -f _alias_tips__precmd >/dev/null 2>&1 && unset -f _alias_tips__precmd
+  typeset -p preexec_functions >/dev/null 2>&1 && preexec_functions=(${preexec_functions:#_alias_tips__preexec})
+  typeset -p precmd_functions >/dev/null 2>&1 && precmd_functions=(${precmd_functions:#_alias_tips__precmd})
+}
+disable_alias_tips
+precmd_functions=(disable_alias_tips ${precmd_functions[@]})
+
+
 ### Added by Zinit's installer
 ZINIT_DIR="$HOME/.local/share/zinit"
 ZINIT_HOME="$ZINIT_DIR/zinit.git"
@@ -29,9 +77,12 @@ autoload -Uz _zinit
 ### End of Zinit's installer chunk
 
 # Load .zsh_pre if available
-zinit is-snippet for \
-    if"[[ -f $HOME/.zsh_pre ]]" $HOME/.zsh_pre \
-    $HOME/.dotrc/config.zsh \
+[[ -f $HOME/.zsh_pre ]] && source $HOME/.zsh_pre
+[[ -f $HOME/.dotrc/config.zsh ]] && source $HOME/.dotrc/config.zsh
+[[ -f $HOME/.dotrc/extra/aliases.zsh ]] && source $HOME/.dotrc/extra/aliases.zsh
+[[ -f $HOME/.dotrc/extra/functions.zsh ]] && source $HOME/.dotrc/extra/functions.zsh
+[[ -f $HOME/.dotrc/extra/fzf.zsh ]] && source $HOME/.dotrc/extra/fzf.zsh
+[[ -f $HOME/.localrc ]] && source $HOME/.localrc
 
 ZSH_THEME="robbyrussell"
 
@@ -39,18 +90,15 @@ ZSH_THEME="robbyrussell"
 # PROMPT            #
 #####################
 
-# Commented out light-mode plugin for now to prevent errors
-zinit lucid light-mode from"gh-r" as"command" bpick'*apple-darwin.tar.gz' for \
+zinit lucid from"gh-r" as"command" bpick'*apple-darwin.tar.gz' for \
    atload'eval "$(starship init zsh)"'    \
-   starship/starship \
+   starship/starship
 
 #####################
 # PROGRAMS          #
 #####################
 
 zinit ice bpick'*macos-arm64*' for jqlang/jq
-zinit wait lucid for lukechilds/zsh-nvm
-
 zinit pack for ls_colors
 zinit ice bpick'*apple-darwin*' \
     atload'eval "$(snm env zsh)"; alias n="snm"' \
@@ -71,16 +119,15 @@ zinit ice bpick'bat/bat' mv'bat* -> bat' \
 
 zinit ice bpick'delta/delta' mv'delta* -> delta' for @dandavison/delta
 
-# zinit ice bpick'*macos*' atload'alias l="exa -abghHlS --git --group-directories-first"' \
-#     pick'bin/exa' for @ogham/exa
+zinit ice bpick'*apple-darwin*' \
+    atload'alias l="eza -abghHlS --git --group-directories-first"' \
+    for @eza-community/eza
 #
 zinit ice bpick'*macos-aarch64*' for @JohnnyMorganz/StyLua
 
 zinit ice bpick'gitui-mac.tar.gz' for @extrawurst/gitui
 
 
-zinit ice bpick'*.tar.gz' atinit'export PATH="$HOME/.yarn/bin:$PATH"' \
-    mv'yarn* -> yarn' pick"yarn/bin/yarn" for yarnpkg/yarn \
 
 ##########################
 # OMZ Libs and Plugins   #
@@ -117,12 +164,12 @@ zinit wait lucid for \
         alias gce='git commit -a -e'
     " \
 	OMZP::git \
-  djui/alias-tips \
-  https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh \
-  https://github.com/junegunn/fzf/blob/master/shell/completion.zsh \
-    hlissner/zsh-autopair \
-    chriskempson/base16-shell \
-	OMZP::fzf \
+  # djui/alias-tips \
+  # https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh \
+  # https://github.com/junegunn/fzf/blob/master/shell/completion.zsh \
+    # hlissner/zsh-autopair \  # Plugin not available, commented out
+    # chriskempson/base16-shell \  # Plugin not available, commented out
+	# OMZP::fzf \  # Plugin causing issues, commented out
 
 #####################
 # PLUGINS           #
@@ -140,13 +187,14 @@ zinit wait lucid for \
 # MANUAL CONFIG     #
 #####################
 
-zinit wait'0a' lucid is-snippet for \
-    $HOME/.dotrc/extra/*.zsh \
-    if"[[ -f $HOME/.localrc ]]" $HOME/.localrc
 
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env)"
+fi
 
-
-eval "$(fnm env)"
+# Ensure alias-tips hooks are removed if previously installed
+typeset -f _alias_tips__preexec >/dev/null 2>&1 && unset -f _alias_tips__preexec
+typeset -f _alias_tips__precmd >/dev/null 2>&1 && unset -f _alias_tips__precmd
 
 autoload -Uz compinit
 compinit

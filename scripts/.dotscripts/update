@@ -10,11 +10,29 @@ REPO="https://github.com/josephdburdick/dotfiles.git"
 
 # ssh would not work under cron, add a https one
 echo "~ Setting up update channel"
-git remote add updates $REPO 2>/dev/null
+if git remote get-url updates >/dev/null 2>&1; then
+    git remote set-url updates $REPO
+else
+    git remote add updates $REPO
+fi
+
+# Stash any local changes
+STASHED=false
+if ! git diff --quiet || ! git diff --staged --quiet; then
+    echo "~ Stashing local changes"
+    git stash push -m "Auto-stash before dotfiles update"
+    STASHED=true
+fi
 
 # Update repo
 echo "~ Updating dotfiles"
 git pull --rebase --stat updates "$(git rev-parse --abbrev-ref HEAD)"
+
+# Restore stashed changes if any
+if [ "$STASHED" = true ]; then
+    echo "~ Restoring local changes"
+    git stash pop
+fi
 
 echo "~ Registering last update"
 git config --global dotfiles.lastupdate "$(date +%Y%m%d%H%M)"
