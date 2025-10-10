@@ -60,31 +60,39 @@ export DISABLE_MAGIC_FUNCTIONS=true
 #####################
 # PATH              #
 #####################
-# nvm
-export NVM_DIR="$HOME/.nvm"
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-  source "$NVM_DIR/nvm.sh"
-fi
-if [ -s "$NVM_DIR/bash_completion" ]; then
-  source "$NVM_DIR/bash_completion"
-fi
+# Add local binaries first
+export PATH="$HOME/.local/bin:$PATH"
 
-# bun completions
-if [ -s "$HOME/.bun/_bun" ]; then
-  source "$HOME/.bun/_bun"
-fi
+# Homebrew (Apple Silicon)
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+export HOMEBREW_PREFIX="/opt/homebrew"
 
-export PYTHON_PATH="$HOME/.pyenv/shims" 
-export LSP_BIN_PATH="$HOME/.local/lsp/bin"
+# Python (pyenv)
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
+
+# Go
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
-export PNPM_HOME="$HOME/Library/pnpm"
-export BUN_INSTALL="$HOME/.bun"
-export BUN_PATH="$BUN_INSTALL/bin"
-export CARGO_PATH="$HOME/.cargo/bin"
-export LIB_PQ_BIN_PATH="/opt/homebrew/opt/libpq/bin"
-export TPM_PATH="/opt/homebrew/opt/tpm"
+export PATH="$GOBIN:$PATH"
 
-# Adding all paths to PATH variable
-export PATH="$EDITOR:$PYTHON_PATH:$LSP_BIN_PATH:$GOBIN:$CARGO_PATH:$BUN_PATH:$PNPM_HOME:$LIB_PQ_BIN_PATH:$TPM_PATH:$PATH"
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Node.js (pnpm)
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# LSP servers
+export PATH="$HOME/.local/lsp/bin:$PATH"
+
+# PostgreSQL client tools
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# Remove duplicate entries from PATH (simple version)
+export PATH=$(echo "$PATH" | tr ':' '\n' | awk '!seen[$0]++' | tr '\n' ':' | sed 's/:$//')
 

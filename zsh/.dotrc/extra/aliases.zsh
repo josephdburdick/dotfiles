@@ -5,9 +5,30 @@ alias vi=nvim
 alias vim=nvim
 alias cat='bat --theme=TwoDark'
 alias top=btop
+alias l="eza -abghHlS --git --group-directories-first"
 
 # git amend commit without edit
 alias gcan="git commit -v -a --no-edit --amend"
+
+# Common git aliases (from OMZ git plugin)
+alias gst="git status"
+alias gco="git checkout"
+alias gci="git commit"
+alias gbr="git branch"
+alias gaa="git add --all"
+alias gap="git add --patch"
+alias gau="git add --update"
+alias gc="git commit -v"
+alias gca="git commit -v -a"
+alias gcm="git commit -m"
+alias gcam="git commit -a -m"
+alias gp="git push"
+alias gl="git pull"
+alias glog="git log --oneline --decorate --graph"
+alias gloga="git log --oneline --decorate --graph --all"
+alias gwip="git add -A; git rm $(git ls-files --deleted) 2> /dev/null; git commit --no-verify -m \"--wip-- [skip ci]\""
+alias gunwip="git log -n 1 | grep -q -c \"--wip--\" && git reset HEAD~1"
+alias gundo="git reset HEAD~1"
 alias p="pnpm"
 alias y="yarn"
 alias sb="npx supabase"
