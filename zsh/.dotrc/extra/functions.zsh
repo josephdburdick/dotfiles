@@ -69,3 +69,10 @@ osx_toggle_hidden_files() {
   fi
 }
 
+# gitignore.io - Generate .gitignore files from templates
+# Usage: gi node,python,rust
+# See: https://docs.gitignore.io/install/command-line
+gi() {
+  curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@
+}
+
