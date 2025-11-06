@@ -176,7 +176,7 @@ return {
     end,
   },
 
-  -- allow TAB for code completion and snippets
+  -- allow TAB for code completion and snippets (enhanced for AI integration)
   {
     "hrsh7th/nvim-cmp",
     ---@param opts cmp.ConfigSchema
@@ -191,9 +191,12 @@ return {
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            -- You could replace select_next_item() with confirm({ select = true }) to get VS Code autocompletion behavior
-            -- cmp.select_next_item()
+          -- First check if NeoCodeium has suggestions (for AI-first experience)
+          local neocodeium = require("neocodeium")
+          if neocodeium.get_status and neocodeium.get_status() == "suggest" then
+            neocodeium.accept()
+          elseif cmp.visible() then
+            -- Regular completion is visible, confirm it
             cmp.confirm({ select = true })
           elseif vim.snippet.active({ direction = 1 }) then
             vim.schedule(function()
@@ -206,12 +209,32 @@ return {
           end
         end, { "i", "s" }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
+          -- Check for NeoCodeium suggestions first
+          local neocodeium = require("neocodeium")
+          if neocodeium.get_status and neocodeium.get_status() == "suggest" then
+            neocodeium.cycle_or_complete(-1)
+          elseif cmp.visible() then
             cmp.select_prev_item()
           elseif vim.snippet.active({ direction = -1 }) then
             vim.schedule(function()
               vim.snippet.jump(-1)
             end)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<C-n>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<C-p>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
           else
             fallback()
           end

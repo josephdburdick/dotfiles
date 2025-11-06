@@ -70,25 +70,83 @@ end, { desc = "Toggle Better TS Error" })
 map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
 map("n", "<Leader>cW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
 
--- NeoCodeium
+-- NeoCodeium (AI Code Completion)
+map("i", "<Tab>", function()
+  require("neocodeium").accept()
+end, { desc = "Accept AI suggestion" })
+map("i", "<S-Tab>", function()
+  require("neocodeium").cycle_or_complete(-1)
+end, { desc = "Previous AI suggestion" })
+
+-- Keep alternative keybindings for when TAB is not available
 map("i", "<C-A-a>", function()
   require("neocodeium").accept()
-end)
+end, { desc = "Accept AI suggestion (alternative)" })
 map("i", "<C-A-w>", function()
   require("neocodeium").accept_word()
-end)
+end, { desc = "Accept AI word" })
 map("i", "<C-A-l>", function()
   require("neocodeium").accept_line()
-end)
+end, { desc = "Accept AI line" })
 map("i", "<C-A-e>", function()
   require("neocodeium").cycle_or_complete()
-end)
+end, { desc = "Cycle AI suggestions" })
 map("i", "<C-A-r>", function()
   require("neocodeium").cycle_or_complete(-1)
-end)
+end, { desc = "Previous AI suggestion (alternative)" })
 map("i", "<C-A-c>", function()
   require("neocodeium").clear()
-end)
+end, { desc = "Clear AI suggestions" })
+
+-- AI Assistant Keybindings
+
+-- CodeCompanion - AI Chat Interface
+map({ "n", "v" }, "<Leader>ac", function()
+  vim.cmd("CodeCompanionChat")
+end, { desc = "Open AI Chat (CodeCompanion)" })
+
+map({ "n", "v" }, "<Leader>ai", function()
+  vim.cmd("CodeCompanionActions")
+end, { desc = "AI Actions (CodeCompanion)" })
+
+-- Avante - Advanced AI Assistant
+map({ "n", "v" }, "<Leader>aa", function()
+  require("avante.api").ask()
+end, { desc = "Ask AI (Avante)" })
+
+map({ "n", "v" }, "<Leader>ae", function()
+  require("avante.api").edit()
+end, { desc = "Edit with AI (Avante)" })
+
+map({ "n", "v" }, "<Leader>ar", function()
+  require("avante.api").refresh()
+end, { desc = "Refresh AI suggestions (Avante)" })
+
+-- GP.nvim - GPT-based assistance
+map({ "n", "v" }, "<Leader>gp", "<Cmd>GpChatNew popup<CR>", { desc = "GPT Chat (popup)" })
+map({ "n", "v" }, "<Leader>gP", "<Cmd>GpChatNew split<CR>", { desc = "GPT Chat (split)" })
+map({ "n", "v" }, "<Leader>gc", "<Cmd>GpChatToggle popup<CR>", { desc = "Toggle GPT Chat" })
+
+-- Text selection for AI context (mini.ai)
+map({ "n", "v" }, "<Leader>ao", "vao", { desc = "Select outer block for AI", remap = true })
+map({ "n", "v" }, "<Leader>ai", "vai", { desc = "Select inner block for AI", remap = true })
+map({ "n", "v" }, "<Leader>af", "vaf", { desc = "Select outer function for AI", remap = true })
+map({ "n", "v" }, "<Leader>aF", "vif", { desc = "Select inner function for AI", remap = true })
+map({ "n", "v" }, "<Leader>ac", "vac", { desc = "Select outer class for AI", remap = true })
+map({ "n", "v" }, "<Leader>aC", "vic", { desc = "Select inner class for AI", remap = true })
+
+-- Quick AI prompts for common tasks
+map({ "n", "v" }, "<Leader>ad", function()
+  vim.cmd("CodeCompanionChat /document")
+end, { desc = "Document code with AI" })
+
+map({ "n", "v" }, "<Leader>at", function()
+  vim.cmd("CodeCompanionChat /test")
+end, { desc = "Generate tests with AI" })
+
+map({ "n", "v" }, "<Leader>ax", function()
+  vim.cmd("CodeCompanionChat /explain")
+end, { desc = "Explain code with AI" })
 
 -- Neovide
 if vim.g.neovide == true then
