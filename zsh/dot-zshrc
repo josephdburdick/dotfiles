@@ -192,6 +192,10 @@ if command -v fnm >/dev/null 2>&1; then
   eval "$(fnm env)"
 fi
 
+# nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 # Ensure alias-tips hooks are removed if previously installed
 typeset -f _alias_tips__preexec >/dev/null 2>&1 && unset -f _alias_tips__preexec
 typeset -f _alias_tips__precmd >/dev/null 2>&1 && unset -f _alias_tips__precmd
