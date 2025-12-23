@@ -193,8 +193,13 @@ if command -v fnm >/dev/null 2>&1; then
 fi
 
 # nvm
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+if [ -s "${HOME}/.nvm/nvm.sh" ]; then
+  export NVM_DIR="${HOME}/.nvm"
+  \. "$NVM_DIR/nvm.sh" # This loads nvm
+elif [ -n "${XDG_CONFIG_HOME-}" ] && [ -s "${XDG_CONFIG_HOME}/nvm/nvm.sh" ]; then
+  export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
+  \. "$NVM_DIR/nvm.sh" # This loads nvm
+fi
 
 # Ensure alias-tips hooks are removed if previously installed
 typeset -f _alias_tips__preexec >/dev/null 2>&1 && unset -f _alias_tips__preexec
@@ -208,8 +213,6 @@ compinit
 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/jb/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
 # End of Docker CLI completions
 
 # Added by Windsurf
