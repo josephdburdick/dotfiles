@@ -28,3 +28,17 @@ tmux/.config/tmux/plugins/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Konsole runtime/plugin/cache data (generated)
+konsole/.local/share/*
+# Keep tracked Konsole theme
+!konsole/.local/share/konsole/
+!konsole/.local/share/konsole/nord.colorscheme
+
+# Local tool binaries that are machine-generated
+bin/.local/bin/agent
+bin/.local/bin/uv
+bin/.local/bin/uvx
+
+# Cursor agent
+bin/.local/bin/cursor-agent
