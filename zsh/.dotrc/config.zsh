@@ -64,7 +64,8 @@ export DISABLE_MAGIC_FUNCTIONS=true
 export PATH="$HOME/.local/bin:$PATH"
 
 # Homebrew (Apple Silicon)
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+export POSTGRES="/opt/homebrew/opt/postgresql@16/bin:"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$POSTGRES:$PATH"
 export HOMEBREW_PREFIX="/opt/homebrew"
 
 # Python (pyenv)
