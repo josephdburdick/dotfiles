@@ -4,14 +4,14 @@
 set -x
 set -eo pipefail
 
-xcode-select --install
+# xcode-select --install
 
 # Check if Homebrew is installed
 if ! [ -x "$(command -v brew)" ]; then
-  echo "Installing Homebrew"
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	echo "Installing Homebrew"
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
-  echo "Homebrew is already installed"
+	echo "Homebrew is already installed"
 fi
 
 # Install brew formula and casks
