@@ -13,6 +13,10 @@ alias gcan="git commit -v -a --no-edit --amend"
 # Common git aliases (from OMZ git plugin)
 alias gst="git status"
 alias gco="git checkout"
+gcof() {
+  git checkout $(git branch | grep "$1" | sed 's/^[* ]*//')
+}
+alias gcom="git checkout master"
 alias gci="git commit"
 alias gbr="git branch"
 alias gaa="git add --all"
@@ -31,7 +35,7 @@ alias gunwip="git log -n 1 | grep -q -c \"--wip--\" && git reset HEAD~1"
 alias gundo="git reset HEAD~1"
 alias p="pnpm"
 alias y="yarn"
-alias sb="npx supabase"
+#alias sb="npx supabase"
 alias vim="/opt/homebrew/bin/nvim"
 
 # python
@@ -94,6 +98,11 @@ ipinfo() {
 }
 
 alias myip=ip-internal
+
+# assembled
+alias fe="cd ${HOME}/go/src/github.com/assembledhq/assembled"
+alias dev="ad dev"
+alias dev-install="ad dev --host dev-2.gokome.com --remerge_confs true --reinstall_deps true"
 
 # open_with_fzf() {
 #     fd -t f -H -I | fzf -m --preview="xdg-mime query default {}" | xargs -ro -d "\n" xdg-open 2>&-

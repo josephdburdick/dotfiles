@@ -18,7 +18,7 @@ return {
     opts = function()
       require("neocodeium").setup({
         silent = true,
-        manual = false,    -- Enable automatic suggestions
+        manual = false, -- Enable automatic suggestions
         show_label = true, -- Show completion source in popup
         filetypes = {
           -- Disable for certain file types if needed
@@ -29,25 +29,25 @@ return {
   },
 
   -- Alternative AI completion (Supermaven) - as fallback
-  {
-    "supermaven-inc/supermaven-nvim",
-    event = "VeryLazy",
-    opts = {
-      keymaps = {
-        accept_suggestion = "<C-A-m>", -- Alternative accept key
-        clear_suggestion = "<C-A-c>",
-        accept_word = "<C-A-w>",
-      },
-      log_level = "warn",                -- Reduce noise
-      disable_keymaps = true,            -- We'll handle keymaps manually
-      disable_inline_completion = false, -- Enable inline suggestions
-      condition = function()
-        -- Only enable if neocodeium is not available or fails
-        return not require("neocodeium").get_status or require("neocodeium").get_status() ~= "suggest"
-      end,
-    },
-  },
-
+  -- {
+  --   "supermaven-inc/supermaven-nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     keymaps = {
+  --       accept_suggestion = "<C-A-m>", -- Alternative accept key
+  --       clear_suggestion = "<C-A-c>",
+  --       accept_word = "<C-A-w>",
+  --     },
+  --     log_level = "warn",                -- Reduce noise
+  --     disable_keymaps = true,            -- We'll handle keymaps manually
+  --     disable_inline_completion = false, -- Enable inline suggestions
+  --     condition = function()
+  --       -- Only enable if neocodeium is not available or fails
+  --       return not require("neocodeium").get_status or require("neocodeium").get_status() ~= "suggest"
+  --     end,
+  --   },
+  -- },
+  --
   -- Enhanced AI assistant with chat interface
   {
     "olimorris/codecompanion.nvim",
@@ -82,13 +82,11 @@ return {
                 default = "gpt-4o-mini", -- Use faster model for inline
               },
             },
-
           })
         end,
       },
     },
   },
-
 
   -- Better text object selection for AI context
   {
@@ -114,14 +112,14 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
-    version = false,       -- set this if you want to always pull the latest change
+    version = false, -- set this if you want to always pull the latest change
     opts = {
       provider = "openai", -- Use OpenAI instead of copilot
       providers = {
         openai = {
           endpoint = "https://api.openai.com/v1",
           model = "gpt-4o", -- Use the latest model
-          timeout = 30000,  -- Timeout in milliseconds
+          timeout = 30000, -- Timeout in milliseconds
           max_tokens = 4096,
           extra_request_body = {
             temperature = 0,
