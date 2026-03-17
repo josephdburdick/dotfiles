@@ -15,8 +15,10 @@ map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
 map("n", "+", "<C-a>", { desc = "Increment" })
 map("n", "-", "<C-x>", { desc = "Decrement" })
 
--- NeoTree
-map("n", "<C-\\>", "<Cmd>Neotree toggle<CR>", { silent = true })
+-- Snacks explorer
+map("n", "<C-\\>", function()
+  require("snacks").explorer()
+end, { silent = true, desc = "Explorer (Snacks)" })
 
 -- Control + s to save
 map({ "i", "x", "n", "s" }, "<C-s>", "<Cmd>w<CR><Esc>", { desc = "Save file" })

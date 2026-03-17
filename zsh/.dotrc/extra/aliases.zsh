@@ -103,7 +103,7 @@ alias myip=ip-internal
 alias fe="cd ${HOME}/go/src/github.com/assembledhq/assembled"
 alias dev="ad dev"
 alias dev-install="ad dev --host dev-2.gokome.com --remerge_confs true --reinstall_deps true"
-
+alias ad="~/go/src/github.com/assembledhq/assembled/gocode/tools/bin/ad"
 # open_with_fzf() {
 #     fd -t f -H -I | fzf -m --preview="xdg-mime query default {}" | xargs -ro -d "\n" xdg-open 2>&-
 # }

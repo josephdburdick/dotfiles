@@ -39,3 +39,5 @@ cask "rectangle"
 cask "slack"
 cask "spotify"
 cask "tomatobar"
+cask "cursor"
+

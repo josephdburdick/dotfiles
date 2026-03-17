@@ -10,6 +10,20 @@ return {
     lazy = false,
   },
   {
+    "sindrets/diffview.nvim",
+    cmd = {
+      "DiffviewOpen",
+      "DiffviewClose",
+      "DiffviewToggleFiles",
+      "DiffviewFocusFiles",
+      "DiffviewRefresh",
+      "DiffviewFileHistory",
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  },
+  {
     "folke/flash.nvim",
     event = "VeryLazy",
 
@@ -57,10 +71,7 @@ return {
   -- https://github.com/antosha417/nvim-lsp-file-operations
   {
     "antosha417/nvim-lsp-file-operations",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-tree.lua",
-    },
+    dependencies = { "nvim-lua/plenary.nvim" },
 
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
 
