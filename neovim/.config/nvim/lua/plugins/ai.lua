@@ -12,21 +12,21 @@ return {
   },
 
   -- Primary AI code completion (NeoCodeium)
-  {
-    "monkoose/neocodeium",
-    event = "VeryLazy",
-    opts = function()
-      require("neocodeium").setup({
-        silent = true,
-        manual = false, -- Enable automatic suggestions
-        show_label = true, -- Show completion source in popup
-        filetypes = {
-          -- Disable for certain file types if needed
-          -- help = false,
-        },
-      })
-    end,
-  },
+  -- {
+  --   "monkoose/neocodeium",
+  --   event = "VeryLazy",
+  --   opts = function()
+  --     require("neocodeium").setup({
+  --       silent = true,
+  --       manual = false, -- Enable automatic suggestions
+  --       show_label = true, -- Show completion source in popup
+  --       filetypes = {
+  --         -- Disable for certain file types if needed
+  --         -- help = false,
+  --       },
+  --     })
+  --   end,
+  -- },
 
   -- Alternative AI completion (Supermaven) - as fallback
   -- {
@@ -87,6 +87,20 @@ return {
       },
     },
   },
+  -- Keep Avante from hard-failing on Copilot provider setup.
+  -- We default to OpenAI to match the rest of this config.
+  {
+    "yetone/avante.nvim",
+    opts = function(_, opts)
+      opts = opts or {}
+      opts.provider = "openai"
+      opts.providers = opts.providers or {}
+      opts.providers.openai = vim.tbl_deep_extend("force", opts.providers.openai or {}, {
+        model = "gpt-4o-mini",
+      })
+      return opts
+    end,
+  },
 
   -- Better text object selection for AI context
   {
@@ -108,83 +122,83 @@ return {
     end,
   },
   -- Advanced AI coding assistant (Avante)
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    lazy = false,
-    version = false, -- set this if you want to always pull the latest change
-    opts = {
-      provider = "openai", -- Use OpenAI instead of copilot
-      providers = {
-        openai = {
-          endpoint = "https://api.openai.com/v1",
-          model = "gpt-4o", -- Use the latest model
-          timeout = 30000, -- Timeout in milliseconds
-          max_tokens = 4096,
-          extra_request_body = {
-            temperature = 0,
-          },
-        },
-      },
-      -- Cursor-like behavior
-      behaviour = {
-        auto_suggestions = false, -- Don't auto-suggest, wait for user trigger
-        auto_set_highlight_group = true,
-        auto_set_keymaps = true,
-        auto_apply_diff_after_generation = false,
-        support_paste_from_clipboard = true,
-      },
-      -- Enhanced UI
-      highlights = {
-        diff = {
-          current = "DiffText",
-          incoming = "DiffAdd",
-        },
-      },
-      -- Mappings for sidebar and chat
-      mappings = {
-        sidebar = {
-          close = { "<Esc>", "q" },
-          switch_windows = "<Tab>",
-          reverse_switch_windows = "<S-Tab>",
-        },
-        suggestion = {
-          accept = "<M-l>", -- Alt+L for accepting suggestions
-          next = "<M-]>",
-          prev = "<M-[>",
-          dismiss = "<C-]>",
-        },
-      },
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
-    dependencies = {
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-      "nvim-tree/nvim-web-devicons",
-      {
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            use_absolute_path = true,
-          },
-        },
-      },
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
-      },
-    },
-  },
+  -- {
+  --   "yetone/avante.nvim",
+  --   event = "VeryLazy",
+  --   lazy = false,
+  --   version = false, -- set this if you want to always pull the latest change
+  --   opts = {
+  --     provider = "openai", -- Use OpenAI instead of copilot
+  --     providers = {
+  --       openai = {
+  --         endpoint = "https://api.openai.com/v1",
+  --         model = "gpt-4o", -- Use the latest model
+  --         timeout = 30000, -- Timeout in milliseconds
+  --         max_tokens = 4096,
+  --         extra_request_body = {
+  --           temperature = 0,
+  --         },
+  --       },
+  --     },
+  --     -- Cursor-like behavior
+  --     behaviour = {
+  --       auto_suggestions = false, -- Don't auto-suggest, wait for user trigger
+  --       auto_set_highlight_group = true,
+  --       auto_set_keymaps = true,
+  --       auto_apply_diff_after_generation = false,
+  --       support_paste_from_clipboard = true,
+  --     },
+  --     -- Enhanced UI
+  --     highlights = {
+  --       diff = {
+  --         current = "DiffText",
+  --         incoming = "DiffAdd",
+  --       },
+  --     },
+  --     -- Mappings for sidebar and chat
+  --     mappings = {
+  --       sidebar = {
+  --         close = { "<Esc>", "q" },
+  --         switch_windows = "<Tab>",
+  --         reverse_switch_windows = "<S-Tab>",
+  --       },
+  --       suggestion = {
+  --         accept = "<M-l>", -- Alt+L for accepting suggestions
+  --         next = "<M-]>",
+  --         prev = "<M-[>",
+  --         dismiss = "<C-]>",
+  --       },
+  --     },
+  --   },
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   build = "make",
+  --   dependencies = {
+  --     "stevearc/dressing.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+  --     "nvim-tree/nvim-web-devicons",
+  --     {
+  --       "HakonHarnes/img-clip.nvim",
+  --       event = "VeryLazy",
+  --       opts = {
+  --         default = {
+  --           embed_image_as_base64 = false,
+  --           prompt_for_file_name = false,
+  --           drag_and_drop = {
+  --             insert_mode = true,
+  --           },
+  --           use_absolute_path = true,
+  --         },
+  --       },
+  --     },
+  --     {
+  --       "MeanderingProgrammer/render-markdown.nvim",
+  --       opts = {
+  --         file_types = { "markdown", "Avante" },
+  --       },
+  --       ft = { "markdown", "Avante" },
+  --     },
+  --   },
+  -- },
 }
