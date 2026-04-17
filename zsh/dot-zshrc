@@ -223,3 +223,6 @@ PATH=~/.console-ninja/.bin:$PATH
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 alias claude="${HOME}/.claude/local/claude"
+
+# Added by Antigravity
+export PATH="${HOME}/.antigravity/antigravity/bin:$PATH"
