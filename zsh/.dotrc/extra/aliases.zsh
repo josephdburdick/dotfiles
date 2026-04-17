@@ -13,8 +13,12 @@ alias gcan="git commit -v -a --no-edit --amend"
 # Common git aliases (from OMZ git plugin)
 alias gst="git status"
 alias gco="git checkout"
+
+# Interactive git checkout function using fzf
 gcof() {
-  git checkout $(git branch | grep "$1" | sed 's/^[* ]*//')
+  local branch
+  branch=$(git branch --all | sed 's/^[* ]*//' | cut -d' ' -f1 | fzf) || return
+  git checkout "$branch"
 }
 alias gcom="git checkout master"
 alias gci="git commit"
