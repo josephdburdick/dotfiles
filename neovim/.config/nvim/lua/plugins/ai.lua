@@ -57,35 +57,46 @@ return {
       "hrsh7th/nvim-cmp",
     },
     event = "VeryLazy",
-    opts = {
-      strategies = {
-        chat = {
-          adapter = "openai",
-          keymaps = {
-            close = { modes = { n = "q", i = "<C-c>" } },
-            stop = { modes = { n = "<C-s>" } },
-            send = { modes = { n = "<CR>", i = "<C-CR>" } },
+    opts = function()
+      local adapters = require("codecompanion.adapters")
+      local use_anthropic = vim.env.ANTHROPIC_API_KEY ~= nil and vim.env.ANTHROPIC_API_KEY ~= ""
+      local primary = use_anthropic and "anthropic" or "openai"
+
+      return {
+        strategies = {
+          chat = {
+            adapter = primary,
+            keymaps = {
+              close = { modes = { n = "q", i = "<C-c>" } },
+              stop = { modes = { n = "<C-s>" } },
+              send = { modes = { n = "<CR>", i = "<C-CR>" } },
+            },
+          },
+          inline = {
+            adapter = primary,
           },
         },
-        inline = {
-          adapter = "openai",
-        },
-      },
-      adapters = {
-        openai = function()
-          return require("codecompanion.adapters").extend("openai", {
-            env = {
-              api_key = "OPENAI_API_KEY",
-            },
-            schema = {
-              model = {
-                default = "gpt-4o-mini", -- Use faster model for inline
+        adapters = {
+          anthropic = function()
+            return adapters.extend("anthropic", {
+              env = { api_key = "ANTHROPIC_API_KEY" },
+            })
+          end,
+          openai = function()
+            return adapters.extend("openai", {
+              env = {
+                api_key = "OPENAI_API_KEY",
               },
-            },
-          })
-        end,
-      },
-    },
+              schema = {
+                model = {
+                  default = "gpt-4o-mini",
+                },
+              },
+            })
+          end,
+        },
+      }
+    end,
   },
   -- Keep Avante from hard-failing on Copilot provider setup.
   -- We default to OpenAI to match the rest of this config.

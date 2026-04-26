@@ -68,48 +68,18 @@ map({ "n", "v" }, "<Leader>cx", function()
   require("better-ts-errors").toggle()
 end, { desc = "Toggle Better TS Error" })
 
--- Debug with OpenAI
-map({ "n", "x" }, "<Leader>cw", "<Cmd>lua require('wtf').ai()<CR>", { desc = "Debug with WTF" })
-map("n", "<Leader>cW", "<Cmd>lua require('wtf').search()<CR>", { desc = "Search with WTF" })
-
--- NeoCodeium (AI Code Completion)
-map("i", "<Tab>", function()
-  require("neocodeium").accept()
-end, { desc = "Accept AI suggestion" })
-map("i", "<S-Tab>", function()
-  require("neocodeium").cycle_or_complete(-1)
-end, { desc = "Previous AI suggestion" })
-
--- Keep alternative keybindings for when TAB is not available
-map("i", "<C-A-a>", function()
-  require("neocodeium").accept()
-end, { desc = "Accept AI suggestion (alternative)" })
-map("i", "<C-A-w>", function()
-  require("neocodeium").accept_word()
-end, { desc = "Accept AI word" })
-map("i", "<C-A-l>", function()
-  require("neocodeium").accept_line()
-end, { desc = "Accept AI line" })
-map("i", "<C-A-e>", function()
-  require("neocodeium").cycle_or_complete()
-end, { desc = "Cycle AI suggestions" })
-map("i", "<C-A-r>", function()
-  require("neocodeium").cycle_or_complete(-1)
-end, { desc = "Previous AI suggestion (alternative)" })
-map("i", "<C-A-c>", function()
-  require("neocodeium").clear()
-end, { desc = "Clear AI suggestions" })
+-- Copilot inline suggestions: Tab accepts via LazyVim/blink (ai_accept); M-] / M-[ cycle Copilot
 
 -- AI Assistant Keybindings
 
--- CodeCompanion - AI Chat Interface
+-- CodeCompanion - AI Chat Interface (Claude if ANTHROPIC_API_KEY else OpenAI — see lua/plugins/ai.lua)
 map({ "n", "v" }, "<Leader>ac", function()
   vim.cmd("CodeCompanionChat")
-end, { desc = "Open AI Chat (CodeCompanion)" })
+end, { desc = "AI chat (CodeCompanion)" })
 
-map({ "n", "v" }, "<Leader>ai", function()
+map({ "n", "v" }, "<Leader>ay", function()
   vim.cmd("CodeCompanionActions")
-end, { desc = "AI Actions (CodeCompanion)" })
+end, { desc = "AI actions palette (CodeCompanion)" })
 
 -- Avante - Advanced AI Assistant
 map({ "n", "v" }, "<Leader>aa", function()
@@ -129,20 +99,20 @@ map({ "n", "v" }, "<Leader>gp", "<Cmd>GpChatNew popup<CR>", { desc = "GPT Chat (
 map({ "n", "v" }, "<Leader>gP", "<Cmd>GpChatNew split<CR>", { desc = "GPT Chat (split)" })
 map({ "n", "v" }, "<Leader>gc", "<Cmd>GpChatToggle popup<CR>", { desc = "Toggle GPT Chat" })
 
--- Text selection for AI context (mini.ai)
-map({ "n", "v" }, "<Leader>ao", "vao", { desc = "Select outer block for AI", remap = true })
-map({ "n", "v" }, "<Leader>ai", "vai", { desc = "Select inner block for AI", remap = true })
-map({ "n", "v" }, "<Leader>af", "vaf", { desc = "Select outer function for AI", remap = true })
-map({ "n", "v" }, "<Leader>aF", "vif", { desc = "Select inner function for AI", remap = true })
-map({ "n", "v" }, "<Leader>ac", "vac", { desc = "Select outer class for AI", remap = true })
-map({ "n", "v" }, "<Leader>aC", "vic", { desc = "Select inner class for AI", remap = true })
+-- Treesitter scope selection for prompts / CodeCompanion context (mini.ai; leader a = AI only)
+map({ "n", "v" }, "<Leader>vo", "vao", { desc = "Select outer block (scope)", remap = true })
+map({ "n", "v" }, "<Leader>vi", "vai", { desc = "Select inner block (scope)", remap = true })
+map({ "n", "v" }, "<Leader>vf", "vaf", { desc = "Select outer function (scope)", remap = true })
+map({ "n", "v" }, "<Leader>vF", "vif", { desc = "Select inner function (scope)", remap = true })
+map({ "n", "v" }, "<Leader>vc", "vac", { desc = "Select outer class (scope)", remap = true })
+map({ "n", "v" }, "<Leader>vC", "vic", { desc = "Select inner class (scope)", remap = true })
 
 -- Quick AI prompts for common tasks
 map({ "n", "v" }, "<Leader>ad", function()
   vim.cmd("CodeCompanionChat /document")
 end, { desc = "Document code with AI" })
 
-map({ "n", "v" }, "<Leader>at", function()
+map({ "n", "v" }, "<Leader>aT", function()
   vim.cmd("CodeCompanionChat /test")
 end, { desc = "Generate tests with AI" })
 
