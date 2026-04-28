@@ -2,6 +2,12 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 vim.opt.relativenumber = false
+
+-- Use a login shell in :terminal so PATH and tool shims (Homebrew, fnm/nvm, pnpm) match
+-- Terminal.app / iTerm. Default non-login subshell can leave an older or wrong `node` first.
+if vim.fn.has("macunix") == 1 and vim.fn.executable("/bin/zsh") == 1 then
+  vim.o.shell = "/bin/zsh -l"
+end
 if vim.g.neovide then
   vim.o.guifont = "FiraCode Nerd Font Mono:h13"
   vim.o.visualbell = true
