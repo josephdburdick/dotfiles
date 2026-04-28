@@ -12,6 +12,8 @@ vim.api.nvim_create_autocmd("User", {
     end
     wk.add({
       { "<leader>a", group = "AI" },
+      { "<leader>c", group = "Claude Code" },
+      { "<leader>s", group = "Select" },
       { "<leader>v", group = "scope (prompts)" },
     })
   end,

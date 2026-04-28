@@ -8,8 +8,8 @@ local map = vim.keymap.set
 map("i", "jk", "<Esc>", { desc = "Escape" })
 
 -- Select all / Copy all
-map("n", "<Leader>a", "gg<S-v>G", { desc = "Select all" })
-map("n", "<Leader>A", "gg0vG$y", { desc = "Copy all" })
+map("n", "<Leader>sa", "gg<S-v>G", { desc = "Select all" })
+map("n", "<Leader>sA", "gg0vG$y", { desc = "Copy all" })
 
 -- Increment/decrement
 map("n", "+", "<C-a>", { desc = "Increment" })
