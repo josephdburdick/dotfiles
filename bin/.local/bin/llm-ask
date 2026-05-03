@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# llm-ask: bulk-read files and answer a question via a cheap OpenAI-compatible model.
+# Bootstraps a shared venv at $LLM_TOOLS_VENV (default ~/.local/share/llm-tools/venv) on first run.
+set -euo pipefail
+
+TOOL="${BASH_SOURCE[0]##*/}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV="${LLM_TOOLS_VENV:-$HOME/.local/share/llm-tools/venv}"
+
+if [[ ! -x "$VENV/bin/python" ]]; then
+  echo "[llm-tools] bootstrapping venv at $VENV ..." >&2
+  python3 -m venv "$VENV"
+  "$VENV/bin/pip" install --quiet --upgrade pip
+  "$VENV/bin/pip" install --quiet openai
+fi
+
+PY_FILE="$SCRIPT_DIR/_${TOOL//-/_}.py"
+exec "$VENV/bin/python" "$PY_FILE" "$@"

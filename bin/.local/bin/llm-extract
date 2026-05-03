@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# llm-extract: compress a Claude Code session transcript (JSONL) into readable text.
+# Pure local — no LLM call, no venv strictly required, but uses the shared venv for consistency.
+set -euo pipefail
+
+TOOL="${BASH_SOURCE[0]##*/}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV="${LLM_TOOLS_VENV:-$HOME/.local/share/llm-tools/venv}"
+
+if [[ ! -x "$VENV/bin/python" ]]; then
+  echo "[llm-tools] bootstrapping venv at $VENV ..." >&2
+  python3 -m venv "$VENV"
+  "$VENV/bin/pip" install --quiet --upgrade pip
+  "$VENV/bin/pip" install --quiet openai
+fi
+
+PY_FILE="$SCRIPT_DIR/_${TOOL//-/_}.py"
+exec "$VENV/bin/python" "$PY_FILE" "$@"
