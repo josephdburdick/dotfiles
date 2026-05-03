@@ -7,7 +7,7 @@ fi
 
 # Load environment variables from ~/.env if the file exists
 if [ -f ~/.env ]; then
-  export $(cat ~/.env | xargs)
+  source ~/.env
 fi
 
 
