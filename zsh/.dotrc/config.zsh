@@ -48,7 +48,16 @@ export TERM=${TERM:-xterm-256color}
 export COLORTERM=${COLORTERM:-truecolor}
 export EDITOR=$(which nvim)
 export PAGER=bat
-export BAT_THEME="TwoDark"
+
+# Pick light/dark themes for bat + delta from the macOS system appearance.
+# AppleInterfaceStyle is unset in Light mode, set to "Dark" in Dark mode.
+if [[ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" == "Dark" ]]; then
+    export BAT_THEME="TwoDark"
+    export DELTA_FEATURES="+dark-colors"
+else
+    export BAT_THEME="GitHub"
+    export DELTA_FEATURES="+light-colors"
+fi
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export DOCKER_BUILDKIT=1

@@ -6,9 +6,6 @@
 
 [delta]
     features = side-by-side line-numbers decorations
-    syntax-theme = Monokai Extended
-    plus-color = "#012800"
-    minus-color = "#340001"
     whitespace-error-style = 22 reverse
     navigate = true # use n and N to move between diff sections
 
@@ -17,6 +14,22 @@
     file-style = bold yellow ul
     file-decoration-style = none
     hunk-header-decoration-style = cyan box ul
+
+[delta "dark-colors"]
+    light = false
+    syntax-theme = Monokai Extended
+    plus-style = "syntax #012800"
+    plus-emph-style = "syntax #034f00"
+    minus-style = "syntax #340001"
+    minus-emph-style = "syntax #780001"
+
+[delta "light-colors"]
+    light = true
+    syntax-theme = GitHub
+    plus-style = "syntax #d4f8d4"
+    plus-emph-style = "syntax #a4eba4"
+    minus-style = "syntax #f8d4d4"
+    minus-emph-style = "syntax #f1a4a4"
 
 [merge]
     conflictstyle = diff3
