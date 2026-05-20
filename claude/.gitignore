@@ -1,0 +1,22 @@
+# Claude Code runtime/ephemeral data
+dot-claude/.last-cleanup
+dot-claude/backups/
+dot-claude/cache/
+dot-claude/downloads/
+dot-claude/file-history/
+dot-claude/history.jsonl
+dot-claude/image-cache/
+dot-claude/mcp-needs-auth-cache.json
+dot-claude/plans/
+dot-claude/session-env/
+dot-claude/sessions/
+dot-claude/shell-snapshots/
+
+# Project session data — keep memory/ but ignore conversation logs
+dot-claude/projects/**/*.jsonl
+dot-claude/projects/**/*.meta.json
+dot-claude/projects/**/subagents/
+dot-claude/projects/**/tool-results/
+
+# Plugin caches
+dot-claude/plugins/known_marketplaces.json

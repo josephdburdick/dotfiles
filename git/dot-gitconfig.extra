@@ -26,10 +26,10 @@
 [delta "light-colors"]
     light = true
     syntax-theme = GitHub
-    plus-style = "syntax #d4f8d4"
-    plus-emph-style = "syntax #a4eba4"
-    minus-style = "syntax #f8d4d4"
-    minus-emph-style = "syntax #f1a4a4"
+    plus-style = "syntax #abf2bc"
+    plus-emph-style = "syntax #6dcc7d"
+    minus-style = "syntax #ffc0c0"
+    minus-emph-style = "syntax #e88080"
 
 [merge]
     conflictstyle = diff3
