@@ -1,5 +1,6 @@
 # Claude Code runtime/ephemeral data
 dot-claude/.last-cleanup
+dot-claude/.last-update-result.json
 dot-claude/backups/
 dot-claude/cache/
 dot-claude/downloads/
@@ -7,6 +8,7 @@ dot-claude/file-history/
 dot-claude/history.jsonl
 dot-claude/image-cache/
 dot-claude/mcp-needs-auth-cache.json
+dot-claude/paste-cache/
 dot-claude/plans/
 dot-claude/session-env/
 dot-claude/sessions/
@@ -18,5 +20,5 @@ dot-claude/projects/**/*.meta.json
 dot-claude/projects/**/subagents/
 dot-claude/projects/**/tool-results/
 
-# Plugin caches
-dot-claude/plugins/known_marketplaces.json
+# Plugins are downloaded/managed by Claude Code (like node_modules)
+dot-claude/plugins/
