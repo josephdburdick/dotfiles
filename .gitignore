@@ -35,10 +35,16 @@ konsole/.local/share/*
 !konsole/.local/share/konsole/
 !konsole/.local/share/konsole/nord.colorscheme
 
-# Local tool binaries that are machine-generated
+# Local tool binaries that are machine-generated (install via brew/package manager)
 bin/.local/bin/agent
 bin/.local/bin/uv
 bin/.local/bin/uvx
+bin/.local/bin/goose
+bin/.local/bin/temporal
+bin/.local/bin/temporal-service
+
+# Python bytecode cache
+bin/.local/bin/__pycache__/
 
 # Cursor agent
 bin/.local/bin/cursor-agent
