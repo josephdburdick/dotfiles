@@ -20,5 +20,8 @@ dot-claude/projects/**/*.meta.json
 dot-claude/projects/**/subagents/
 dot-claude/projects/**/tool-results/
 
+# Other machines' project memory (machine-specific paths; don't travel with dotfiles)
+dot-claude/projects/-Users-joe-*/
+
 # Plugins are downloaded/managed by Claude Code (like node_modules)
 dot-claude/plugins/

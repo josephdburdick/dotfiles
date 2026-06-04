@@ -42,6 +42,8 @@ bin/.local/bin/uvx
 bin/.local/bin/goose
 bin/.local/bin/temporal
 bin/.local/bin/temporal-service
+# claude: native-installer symlink to ~/.local/share/claude/versions/<ver> (machine/user-specific; owned by the Claude Code installer, not stow)
+bin/.local/bin/claude
 
 # Python bytecode cache
 bin/.local/bin/__pycache__/
