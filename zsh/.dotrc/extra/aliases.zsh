@@ -20,6 +20,27 @@ gcof() {
   branch=$(git branch --all | sed 's/^[* ]*//' | cut -d' ' -f1 | fzf) || return
   git checkout "$branch"
 }
+
+# Checkout a branch by a substring (e.g. ticket number): gcob 6014
+gcob() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: gcob <pattern>  (e.g. gcob 6014)"
+    return 1
+  fi
+  local matches branch
+  matches=$(git branch --all --format='%(refname:short)' \
+    | sed 's#^origin/##' | grep -v '^HEAD$' | sort -u | grep -- "$1")
+  if [[ -z "$matches" ]]; then
+    echo "gcob: no branch matching '$1'"
+    return 1
+  fi
+  if [[ $(echo "$matches" | wc -l) -gt 1 ]]; then
+    branch=$(echo "$matches" | fzf --select-1 --query "$1") || return
+  else
+    branch="$matches"
+  fi
+  git checkout "$branch"
+}
 alias gcom="git checkout master"
 alias gci="git commit"
 alias gbr="git branch"

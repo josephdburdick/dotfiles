@@ -45,6 +45,9 @@ bin/.local/bin/temporal-service
 # claude: native-installer symlink to ~/.local/share/claude/versions/<ver> (machine/user-specific; owned by the Claude Code installer, not stow)
 bin/.local/bin/claude
 
+# Claude Code runtime task/transcript data (machine-generated)
+claude/dot-claude/tasks/
+
 # Python bytecode cache
 bin/.local/bin/__pycache__/
 
