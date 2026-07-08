@@ -44,6 +44,9 @@ bin/.local/bin/temporal
 bin/.local/bin/temporal-service
 # claude: native-installer symlink to ~/.local/share/claude/versions/<ver> (machine/user-specific; owned by the Claude Code installer, not stow)
 bin/.local/bin/claude
+# analytics-mcp: pipx-venv symlinks (machine-specific absolute paths; install via pipx)
+bin/.local/bin/analytics-mcp
+bin/.local/bin/google-analytics-mcp
 
 # Claude Code runtime task/transcript data (machine-generated)
 claude/dot-claude/tasks/
