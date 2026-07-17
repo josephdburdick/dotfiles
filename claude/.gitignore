@@ -3,16 +3,23 @@ dot-claude/.last-cleanup
 dot-claude/.last-update-result.json
 dot-claude/backups/
 dot-claude/cache/
+dot-claude/daemon/
+dot-claude/daemon.log
+dot-claude/daemon-auth-cooldown
+dot-claude/daemon-auth-status.json
 dot-claude/downloads/
 dot-claude/file-history/
+dot-claude/gh-pr-status-cache.json
 dot-claude/history.jsonl
 dot-claude/image-cache/
+dot-claude/jobs/
 dot-claude/mcp-needs-auth-cache.json
 dot-claude/paste-cache/
 dot-claude/plans/
 dot-claude/session-env/
 dot-claude/sessions/
 dot-claude/shell-snapshots/
+dot-claude/telemetry/
 
 # Project session data — keep memory/ but ignore conversation logs
 dot-claude/projects/**/*.jsonl
