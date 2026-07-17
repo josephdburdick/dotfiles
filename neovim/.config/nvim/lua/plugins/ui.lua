@@ -62,25 +62,30 @@ return {
   },
   -- blur cursor on move
   { "sphamba/smear-cursor.nvim" },
-  -- Colored marks in scrollbar
+  -- Colored marks in scrollbar (colors from the active nightfox palette)
   {
     "petertriho/nvim-scrollbar",
     config = function()
-      local colors = require("tokyonight.colors").setup()
-
-      require("scrollbar").setup({
-        handle = {
-          color = colors.bg_highlight,
-        },
-        marks = {
-          Search = { color = colors.orange },
-          Error = { color = colors.error },
-          Warn = { color = colors.warning },
-          Info = { color = colors.info },
-          Hint = { color = colors.hint },
-          Misc = { color = colors.purple },
-        },
-      })
+      local ok, palette = pcall(function()
+        return require("nightfox.palette").load("nightfox")
+      end)
+      local opts = {}
+      if ok and palette then
+        opts = {
+          handle = {
+            color = palette.bg2,
+          },
+          marks = {
+            Search = { color = palette.orange.base },
+            Error = { color = palette.red.base },
+            Warn = { color = palette.yellow.base },
+            Info = { color = palette.blue.base },
+            Hint = { color = palette.cyan.base },
+            Misc = { color = palette.magenta.base },
+          },
+        }
+      end
+      require("scrollbar").setup(opts)
     end,
   },
 }

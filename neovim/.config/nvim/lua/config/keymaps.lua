@@ -59,18 +59,27 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 map("n", "<A-j>", ":m .+1<CR>==", { silent = true })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
 
--- Link to Git repo
-map("n", "<Leader>gl", "<Cmd>lua require('ndoo').open()<CR>", { desc = "Open Git link" })
-map("v", "<Leader>gl", "<Cmd>lua require('ndoo').open({ v = true })<CR>", { desc = "Open Git link" })
+-- Open current file/selection on GitHub (Snacks gitbrowse).
+-- The gitui extra deletes <leader>gl on User LazyVimKeymaps (fires right after
+-- this file loads), so register the map on that same event to run after it.
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyVimKeymaps",
+  once = true,
+  callback = function()
+    map({ "n", "v" }, "<Leader>gl", function()
+      Snacks.gitbrowse()
+    end, { desc = "Open Git link" })
+  end,
+})
 
 -- Better TS Errors
 map({ "n", "v" }, "<Leader>cx", function()
   require("better-ts-errors").toggle()
 end, { desc = "Toggle Better TS Error" })
 
--- Copilot inline suggestions: Tab accepts via LazyVim/blink (ai_accept); M-] / M-[ cycle Copilot
-
 -- AI Assistant Keybindings
+-- Cursor-style Cmd+L / Cmd+I / Cmd+K live with their plugins:
+-- Claude Code + CodeCompanion in lua/plugins/ai.lua
 
 -- CodeCompanion - AI Chat Interface (Claude if ANTHROPIC_API_KEY else OpenAI — see lua/plugins/ai.lua)
 map({ "n", "v" }, "<Leader>ac", function()
@@ -80,24 +89,6 @@ end, { desc = "AI chat (CodeCompanion)" })
 map({ "n", "v" }, "<Leader>ay", function()
   vim.cmd("CodeCompanionActions")
 end, { desc = "AI actions palette (CodeCompanion)" })
-
--- Avante - Advanced AI Assistant
-map({ "n", "v" }, "<Leader>aa", function()
-  require("avante.api").ask()
-end, { desc = "Ask AI (Avante)" })
-
-map({ "n", "v" }, "<Leader>ae", function()
-  require("avante.api").edit()
-end, { desc = "Edit with AI (Avante)" })
-
-map({ "n", "v" }, "<Leader>ar", function()
-  require("avante.api").refresh()
-end, { desc = "Refresh AI suggestions (Avante)" })
-
--- GP.nvim - GPT-based assistance
-map({ "n", "v" }, "<Leader>gp", "<Cmd>GpChatNew popup<CR>", { desc = "GPT Chat (popup)" })
-map({ "n", "v" }, "<Leader>gP", "<Cmd>GpChatNew split<CR>", { desc = "GPT Chat (split)" })
-map({ "n", "v" }, "<Leader>gc", "<Cmd>GpChatToggle popup<CR>", { desc = "Toggle GPT Chat" })
 
 -- Treesitter scope selection for prompts / CodeCompanion context (mini.ai; leader a = AI only)
 map({ "n", "v" }, "<Leader>vo", "vao", { desc = "Select outer block (scope)", remap = true })

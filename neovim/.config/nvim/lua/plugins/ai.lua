@@ -1,22 +1,25 @@
+-- AI stack, Cursor-style:
+--   Cmd+L / Alt+L  -> Claude Code panel (chat/agent, like Cursor's chat)
+--   Cmd+I / Alt+I  -> toggle Claude Code (like Cursor's composer/agent)
+--   Cmd+K          -> inline AI edit via CodeCompanion (like Cursor's Cmd+K bar)
+-- Cmd (<D-...>) keys work in Neovide and Ghostty (kitty keyboard protocol);
+-- Alt (<M-...>) variants are the everywhere-else fallback.
 return {
-  -- GPT-based AI assistance
-  {
-    "robitx/gp.nvim",
-    config = function()
-      local conf = {
-        -- For customization, refer to Install > Configuration in the Documentation/Readme
-        openai_api_key = os.getenv("OPENAI_API_KEY"),
-      }
-      require("gp").setup(conf)
-    end,
-  },
-
+  -- Claude Code: the real CLI in a side panel with native diff accept/deny
   {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
     config = true,
     keys = {
       { "<leader>c", nil, desc = "Claude Code" },
+      -- Cursor-style bindings
+      { "<D-l>", "<cmd>ClaudeCodeFocus<cr>", mode = { "n", "t" }, desc = "Claude panel (Cmd+L)" },
+      { "<M-l>", "<cmd>ClaudeCodeFocus<cr>", mode = { "n", "t" }, desc = "Claude panel (Alt+L)" },
+      { "<D-l>", "<cmd>ClaudeCodeSend<cr>", mode = "x", desc = "Send selection to Claude (Cmd+L)" },
+      { "<M-l>", "<cmd>ClaudeCodeSend<cr>", mode = "x", desc = "Send selection to Claude (Alt+L)" },
+      { "<D-i>", "<cmd>ClaudeCode<cr>", mode = { "n", "t" }, desc = "Toggle Claude (Cmd+I)" },
+      { "<M-i>", "<cmd>ClaudeCode<cr>", mode = { "n", "t" }, desc = "Toggle Claude (Alt+I)" },
+      -- Leader bindings
       { "<leader>cc", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
       { "<leader>cf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
       { "<leader>cr", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
@@ -36,54 +39,20 @@ return {
     },
   },
 
-  -- Primary AI code completion (NeoCodeium)
-  -- {
-  --   "monkoose/neocodeium",
-  --   event = "VeryLazy",
-  --   opts = function()
-  --     require("neocodeium").setup({
-  --       silent = true,
-  --       manual = false, -- Enable automatic suggestions
-  --       show_label = true, -- Show completion source in popup
-  --       filetypes = {
-  --         -- Disable for certain file types if needed
-  --         -- help = false,
-  --       },
-  --     })
-  --   end,
-  -- },
-
-  -- Alternative AI completion (Supermaven) - as fallback
-  -- {
-  --   "supermaven-inc/supermaven-nvim",
-  --   event = "VeryLazy",
-  --   opts = {
-  --     keymaps = {
-  --       accept_suggestion = "<C-A-m>", -- Alternative accept key
-  --       clear_suggestion = "<C-A-c>",
-  --       accept_word = "<C-A-w>",
-  --     },
-  --     log_level = "warn",                -- Reduce noise
-  --     disable_keymaps = true,            -- We'll handle keymaps manually
-  --     disable_inline_completion = false, -- Enable inline suggestions
-  --     condition = function()
-  --       -- Only enable if neocodeium is not available or fails
-  --       return not require("neocodeium").get_status or require("neocodeium").get_status() ~= "suggest"
-  --     end,
-  --   },
-  -- },
-  --
-  -- Enhanced AI assistant with chat interface
+  -- CodeCompanion: inline edits + chat (Claude if ANTHROPIC_API_KEY, else OpenAI)
   {
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "hrsh7th/nvim-cmp",
     },
     event = "VeryLazy",
+    keys = {
+      -- ":CodeCompanion " leaves the cmdline open for the instruction, like Cursor's Cmd+K bar
+      { "<D-k>", ":CodeCompanion ", mode = { "n", "v" }, silent = false, desc = "Inline AI edit (Cmd+K)" },
+      { "<leader>ai", ":CodeCompanion ", mode = { "n", "v" }, silent = false, desc = "Inline AI edit" },
+    },
     opts = function()
-      local adapters = require("codecompanion.adapters")
       local use_anthropic = vim.env.ANTHROPIC_API_KEY ~= nil and vim.env.ANTHROPIC_API_KEY ~= ""
       local primary = use_anthropic and "anthropic" or "openai"
 
@@ -101,40 +70,7 @@ return {
             adapter = primary,
           },
         },
-        adapters = {
-          anthropic = function()
-            return adapters.extend("anthropic", {
-              env = { api_key = "ANTHROPIC_API_KEY" },
-            })
-          end,
-          openai = function()
-            return adapters.extend("openai", {
-              env = {
-                api_key = "OPENAI_API_KEY",
-              },
-              schema = {
-                model = {
-                  default = "gpt-4o-mini",
-                },
-              },
-            })
-          end,
-        },
       }
-    end,
-  },
-  -- Keep Avante from hard-failing on Copilot provider setup.
-  -- We default to OpenAI to match the rest of this config.
-  {
-    "yetone/avante.nvim",
-    opts = function(_, opts)
-      opts = opts or {}
-      opts.provider = "openai"
-      opts.providers = opts.providers or {}
-      opts.providers.openai = vim.tbl_deep_extend("force", opts.providers.openai or {}, {
-        model = "gpt-4o-mini",
-      })
-      return opts
     end,
   },
 
@@ -157,84 +93,4 @@ return {
       }
     end,
   },
-  -- Advanced AI coding assistant (Avante)
-  -- {
-  --   "yetone/avante.nvim",
-  --   event = "VeryLazy",
-  --   lazy = false,
-  --   version = false, -- set this if you want to always pull the latest change
-  --   opts = {
-  --     provider = "openai", -- Use OpenAI instead of copilot
-  --     providers = {
-  --       openai = {
-  --         endpoint = "https://api.openai.com/v1",
-  --         model = "gpt-4o", -- Use the latest model
-  --         timeout = 30000, -- Timeout in milliseconds
-  --         max_tokens = 4096,
-  --         extra_request_body = {
-  --           temperature = 0,
-  --         },
-  --       },
-  --     },
-  --     -- Cursor-like behavior
-  --     behaviour = {
-  --       auto_suggestions = false, -- Don't auto-suggest, wait for user trigger
-  --       auto_set_highlight_group = true,
-  --       auto_set_keymaps = true,
-  --       auto_apply_diff_after_generation = false,
-  --       support_paste_from_clipboard = true,
-  --     },
-  --     -- Enhanced UI
-  --     highlights = {
-  --       diff = {
-  --         current = "DiffText",
-  --         incoming = "DiffAdd",
-  --       },
-  --     },
-  --     -- Mappings for sidebar and chat
-  --     mappings = {
-  --       sidebar = {
-  --         close = { "<Esc>", "q" },
-  --         switch_windows = "<Tab>",
-  --         reverse_switch_windows = "<S-Tab>",
-  --       },
-  --       suggestion = {
-  --         accept = "<M-l>", -- Alt+L for accepting suggestions
-  --         next = "<M-]>",
-  --         prev = "<M-[>",
-  --         dismiss = "<C-]>",
-  --       },
-  --     },
-  --   },
-  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  --   build = "make",
-  --   dependencies = {
-  --     "stevearc/dressing.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "MunifTanjim/nui.nvim",
-  --     "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-  --     "nvim-tree/nvim-web-devicons",
-  --     {
-  --       "HakonHarnes/img-clip.nvim",
-  --       event = "VeryLazy",
-  --       opts = {
-  --         default = {
-  --           embed_image_as_base64 = false,
-  --           prompt_for_file_name = false,
-  --           drag_and_drop = {
-  --             insert_mode = true,
-  --           },
-  --           use_absolute_path = true,
-  --         },
-  --       },
-  --     },
-  --     {
-  --       "MeanderingProgrammer/render-markdown.nvim",
-  --       opts = {
-  --         file_types = { "markdown", "Avante" },
-  --       },
-  --       ft = { "markdown", "Avante" },
-  --     },
-  --   },
-  -- },
 }

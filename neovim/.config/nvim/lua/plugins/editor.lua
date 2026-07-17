@@ -29,7 +29,12 @@ return {
 
     ---@type Flash.Config
     opts = {
-      enable = true,
+      modes = {
+        -- Show jump labels on the current line when using f/t/F/T
+        char = {
+          jump_labels = true,
+        },
+      },
     },
     -- stylua: ignore
     keys = {
@@ -82,13 +87,26 @@ return {
     end,
   },
 
-  -- Precognition shows key hints in gutter
+  -- Precognition previews motion targets (b e w $ …) on a virtual line
   {
     "tris203/precognition.nvim",
     event = "BufRead",
     opts = {
+      startVisible = true,
       highlightColor = {
         fg = "#666666",
+      },
+      -- v1.3.0 turned these on by default; they flood the virtual line with
+      -- f/t target letters and drown out the classic motion preview
+      targetedMotionHints = {
+        enabled = false,
+      },
+    },
+    keys = {
+      {
+        "<leader>up",
+        function() require("precognition").toggle() end,
+        desc = "Toggle motion hints (Precognition)",
       },
     },
   },
@@ -167,25 +185,12 @@ return {
     opts = {}, -- your configuration
   },
 
-  -- code actions
+  -- code actions with preview (snacks backend; telescope is no longer installed)
   {
     "aznhe21/actions-preview.nvim",
-    config = function()
-      require("actions-preview").setup({
-        telescope = {
-          sorting_strategy = "ascending",
-          layout_strategy = "vertical",
-          layout_config = {
-            width = 0.8,
-            height = 0.9,
-            prompt_position = "top",
-            preview_cutoff = 20,
-            preview_height = function(_, _, max_lines)
-              return max_lines - 15
-            end,
-          },
-        },
-      })
-    end,
+    dependencies = { "folke/snacks.nvim" },
+    opts = {
+      backend = { "snacks", "nui" },
+    },
   },
 }

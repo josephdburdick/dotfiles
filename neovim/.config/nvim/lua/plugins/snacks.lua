@@ -26,5 +26,7 @@ __/\\\\\_____/\\\__/\\\\\\\\\\\\\\\_______/\\\\\_______/\\\________/\\\__/\\\\\\
         },
       },
     },
+    -- neoscroll owns scroll animation (see lua/plugins/ui.lua)
+    scroll = { enabled = false },
   },
 }

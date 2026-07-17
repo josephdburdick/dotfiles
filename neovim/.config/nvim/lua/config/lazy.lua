@@ -8,13 +8,6 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
-  -- Github link integration
-  {
-    "mistweaverco/ndoo.nvim",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-  },
   spec = {
     -- add LazyVim and import its plugins
     {
@@ -38,19 +31,7 @@ require("lazy").setup({
     { import = "plugins" },
   },
   ui = {
-    -- enable the dashboard
-    dashboard = true,
-    -- enable the statusline
-    statusline = true,
-    -- enable the bufferline
-    bufferline = true,
-    -- enable the tabline
-    tabline = true,
-    -- enable the float terminal
-    floatterm = true,
-    -- set default border for float windows
     border = "single",
-    style = "minimal",
   },
   defaults = {
     -- by default, only lazyvim plugins will be lazy-loaded. your custom plugins will load during startup.
