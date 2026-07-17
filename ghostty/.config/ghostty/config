@@ -1,0 +1,17 @@
+# Ghostty — paired with the nvim Cursor-style setup in neovim/.config/nvim
+# Docs: https://ghostty.org/docs/config
+
+# Match the editor theme + font
+theme = Nightfox
+font-family = FiraCode Nerd Font Mono
+font-size = 13
+
+# Make Option behave as Alt so nvim <A-...> maps (move/copy lines) work.
+# Without this, macOS turns Option+j into "∆" and the maps never fire.
+macos-option-as-alt = true
+
+# Free Cmd+Shift+P (Ghostty's own command palette) so nvim can use it for
+# Snacks.picker.commands. Other Cmd combos used by nvim (Cmd+P, Cmd+K, Cmd+L,
+# Cmd+I, Cmd+F, Cmd+B, Cmd+S, Cmd+Z…) are unbound in Ghostty by default and
+# already reach nvim via the kitty keyboard protocol.
+keybind = super+shift+p=unbind
