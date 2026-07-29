@@ -72,6 +72,40 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+-- Copy a GitHub permalink for the current line or visual selection.
+-- Pins to the newest commit of the file that exists on origin so the copied
+-- link never 404s (unlike branch links, which break for unpushed branches).
+map({ "n", "x" }, "<Leader>gY", function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    return Snacks.notify.error("Buffer has no file", { title = "Git Permalink" })
+  end
+  local dir = vim.fn.fnamemodify(file, ":h")
+  local function git(args)
+    local out = vim.fn.systemlist(vim.list_extend({ "git", "-C", dir }, args))
+    return vim.v.shell_error == 0 and out[1] or nil
+  end
+  local pushed = git({ "rev-list", "-1", "--remotes=origin", "--", file })
+  if not pushed then
+    return Snacks.notify.error("No commit of this file found on origin", { title = "Git Permalink" })
+  end
+  local local_latest = git({ "rev-list", "-1", "HEAD", "--", file })
+  git({ "diff", "--quiet", "HEAD", "--", file })
+  local dirty = vim.v.shell_error ~= 0
+  if pushed ~= local_latest or dirty then
+    Snacks.notify.warn("Local changes not on origin; line numbers may differ", { title = "Git Permalink" })
+  end
+  Snacks.gitbrowse({
+    what = "permalink",
+    commit = pushed,
+    notify = false,
+    open = function(url)
+      vim.fn.setreg("+", url)
+      Snacks.notify("Copied " .. url, { title = "Git Permalink" })
+    end,
+  })
+end, { desc = "Copy GitHub permalink" })
+
 -- Better TS Errors
 map({ "n", "v" }, "<Leader>cx", function()
   require("better-ts-errors").toggle()
