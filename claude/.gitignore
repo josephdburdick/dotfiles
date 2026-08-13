@@ -20,6 +20,8 @@ dot-claude/session-env/
 dot-claude/sessions/
 dot-claude/shell-snapshots/
 dot-claude/telemetry/
+# Pasted images/screenshots dropped into a session
+dot-claude/uploads/
 
 # Project session data — keep memory/ but ignore conversation logs
 dot-claude/projects/**/*.jsonl
