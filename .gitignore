@@ -29,12 +29,6 @@ tmux/.config/tmux/plugins/
 ehthumbs.db
 Thumbs.db
 
-# Konsole runtime/plugin/cache data (generated)
-konsole/.local/share/*
-# Keep tracked Konsole theme
-!konsole/.local/share/konsole/
-!konsole/.local/share/konsole/nord.colorscheme
-
 # Local tool binaries that are machine-generated (install via brew/package manager)
 bin/.local/bin/agent
 bin/.local/bin/uv
