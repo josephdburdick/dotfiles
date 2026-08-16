@@ -35,6 +35,19 @@ return {
   --     end,
   --   },
   -- },
+  -- Quiet down markdownlint: use the shared rule config in the nvim config dir
+  -- (.markdownlint.yaml) instead of the all-defaults ruleset.
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters = {
+        ["markdownlint-cli2"] = {
+          args = { "--config", vim.fn.stdpath("config") .. "/.markdownlint.yaml", "-" },
+        },
+      },
+    },
+  },
   {
     "stevearc/conform.nvim",
     opts = {
