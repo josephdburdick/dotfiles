@@ -62,12 +62,15 @@ return {
   },
   -- blur cursor on move
   { "sphamba/smear-cursor.nvim" },
-  -- Colored marks in scrollbar (colors from the active nightfox palette)
+  -- Colored marks in scrollbar (colors from the active nightfox palette).
+  -- Loads the variant that is actually set rather than a hardcoded one, so
+  -- switching carbonfox/duskfox/etc. in theme.lua carries the marks along.
+  -- A non-nightfox scheme just fails the pcall and falls back to defaults.
   {
     "petertriho/nvim-scrollbar",
     config = function()
       local ok, palette = pcall(function()
-        return require("nightfox.palette").load("nightfox")
+        return require("nightfox.palette").load(vim.g.colors_name)
       end)
       local opts = {}
       if ok and palette then

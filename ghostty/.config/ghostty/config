@@ -2,7 +2,7 @@
 # Docs: https://ghostty.org/docs/config
 
 # Match the editor theme + font
-theme = Nightfox
+theme = Carbonfox
 font-family = FiraCode Nerd Font Mono
 font-size = 13
 
