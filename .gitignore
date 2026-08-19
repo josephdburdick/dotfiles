@@ -45,8 +45,9 @@ bin/.local/bin/google-analytics-mcp
 # Claude Code runtime task/transcript data (machine-generated)
 claude/dot-claude/tasks/
 
-# Python bytecode cache
-bin/.local/bin/__pycache__/
+# Python bytecode cache — any script run or imported in place leaves one
+__pycache__/
+*.pyc
 
 # Cursor agent
 bin/.local/bin/cursor-agent
