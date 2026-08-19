@@ -53,25 +53,44 @@ return {
           -- beside the list), which turns a fullscreen portrait terminal into
           -- two cramped half-width panes. Pick by orientation instead; the
           -- preset resolves on every picker open, so dragging the terminal to
-          -- another monitor just works.
+          -- another monitor just works. Sources that declare their own layout
+          -- (explorer sidebar, select dropdown) are unaffected: per-source
+          -- config merges after this global one.
           preset = function()
-            if portrait() then
-              return "portrait"
-            end
-            return vim.o.columns >= 120 and "default" or "vertical"
+            -- A narrow landscape split wants the stacked layout too.
+            return (portrait() or vim.o.columns < 120) and "portrait" or "landscape"
           end,
         },
+        -- Both layouts take nearly the whole terminal: the built-in presets
+        -- cap at 80% of each axis, which wastes exactly the space a picker
+        -- full of long monorepo paths needs.
         layouts = {
-          -- The built-in "vertical" preset at half width is wasteful on a
-          -- narrow screen. This is that preset stretched to nearly the full
-          -- terminal, with the preview given half the height so the code
-          -- under the cursor line is actually readable.
+          -- The built-in "default" (list + preview side by side), stretched.
+          landscape = {
+            layout = {
+              box = "horizontal",
+              width = 0.99,
+              min_width = 120,
+              height = 0.95,
+              {
+                box = "vertical",
+                border = "rounded",
+                title = "{title} {live} {flags}",
+                { win = "input", height = 1, border = "bottom" },
+                { win = "list", border = "none" },
+              },
+              { win = "preview", title = "{preview}", border = "rounded", width = 0.5 },
+            },
+          },
+          -- The built-in "vertical" (list over preview), stretched, with the
+          -- preview given half the height so the code under the cursor line
+          -- is actually readable.
           portrait = {
             layout = {
               backdrop = false,
-              width = 0.95,
+              width = 0.99,
               min_width = 60,
-              height = 0.95,
+              height = 0.97,
               border = "rounded",
               box = "vertical",
               title = "{title} {live} {flags}",
