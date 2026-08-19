@@ -15,3 +15,6 @@ macos-option-as-alt = true
 # Cmd+I, Cmd+F, Cmd+B, Cmd+S, Cmd+Z…) are unbound in Ghostty by default and
 # already reach nvim via the kitty keyboard protocol.
 keybind = super+shift+p=unbind
+# Pass Cmd+T through to nvim (workspace symbol search, Cursor-style).
+# Costs Ghostty's new-tab shortcut; tabs live in tmux here anyway.
+keybind = super+t=unbind
