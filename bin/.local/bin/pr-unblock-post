@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+"""Daily "what to review to unblock the queue" post.
+
+A Graphite stack merges bottom-up, so an approved PR five levels up is stuck until
+everything beneath it lands. That makes the queue's real bottleneck a handful of
+stack roots, not the raw count of unreviewed PRs. This ranks the blockers by how
+many *ready* PRs each one is holding back, so the reviewer with ten minutes knows
+which one buys the most.
+
+Usage:
+    pr-unblock-post                 # print the Slack post
+    pr-unblock-post --json          # machine-readable
+    pr-unblock-post --post          # POST to $PR_UNBLOCK_SLACK_WEBHOOK
+    pr-unblock-post --author NAME   # default: @me
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import urllib.request
+
+REPO = os.environ.get("PR_UNBLOCK_REPO", "assembledhq/assembled")
+
+
+def gh_json(args):
+    out = subprocess.run(["gh"] + args, capture_output=True, text=True)
+    if out.returncode != 0:
+        sys.exit(f"gh failed: {out.stderr.strip()[:400]}")
+    return json.loads(out.stdout or "[]")
+
+
+def fetch(author):
+    prs = gh_json([
+        "pr", "list", "--repo", REPO, "--author", author, "--state", "open",
+        "--limit", "300", "--json",
+        "number,title,headRefName,baseRefName,reviewDecision,mergeable,isDraft,url",
+    ])
+    return [p for p in prs if not p["isDraft"]]
+
+
+def check_state(number):
+    """0 failing / 0 pending means genuinely green."""
+    out = subprocess.run(
+        ["gh", "pr", "checks", str(number), "--repo", REPO, "--json", "state"],
+        capture_output=True, text=True,
+    )
+    if out.returncode not in (0, 8) or not out.stdout.strip():
+        return None
+    try:
+        states = [c.get("state", "") for c in json.loads(out.stdout)]
+    except json.JSONDecodeError:
+        return None
+    bad = {"FAILURE", "ERROR", "TIMED_OUT", "CANCELLED"}
+    wait = {"PENDING", "IN_PROGRESS", "QUEUED", "EXPECTED"}
+    return {
+        "failing": sum(1 for s in states if s in bad),
+        "pending": sum(1 for s in states if s in wait),
+    }
+
+
+def build(prs):
+    by_head = {p["headRefName"]: p for p in prs}
+    children = {}
+    for p in prs:
+        children.setdefault(p["baseRefName"], []).append(p)
+
+    def descendants(pr, seen=None):
+        seen = seen or set()
+        out = []
+        for c in children.get(pr["headRefName"], []):
+            if c["number"] in seen:
+                continue
+            seen.add(c["number"])
+            out.append(c)
+            out.extend(descendants(c, seen))
+        return out
+
+    return by_head, children, descendants
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--author", default="@me")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--post", action="store_true")
+    ap.add_argument("--top", type=int, default=6)
+    args = ap.parse_args()
+
+    prs = fetch(args.author)
+    by_head, children, descendants = build(prs)
+
+    approved = {p["number"] for p in prs if p.get("reviewDecision") == "APPROVED"}
+    blockers = []
+    for p in prs:
+        if p["number"] in approved:
+            continue
+        held = [d for d in descendants(p) if d["number"] in approved]
+        blockers.append((len(held), p, held))
+    blockers.sort(key=lambda t: (-t[0], t[1]["number"]))
+
+    top = [b for b in blockers if b[0] > 0][: args.top]
+    # A root with nothing above it still needs review; surface a few so the list is never empty.
+    if len(top) < args.top:
+        roots = [b for b in blockers if b[0] == 0 and b[1]["baseRefName"] == "master"]
+        top += roots[: args.top - len(top)]
+
+    enriched = []
+    for held_n, p, held in top:
+        ck = check_state(p["number"])
+        enriched.append({
+            "number": p["number"], "title": p["title"], "url": p["url"],
+            "unblocks": held_n,
+            "reviewDecision": p.get("reviewDecision") or "NONE",
+            "mergeable": p.get("mergeable"),
+            "checks": ck,
+            "held": [h["number"] for h in held],
+        })
+
+    ready = [p for p in prs
+             if p["number"] in approved and p.get("mergeable") == "MERGEABLE"]
+
+    if args.json:
+        print(json.dumps({"blockers": enriched, "readyCount": len(ready)}, indent=2))
+        return
+
+    lines = [
+        "*PR queue — highest-leverage reviews today*",
+        f"_{len(prs)} open · {len(ready)} approved & mergeable · "
+        f"reviewing the list below releases the rest_",
+        "",
+    ]
+    for e in enriched:
+        bits = []
+        if e["unblocks"]:
+            bits.append(f"unblocks *{e['unblocks']}* approved PR" + ("s" if e["unblocks"] != 1 else ""))
+        else:
+            bits.append("stack root")
+        if e["checks"] is None:
+            bits.append("checks unknown")
+        elif e["checks"]["failing"]:
+            bits.append(f":red_circle: {e['checks']['failing']} failing")
+        elif e["checks"]["pending"]:
+            bits.append(f"{e['checks']['pending']} running")
+        else:
+            bits.append("green")
+        if e["reviewDecision"] == "CHANGES_REQUESTED":
+            bits.append("changes requested — already addressed")
+        if e["mergeable"] == "CONFLICTING":
+            bits.append(":warning: conflicting")
+        lines.append(f"• <{e['url']}|#{e['number']}> {e['title']}")
+        lines.append(f"    {' · '.join(bits)}")
+    lines += ["", "_Stacks merge bottom-up, so approving a root releases everything above it._"]
+    text = "\n".join(lines)
+
+    if args.post:
+        hook = os.environ.get("PR_UNBLOCK_SLACK_WEBHOOK")
+        if not hook:
+            sys.exit("PR_UNBLOCK_SLACK_WEBHOOK is not set")
+        req = urllib.request.Request(
+            hook, data=json.dumps({"text": text}).encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req) as r:
+            print(f"posted ({r.status})")
+    else:
+        print(text)
+
+
+if __name__ == "__main__":
+    main()

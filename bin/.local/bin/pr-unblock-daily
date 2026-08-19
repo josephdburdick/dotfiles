@@ -1,0 +1,15 @@
+#!/bin/bash
+# Daily driver: post to Slack if a webhook is configured, otherwise archive the
+# post so it can be pasted by hand. Runs from the repo so `gh` picks it up.
+set -uo pipefail
+REPO_DIR="${PR_UNBLOCK_REPO_DIR:-$HOME/go/src/github.com/assembledhq/assembled}"
+OUT_DIR="$HOME/.local/share/pr-unblock"
+mkdir -p "$OUT_DIR"
+cd "$REPO_DIR" || exit 1
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+stamp=$(date +%Y-%m-%d)
+if [ -n "${PR_UNBLOCK_SLACK_WEBHOOK:-}" ]; then
+  "$HOME/.local/bin/pr-unblock-post" --post > "$OUT_DIR/$stamp.log" 2>&1
+else
+  "$HOME/.local/bin/pr-unblock-post" > "$OUT_DIR/$stamp.md" 2>&1
+fi
