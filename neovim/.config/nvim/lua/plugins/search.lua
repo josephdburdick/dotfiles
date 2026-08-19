@@ -6,7 +6,9 @@
 --   Cmd+B                       -> toggle the file explorer sidebar
 --   Cmd+T                       -> workspace symbols (Cursor's Cmd+T; needs ghostty's super+t unbind)
 --   Cmd+Shift+O / Ctrl+Shift+O  -> symbols in the current file (Cursor's Cmd+Shift+O)
---   F12 / Shift+F12             -> definition / all references of the symbol under cursor
+--   Cmd+R                       -> all references of the symbol under cursor
+--   F12 / Shift+F12             -> definition / references too, when a keyboard has them;
+--                                  on a 60% board use gd / gr / Cmd+R instead
 --   gR                          -> references as a persistent Trouble panel, grouped by file
 -- Shifted Ctrl combos and Shift+F12 need a terminal with the kitty keyboard
 -- protocol (Ghostty has it; tmux passes it with extended-keys on).
@@ -40,6 +42,7 @@ return {
       { "<D-t>", function() Snacks.picker.lsp_workspace_symbols() end, desc = "Workspace symbols (Cmd+T)" },
       { "<D-S-o>", function() Snacks.picker.lsp_symbols() end, desc = "Document symbols (Cmd+Shift+O)" },
       { "<C-S-o>", function() Snacks.picker.lsp_symbols() end, desc = "Document symbols (Ctrl+Shift+O)" },
+      { "<D-r>", function() Snacks.picker.lsp_references() end, desc = "All references (Cmd+R)" },
       { "<F12>", function() Snacks.picker.lsp_definitions() end, desc = "Go to definition (F12)" },
       { "<S-F12>", function() Snacks.picker.lsp_references() end, desc = "All references (Shift+F12)" },
     },
