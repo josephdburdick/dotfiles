@@ -39,7 +39,10 @@ return {
       { "<D-b>", function() Snacks.explorer() end, desc = "Toggle explorer (Cmd+B)" },
       -- Symbol search. LSP-backed, so an "instance" is a semantic reference,
       -- not a text match — renamed imports and shadowed names resolve correctly.
+      -- Ghostty and kitty both keep Cmd+T for their own new-tab shortcut, so
+      -- <D-t> only lands in GUI nvim (Neovide); Ctrl+Shift+T is the terminal path.
       { "<D-t>", function() Snacks.picker.lsp_workspace_symbols() end, desc = "Workspace symbols (Cmd+T)" },
+      { "<C-S-t>", function() Snacks.picker.lsp_workspace_symbols() end, desc = "Workspace symbols (Ctrl+Shift+T)" },
       { "<D-S-o>", function() Snacks.picker.lsp_symbols() end, desc = "Document symbols (Cmd+Shift+O)" },
       { "<C-S-o>", function() Snacks.picker.lsp_symbols() end, desc = "Document symbols (Ctrl+Shift+O)" },
       { "<D-r>", function() Snacks.picker.lsp_references() end, desc = "All references (Cmd+R)" },
