@@ -4,7 +4,9 @@ dot-claude/.last-update-result.json
 dot-claude/backups/
 dot-claude/cache/
 dot-claude/daemon/
+dot-claude/daemon.lock
 dot-claude/daemon.log
+dot-claude/daemon.status.json
 dot-claude/daemon-auth-cooldown
 dot-claude/daemon-auth-status.json
 dot-claude/downloads/

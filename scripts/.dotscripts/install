@@ -28,3 +28,21 @@ for F in $DOTFILES_DIRS; do
 	# Installed new links
 	stow --dotfiles --dir $DOTFILES --target $TARGET $F
 done
+
+# Claude Code plugins live in ~/.claude/plugins (gitignored — Claude Code manages
+# them like node_modules) and their enablement lands in the gitignored
+# settings.json, so neither travels with the dotfiles. Install them declaratively
+# from the tracked manifest instead.
+CLAUDE_PLUGINS="$DOTFILES/claude/dot-claude/plugins.txt"
+if command -v claude >/dev/null 2>&1 && [ -f "$CLAUDE_PLUGINS" ]; then
+	while IFS= read -r plugin || [ -n "$plugin" ]; do
+		case "$plugin" in '' | '#'*) continue ;; esac
+
+		echo "~ Installing plugin :: $plugin"
+
+		# Re-installing is a no-op, but a network blip or a renamed plugin
+		# would abort the whole install under `set -e`. Don't let one plugin
+		# take the rest of the dotfiles down with it.
+		claude plugin install "$plugin" --scope user --yes || true
+	done <"$CLAUDE_PLUGINS"
+fi

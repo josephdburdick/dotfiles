@@ -1,0 +1,11 @@
+# Claude Code plugins, installed by scripts/.dotscripts/install.
+#
+# Tracked here because Claude Code manages ~/.claude/plugins/ itself (gitignored,
+# like node_modules) and records enablement in ~/.claude/settings.json, which is
+# also gitignored so `stow` cannot conflict on a fresh machine. Without this
+# manifest, plugins would not survive a new install.
+#
+# One plugin name per line. Use plugin@marketplace to pin a marketplace.
+# Plugins from anthropics/claude-plugins-official need no marketplace step.
+
+mattpocock-skills
