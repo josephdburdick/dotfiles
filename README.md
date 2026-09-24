@@ -37,8 +37,13 @@ git clone https://github.com/josephdburdick/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 ```
 
-- Brew install everything with `$ ./migrate.sh`
+- macOS: brew install everything with `$ ./migrate.sh`
+- Linux: install `stow` (and optionally `zsh`, `git-delta`) with your package manager
 - Now run `make setup`
+
+`make setup` detects the platform (`darwin`, `omarchy` or `linux`) and stows the packages in `packages.<os>`, or every package when there is no list. Override detection with `make setup OS=linux`.
+
+On [Omarchy](https://omarchy.org) the terminal, editor, tmux and prompt configs are left to Omarchy, bash stays the default shell, and the shared aliases/functions in `shell/` are hooked into `~/.bashrc`. To use zsh instead (syntax highlighting as you type), `sudo pacman -S zsh && chsh -s /usr/bin/zsh`; `~/.zshrc` loads Omarchy's aliases and functions too.
 
 > NOTE: After the installation, when you'll open your terminal, or a different tab then `zinit` will start downloading some command line tools that are used inside the dotfiles.
 

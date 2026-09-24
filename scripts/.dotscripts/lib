@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Shared helpers for the dotscripts. Expects $DOTFILES to point at the repo.
+
+# Print the target platform: darwin, omarchy or linux.
+# Set DOTFILES_OS (or `make <target> OS=<name>`) to override detection.
+dotfiles_os() {
+	if [ -n "${DOTFILES_OS:-}" ]; then
+		echo "$DOTFILES_OS"
+	elif [ "$(uname -s)" = "Darwin" ]; then
+		echo darwin
+	elif [ -d /usr/share/omarchy ]; then
+		echo omarchy
+	else
+		echo linux
+	fi
+}
+
+# Print the stow packages for this platform, one per line. Uses
+# packages.<os> when it exists, otherwise every top-level directory.
+dotfiles_packages() {
+	local list="$DOTFILES/packages.$(dotfiles_os)"
+
+	if [ -f "$list" ]; then
+		grep -v -e '^#' -e '^[[:space:]]*$' "$list"
+	else
+		ls -d "$DOTFILES"/*/ | awk -F "/" '{ print $(NF-1) }'
+	fi
+}
+
+# True when the given stow package is installed on this platform.
+dotfiles_has_package() {
+	dotfiles_packages | grep -qx "$1"
+}

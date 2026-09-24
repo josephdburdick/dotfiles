@@ -1,0 +1,17 @@
+# Stow packages for Linux (non-Omarchy). Mac-only apps are left out.
+shell
+zsh
+git
+bin
+bat
+fd
+gitui
+starship
+tmux
+neovim
+kitty
+ghostty
+alacritty
+wezterm
+claude
+scripts

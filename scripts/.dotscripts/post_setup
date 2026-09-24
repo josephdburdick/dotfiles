@@ -2,14 +2,27 @@
 
 set -e
 
+cd "$(dirname "$0")/../.."
+
+export DOTFILES=$(pwd -P)
+
+. "$DOTFILES/scripts/.dotscripts/lib"
+
+OS=$(dotfiles_os)
+
 ############################
 ## Setup required for git ##
 ############################
 
 echo "> Setting up git"
 
-# Adding extra config, look inside git/ dir
-git config --global include.path $HOME/.gitconfig.extra
+# Adding extra config, look inside git/ dir. It pages through delta, and git
+# errors out on every diff if delta is missing, so only include it when found.
+if command -v delta >/dev/null 2>&1; then
+    git config --global include.path $HOME/.gitconfig.extra
+else
+    echo "~ Skipping :: ~/.gitconfig.extra needs delta (brew install git-delta / pacman -S git-delta), then re-run make setup"
+fi
 
 # If hub is found, use https: instead of git: or ssh::
 if command -v hub >/dev/null 2>&1; then
@@ -22,55 +35,37 @@ fi
 # 	git config --global mergetool.vscode.cmd "code --wait $MERGED"
 # fi
 
-############################
-## Setup required for zsh ##
-############################
+#############################
+## Setup required for bash ##
+#############################
 
-echo "> Setting up zsh"
+# Omarchy (and most Linux distros) keep bash as the login shell, so hook the
+# shared aliases/functions from shell/ into ~/.bashrc as well. zsh sources
+# them from ~/.zshrc. Zinit installs itself on the first zsh prompt.
 
-ZINIT=$HOME/.zinit
+BASH_HOOK='[[ -f ~/.dotrc/shell/init.sh ]] && source ~/.dotrc/shell/init.sh'
 
-if [[ ! -d $ZINIT ]]; then
-    echo "~ Installing :: zinit"
+if [ "$OS" != "darwin" ] && dotfiles_has_package shell; then
+    echo "> Setting up bash"
 
-    command mkdir -p $ZINIT && command chmod g-rwX $ZINIT
-    command git clone https://github.com/zdharma/zinit "$ZINIT/bin" && \
-        echo "+ Done" || \
-        echo "- Fail"
-
-    echo "~ All 'zinit' plugins will be installed on first prompt."
-else
-    echo "~ Already Installed :: zinit"
-    echo "~ Run 'zinit self-update && zinit update --all' to update plugins"
+    if ! grep -qF "$BASH_HOOK" "$HOME/.bashrc" 2>/dev/null; then
+        printf '\n# dotfiles: shared aliases and functions\n%s\n' "$BASH_HOOK" >>"$HOME/.bashrc"
+        echo "+ Added shell/init.sh to ~/.bashrc"
+    else
+        echo "~ Already Installed :: ~/.bashrc hook"
+    fi
 fi
 
-###############################
-## Setup required for neovim ##
-###############################
-
-echo "> Setting up neovim"
-
-PACKER=$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
-
-if [ ! -d $PACKER ]; then
-    echo "~ Installing :: packer.nvim"
-
-    git clone https://github.com/wbthomason/packer.nvim $PACKER
-
-    echo "+ Done"
-else
-    echo "~ Already Installed :: packer.nvim"
-fi
-
-###############################
-## Setup required for neovim ##
-###############################
-
-echo "> Setting up tmux"
+#############################
+## Setup required for tmux ##
+#############################
 
 TPM_DIR=$HOME/.tmux/plugins/tpm
 
-if [ ! -d $TPM_DIR ]; then
+if ! dotfiles_has_package tmux; then
+    : # tmux config is managed elsewhere (e.g. Omarchy)
+elif [ ! -d $TPM_DIR ]; then
+    echo "> Setting up tmux"
     echo "~ Installing :: tmux-plugin-manager"
 
     git clone https://github.com/tmux-plugins/tpm $TPM_DIR
@@ -83,6 +78,12 @@ fi
 ##################################
 ## Making ZSH the default shell ##
 ##################################
+
+# Omarchy is built around bash; keep it and use the ~/.bashrc hook above.
+if [ "$OS" = "omarchy" ]; then
+    echo '>> All installed! Enjoy dofiles :) <<'
+    exit 0
+fi
 
 find_zsh() {
 	if command -v zsh >/dev/null 2>&1 && grep "$(command -v zsh)" /etc/shells >/dev/null; then

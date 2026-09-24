@@ -9,8 +9,12 @@ cd "$(dirname "$0")/../.."
 export DOTFILES=$(pwd -P)
 TARGET=$HOME
 
+. "$DOTFILES/scripts/.dotscripts/lib"
+
+echo "~ Platform :: $(dotfiles_os)"
+
 # List of packages that has to installed via `stow`
-DOTFILES_DIRS=$(ls -d $DOTFILES/*/ | awk -F "/" '{ print $(NF-1) }')
+DOTFILES_DIRS=$(dotfiles_packages)
 
 for F in $DOTFILES_DIRS; do
 	# Don't install scripts/

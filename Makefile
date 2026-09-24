@@ -3,6 +3,11 @@
 .DEFAULT_GOAL := setup
 
 DOT_SCRIPTS = ./scripts/.dotscripts
+
+# Override platform detection, e.g. `make setup OS=linux`
+ifdef OS
+export DOTFILES_OS := $(OS)
+endif
 STOW = $(shell command -v stow 2> /dev/null)
 
 check_stow:

@@ -75,7 +75,7 @@ Each tool/application has its own directory containing the configuration files i
 #### ZSH Configuration
 - **Main**: `zsh/dot-zshrc` - Primary zsh configuration with Zinit plugin manager
 - **Config**: `zsh/.dotrc/config.zsh` - Environment variables, history, and PATH setup  
-- **Aliases**: `zsh/.dotrc/extra/aliases.zsh` - Custom command aliases and functions
+- **Aliases**: `shell/.dotrc/shell/` - Aliases and functions shared by bash and zsh (`common.sh`, `darwin.sh`, `linux.sh`)
 
 #### Build System
 - **Makefile**: Defines `setup`, `install`, `update`, `purge` commands
@@ -115,7 +115,7 @@ The setup script will interactively configure git user.name and user.email on fi
 All GUI applications and command-line tools are defined in the `Brewfile`. The `migrate.sh` script handles Homebrew installation and runs `brew bundle`.
 
 ### Platform Specific
-This configuration is optimized for macOS (Apple Silicon). Some aliases and paths may need adjustment for other platforms.
+This configuration is optimized for macOS (Apple Silicon) and also installs on Linux. `make setup` detects the platform and stows the packages listed in `packages.<os>` (override with `make setup OS=linux`). On Omarchy it leaves terminal/editor/tmux/prompt configs to Omarchy, keeps bash, and hooks `shell/` into `~/.bashrc`.
 
 ### Custom Scripts
 Binary scripts are located in `bin/.local/bin/` and include utilities like:
