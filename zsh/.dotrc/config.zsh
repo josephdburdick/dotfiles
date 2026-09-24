@@ -68,6 +68,9 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 export CGO_ENABLED=1
 export CGO_CFLAGS="-g -O2 -Wno-return-local-addr"
 export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+# Suggest from history, then completions; skip long buffers to keep typing snappy
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=40
 export DISABLE_MAGIC_FUNCTIONS=true
 #####################
 # PATH              #
