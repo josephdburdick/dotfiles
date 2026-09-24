@@ -117,7 +117,7 @@ _zinit_bin fzf junegunn/fzf
 _zinit_bin rg BurntSushi/ripgrep pick'*/rg'
 _zinit_bin fd sharkdp/fd pick'*/fd'
 _zinit_bin bat sharkdp/bat pick'*/bat'
-command -v bat >/dev/null 2>&1 && export MANPAGER="bat --plain"
+[[ -z $MANPAGER ]] && command -v bat >/dev/null 2>&1 && export MANPAGER="bat --plain"
 _zinit_bin delta dandavison/delta pick'*/delta'
 _zinit_bin eza eza-community/eza
 command -v eza >/dev/null 2>&1 && alias l="eza -abghHlS --git --group-directories-first"
@@ -125,6 +125,16 @@ _zinit_bin stylua JohnnyMorganz/StyLua
 _zinit_bin gitui gitui-org/gitui
 
 unfunction _zinit_bin
+
+# Omarchy ships its aliases/functions for bash (ff, n, t, open, compress, ga/gd
+# worktrees, ...); they are plain enough to load in zsh too. Loaded after
+# zoxide so Omarchy's `cd` -> `zd` wrapper can find `z`.
+if [[ $OSTYPE == linux* && -d /usr/share/omarchy ]]; then
+    source /usr/share/omarchy/default/bash/envs
+    source $OMARCHY_PATH/default/bash/aliases
+    for f in $OMARCHY_PATH/default/bash/fns/*; do source $f; done
+    command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
+fi
 
 ##########################
 # OMZ Libs and Plugins   #
