@@ -30,14 +30,13 @@ if [[ -f "$HOME/.zsh_safe_mode" ]]; then
     source "$HOME/.dotrc/config.zsh"
   fi
 
-  # Load aliases and other extras (but skip tui.zsh which has zinit calls)
-  if [[ -f "$HOME/.dotrc/extra/aliases.zsh" ]]; then
-    echo "SAFE MODE: Sourcing aliases.zsh" >&2
-    source "$HOME/.dotrc/extra/aliases.zsh"
-    echo "SAFE MODE: aliases.zsh loaded, checking l alias: $(type l 2>/dev/null | head -1)" >&2
+  # Load shared aliases/functions (but skip tui.zsh which has zinit calls)
+  if [[ -f "$HOME/.dotrc/shell/init.sh" ]]; then
+    echo "SAFE MODE: Sourcing shell/init.sh" >&2
+    source "$HOME/.dotrc/shell/init.sh"
+    echo "SAFE MODE: shell/init.sh loaded, checking l alias: $(type l 2>/dev/null | head -1)" >&2
   fi
 
-  [[ -f "$HOME/.dotrc/extra/functions.zsh" ]] && source "$HOME/.dotrc/extra/functions.zsh"
   [[ -f "$HOME/.dotrc/extra/fzf.zsh" ]] && source "$HOME/.dotrc/extra/fzf.zsh"
   # Skip tui.zsh in safe mode as it has zinit calls
 
@@ -79,8 +78,7 @@ autoload -Uz _zinit
 # Load .zsh_pre if available
 [[ -f $HOME/.zsh_pre ]] && source $HOME/.zsh_pre
 [[ -f $HOME/.dotrc/config.zsh ]] && source $HOME/.dotrc/config.zsh
-[[ -f $HOME/.dotrc/extra/aliases.zsh ]] && source $HOME/.dotrc/extra/aliases.zsh
-[[ -f $HOME/.dotrc/extra/functions.zsh ]] && source $HOME/.dotrc/extra/functions.zsh
+[[ -f $HOME/.dotrc/shell/init.sh ]] && source $HOME/.dotrc/shell/init.sh
 [[ -f $HOME/.dotrc/extra/fzf.zsh ]] && source $HOME/.dotrc/extra/fzf.zsh
 [[ -f $HOME/.localrc ]] && source $HOME/.localrc
 
@@ -90,44 +88,43 @@ ZSH_THEME="robbyrussell"
 # PROMPT            #
 #####################
 
-zinit lucid from"gh-r" as"command" bpick'*apple-darwin.tar.gz' for \
-   atload'eval "$(starship init zsh)"'    \
-   starship/starship
+# Fetch a CLI from GitHub releases only when it isn't already installed by
+# Homebrew or the system package manager. zinit picks the asset for this OS/arch.
+_zinit_bin() {
+    local cmd=$1 repo=$2; shift 2
+    command -v $cmd >/dev/null 2>&1 || zinit lucid from'gh-r' as'program' "$@" for @$repo
+}
+
+_zinit_bin starship starship/starship
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
 #####################
 # PROGRAMS          #
 #####################
 
-zinit ice bpick'*macos-arm64*' for jqlang/jq
+_zinit_bin jq jqlang/jq mv'jq* -> jq'
 zinit pack for ls_colors
-zinit ice bpick'*apple-darwin*' \
-    atload'eval "$(snm env zsh)"; alias n="snm"' \
-    mv'snm* -> snm' pick'snm/snm' for @numToStr/snm
 
-zinit ice bpick'*apple-darwin*' \
-    atload'eval "$(zoxide init --no-aliases zsh)"; alias z="__zoxide_z"' \
-    pick'zoxide/zoxide' for @ajeetdsouza/zoxide
+if [[ $OSTYPE == darwin* ]]; then
+    _zinit_bin snm numToStr/snm mv'snm* -> snm' pick'snm/snm'
+    command -v snm >/dev/null 2>&1 && { eval "$(snm env zsh)"; alias n="snm" }
+fi
 
-zinit ice bpick'*darwin_arm64*' for @junegunn/fzf
+_zinit_bin zoxide ajeetdsouza/zoxide
+command -v zoxide >/dev/null 2>&1 && { eval "$(zoxide init --no-aliases zsh)"; alias z="__zoxide_z" }
 
-zinit ice bpick'rg/rg' mv'ripgrep* -> rg' for @BurntSushi/ripgrep
+_zinit_bin fzf junegunn/fzf
+_zinit_bin rg BurntSushi/ripgrep pick'*/rg'
+_zinit_bin fd sharkdp/fd pick'*/fd'
+_zinit_bin bat sharkdp/bat pick'*/bat'
+command -v bat >/dev/null 2>&1 && export MANPAGER="bat --plain"
+_zinit_bin delta dandavison/delta pick'*/delta'
+_zinit_bin eza eza-community/eza
+command -v eza >/dev/null 2>&1 && alias l="eza -abghHlS --git --group-directories-first"
+_zinit_bin stylua JohnnyMorganz/StyLua
+_zinit_bin gitui gitui-org/gitui
 
-zinit ice bpick'fd/fd' mv'fd* -> fd' for @sharkdp/fd
-
-zinit ice bpick'bat/bat' mv'bat* -> bat' \
-    atload'export MANPAGER="bat --plain"' for @sharkdp/bat
-
-zinit ice bpick'delta/delta' mv'delta* -> delta' for @dandavison/delta
-
-zinit ice bpick'*apple-darwin*' \
-    atload'alias l="eza -abghHlS --git --group-directories-first"' \
-    for @eza-community/eza
-#
-zinit ice bpick'*macos-aarch64*' for @JohnnyMorganz/StyLua
-
-zinit ice bpick'gitui-mac.tar.gz' for @extrawurst/gitui
-
-
+unfunction _zinit_bin
 
 ##########################
 # OMZ Libs and Plugins   #
@@ -145,12 +142,6 @@ zinit wait lucid for \
         alias ...="cd ../.."
         alias ....="cd ../../.."
         alias .....="cd ../../../.."
-
-        function take() {
-            mkdir -p $@ && cd ${@:$#}
-        }
-
-        alias rm="rm -rf"
     ' \
 	OMZL::directories.zsh \
 	OMZL::git.zsh \
@@ -187,6 +178,11 @@ zinit wait lucid for \
 # MANUAL CONFIG     #
 #####################
 
+
+# mise manages node/gh/etc. on Omarchy; bash activates it in Omarchy's rc
+if [[ $OSTYPE == linux* ]] && command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
 
 if command -v fnm >/dev/null 2>&1; then
   eval "$(fnm env)"

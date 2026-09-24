@@ -46,12 +46,15 @@ export DOTFILES=${DOTFILES:-$HOME/.dotfiles}
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export TERM=${TERM:-xterm-256color}
 export COLORTERM=${COLORTERM:-truecolor}
-export EDITOR=$(which nvim)
+export EDITOR=$(command -v nvim)
 export PAGER=bat
 
 # Pick light/dark themes for bat + delta from the macOS system appearance.
 # AppleInterfaceStyle is unset in Light mode, set to "Dark" in Dark mode.
-if [[ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" == "Dark" ]]; then
+# On Linux, leave BAT_THEME to the desktop (Omarchy sets it) and assume dark.
+if [[ $OSTYPE != darwin* ]]; then
+    export DELTA_FEATURES="+dark-colors"
+elif [[ "$(defaults read -g AppleInterfaceStyle 2>/dev/null)" == "Dark" ]]; then
     export BAT_THEME="TwoDark"
     export DELTA_FEATURES="+dark-colors"
 else
@@ -73,9 +76,11 @@ export DISABLE_MAGIC_FUNCTIONS=true
 export PATH="$HOME/.local/bin:$PATH"
 
 # Homebrew (Apple Silicon)
-export POSTGRES="/opt/homebrew/opt/postgresql@16/bin:"
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$POSTGRES:$PATH"
-export HOMEBREW_PREFIX="/opt/homebrew"
+if [[ $OSTYPE == darwin* ]]; then
+    export POSTGRES="/opt/homebrew/opt/postgresql@16/bin:"
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$POSTGRES:$PATH"
+    export HOMEBREW_PREFIX="/opt/homebrew"
+fi
 
 # Python (pyenv)
 export PYENV_ROOT="$HOME/.pyenv"
@@ -90,7 +95,11 @@ export PATH="$GOBIN:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Node.js (pnpm)
-export PNPM_HOME="$HOME/Library/pnpm"
+if [[ $OSTYPE == darwin* ]]; then
+    export PNPM_HOME="$HOME/Library/pnpm"
+else
+    export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
+fi
 export PATH="$PNPM_HOME:$PATH"
 
 # Bun
@@ -101,7 +110,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/.local/lsp/bin:$PATH"
 
 # PostgreSQL client tools
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+[[ $OSTYPE == darwin* ]] && export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Remove duplicate entries from PATH (simple version)
 export PATH=$(echo "$PATH" | tr ':' '\n' | awk '!seen[$0]++' | tr '\n' ':' | sed 's/:$//')

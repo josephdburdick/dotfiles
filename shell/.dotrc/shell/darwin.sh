@@ -1,3 +1,23 @@
+# macOS-only aliases and functions, sourced after common.sh.
+
+alias cat='bat --theme=TwoDark'
+
+# python
+alias python="$(command -v python3)"
+alias PYTHON="$(command -v python3)"
+alias pip="pip3"
+
+ip-internal() {
+  echo "Wireless :: IP => $(ipconfig getifaddr en0)"
+}
+
+# assembled
+if [ -d "$HOME/go/src/github.com/assembledhq/assembled" ]; then
+  alias fe="cd ${HOME}/go/src/github.com/assembledhq/assembled"
+  alias dev="ad dev"
+  alias dev-install="ad dev --host dev-2.gokome.com --remerge_confs true --reinstall_deps true"
+  alias ad="~/go/src/github.com/assembledhq/assembled/gocode/tools/bin/ad"
+fi
 
 # toggle macOS VSCode press and hold
 osx_toggle_vscode_apple_press_and_hold() {
@@ -12,21 +32,18 @@ osx_toggle_vscode_apple_press_and_hold() {
   fi
 }
 
-
-
 # toggle macOS Cursor IDE press and hold
 osx_toggle_cursor_apple_press_and_hold() {
   if [[ $1 == "off" ]]; then
-defaults write "$(osascript -e 'id of app "Cursor"')" ApplePressAndHoldEnabled -bool false
+    defaults write "$(osascript -e 'id of app "Cursor"')" ApplePressAndHoldEnabled -bool false
     echo "ApplePressAndHoldEnabled is now OFF for Cursor IDE."
   elif [[ $1 == "on" ]]; then
-defaults write "$(osascript -e 'id of app "Cursor"')" ApplePressAndHoldEnabled -bool true
+    defaults write "$(osascript -e 'id of app "Cursor"')" ApplePressAndHoldEnabled -bool true
     echo "ApplePressAndHoldEnabled is now ON for Cursor IDE."
   else
     echo "Usage: osx_toggle_cursor_apple_press_and_hold [on|off]"
   fi
 }
-
 
 # toggle verbose boot mode
 osx_toggle_verbose_boot() {
@@ -68,11 +85,3 @@ osx_toggle_hidden_files() {
     echo "Usage: toggle_hidden_files [on|off]"
   fi
 }
-
-# gitignore.io - Generate .gitignore files from templates
-# Usage: gi node,python,rust
-# See: https://docs.gitignore.io/install/command-line
-gi() {
-  curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/$@
-}
-

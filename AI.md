@@ -4,7 +4,8 @@ This is a concise playbook for AI agents working in this repo. It explains where
 
 ## Repo facts
 
-- macOS-focused dotfiles using GNU Stow. Files named `dot-*` become `.*` in `$HOME`.
+- macOS-first dotfiles using GNU Stow, with Linux and Omarchy support. Files named `dot-*` become `.*` in `$HOME`.
+- `scripts/.dotscripts/lib` detects the platform (`darwin`, `omarchy`, `linux`); `packages.<os>` lists the stow packages for it (no list means every package).
 - Package management via Homebrew with a `Brewfile` and `brew bundle`.
 - Key areas: `zsh/`, `neovim/`, `tmux/`, `starship/`, `kitty/`, `wezterm/`, `git/`, `bin/`, `scripts/`.
 - See `WARP.md` for terminal-oriented ops and commands.
@@ -34,7 +35,8 @@ This is a concise playbook for AI agents working in this repo. It explains where
 
 - Primary file: `zsh/dot-zshrc` (Zinit plugin manager is used here).
 - Environment and PATHs: `zsh/.dotrc/config.zsh`.
-- Aliases and functions: `zsh/.dotrc/extra/aliases.zsh` (and siblings under `zsh/.dotrc/extra/`).
+- Aliases and functions: `shell/.dotrc/shell/` — `common.sh` is shared by bash and zsh on every OS, `darwin.sh` / `linux.sh` hold OS-specific ones. Keep these files portable (no zsh-only syntax).
+- zsh-only extras stay under `zsh/.dotrc/extra/`.
 - Keep login time fast: avoid heavy commands in RC; guard optional features; defer work.
 - When adding plugins, prefer lazy-loading in Zinit; avoid duplicate functionality.
 
@@ -61,7 +63,7 @@ This is a concise playbook for AI agents working in this repo. It explains where
 - ZSH still starts cleanly with no errors or long delays.
 - Neovim starts without errors; `:checkhealth` has no regressions for common providers.
 - `brew bundle` succeeds; `stow -n` previews expected links.
-- Mac-specific paths are respected; no Linux-only commands added by default.
+- Mac-specific paths and commands are guarded by `$OSTYPE` (or live in `darwin.sh`); Linux-only ones likewise (`linux.sh`).
 
 ## Useful commands
 

@@ -1,0 +1,13 @@
+# Stow packages for Omarchy (https://omarchy.org).
+#
+# Omarchy owns terminal, editor, tmux and prompt configs (nvim, kitty, ghostty,
+# alacritty, tmux, starship) and swaps them when changing themes, so only the
+# shell layer and tool configs it doesn't manage are linked here. `claude` is
+# left out because ~/.claude usually already exists; stow it by hand if wanted.
+shell
+zsh
+git
+bin
+fd
+gitui
+scripts
