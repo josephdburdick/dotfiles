@@ -182,7 +182,9 @@ zinit wait lucid for \
 zinit wait lucid for \
     reset \
     zdharma-continuum/fast-syntax-highlighting \
-    trapd00r/LS_COLORS
+    trapd00r/LS_COLORS \
+    atload'!_zsh_autosuggest_start' \
+    zsh-users/zsh-autosuggestions
 
 #####################
 # MANUAL CONFIG     #
