@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+# Install system-wide config (outside $HOME, so not managed by stow) from
+# system/linux/, which mirrors /. Needs sudo; only copies files that changed.
+
+cd "$(dirname "$0")/../.."
+
+export DOTFILES=$(pwd -P)
+
+. "$DOTFILES/scripts/.dotscripts/lib"
+
+if [ "$(dotfiles_os)" = "darwin" ]; then
+	echo "~ Nothing to install on macOS"
+	exit 0
+fi
+
+SRC="$DOTFILES/system/linux"
+CHANGED=false
+
+while IFS= read -r f; do
+	dest="/${f#$SRC/}"
+
+	# Skip config for software that isn't installed (e.g. no NetworkManager)
+	if [ ! -d "$(dirname "$dest")" ]; then
+		echo "~ Skipping :: $dest ($(dirname "$dest") not found)"
+		continue
+	fi
+
+	if cmp -s "$f" "$dest"; then
+		echo "~ Up to date :: $dest"
+		continue
+	fi
+
+	mode=644
+	[ -x "$f" ] && mode=755
+	sudo install -m "$mode" -o root -g root "$f" "$dest"
+	echo "+ Installed :: $dest"
+	CHANGED=true
+done < <(find "$SRC" -type f | sort)
+
+if [ "$CHANGED" = true ]; then
+	echo "~ Reloading sysctl settings"
+	sudo sysctl --system >/dev/null
+fi

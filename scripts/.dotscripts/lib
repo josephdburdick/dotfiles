@@ -24,7 +24,8 @@ dotfiles_packages() {
 	if [ -f "$list" ]; then
 		grep -v -e '^#' -e '^[[:space:]]*$' "$list"
 	else
-		ls -d "$DOTFILES"/*/ | awk -F "/" '{ print $(NF-1) }'
+		# system/ holds files for / (see scripts/.dotscripts/system), not $HOME
+		ls -d "$DOTFILES"/*/ | awk -F "/" '{ print $(NF-1) }' | grep -vx system
 	fi
 }
 

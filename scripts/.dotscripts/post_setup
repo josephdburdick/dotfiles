@@ -56,6 +56,10 @@ if [ "$OS" != "darwin" ] && dotfiles_has_package shell; then
     fi
 fi
 
+if [ "$OS" != "darwin" ]; then
+    echo "~ Optional :: 'make system' installs system/linux/ into /etc (sudo)"
+fi
+
 #############################
 ## Setup required for tmux ##
 #############################

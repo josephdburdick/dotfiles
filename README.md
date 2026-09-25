@@ -59,6 +59,8 @@ For convenience, I've added some `make` commands to do some regular stuff which 
 
 - `purge` - Removes everything
 
+- `system` - Linux only: installs the files in `system/linux/` (a mirror of `/`) with sudo. Currently: turn Wi-Fi off while ethernet is connected (NetworkManager dispatcher) and per-interface ARP replies so Wi-Fi and ethernet on the same subnet don't conflict
+
 ### 🖥️ Software
 
 - OS: Linux
