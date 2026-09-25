@@ -39,6 +39,7 @@ cask "obsidian"
 cask "rectangle"
 cask "slack"
 cask "spotify"
+cask "tailscale-app"
 cask "tomatobar"
 cask "cursor"
 
