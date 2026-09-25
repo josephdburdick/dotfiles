@@ -67,7 +67,7 @@ Each tool/application has its own directory containing the configuration files i
 - **Terminal/Shell**: `zsh/`, `starship/`, `tmux/`
 - **Editors**: `neovim/`, `cursor/`
 - **Terminal Emulators**: `kitty/`, `alacritty/`, `wezterm/`
-- **Development Tools**: `git/`, `bat/`, `fd/`
+- **Development Tools**: `git/`, `fd/`
 - **Scripts**: `bin/`, `scripts/`
 
 ### Key Configuration Files

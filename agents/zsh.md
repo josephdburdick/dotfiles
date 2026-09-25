@@ -7,7 +7,7 @@ Zsh is managed with Zinit. Keep login shell fast and robust. Prefer guarded, laz
 - `zsh/dot-zshrc` — main entry, plugin manager, top-level init.
 - `zsh/.dotrc/config.zsh` — environment variables and PATH management.
 - `shell/.dotrc/shell/` — aliases and functions shared with bash (`common.sh`, plus `darwin.sh` / `linux.sh`).
-- `zsh/.dotrc/extra/` — zsh-only per-topic extras (fzf, tui).
+- `zsh/.dotrc/extra/` — zsh-only per-topic extras (fzf).
 
 ## Guidelines
 

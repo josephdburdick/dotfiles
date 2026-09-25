@@ -30,7 +30,7 @@ if [[ -f "$HOME/.zsh_safe_mode" ]]; then
     source "$HOME/.dotrc/config.zsh"
   fi
 
-  # Load shared aliases/functions (but skip tui.zsh which has zinit calls)
+  # Load shared aliases/functions
   if [[ -f "$HOME/.dotrc/shell/init.sh" ]]; then
     echo "SAFE MODE: Sourcing shell/init.sh" >&2
     source "$HOME/.dotrc/shell/init.sh"
@@ -38,7 +38,6 @@ if [[ -f "$HOME/.zsh_safe_mode" ]]; then
   fi
 
   [[ -f "$HOME/.dotrc/extra/fzf.zsh" ]] && source "$HOME/.dotrc/extra/fzf.zsh"
-  # Skip tui.zsh in safe mode as it has zinit calls
 
   # Set up minimal prompt and return
   echo "SAFE MODE: Setting prompt and returning" >&2
