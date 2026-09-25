@@ -35,6 +35,19 @@ fi
 # 	git config --global mergetool.vscode.cmd "code --wait $MERGED"
 # fi
 
+##############################
+## Notes vault at ~/notes ##
+##############################
+
+# Claude commands in claude/dot-claude/commands/ link to specs in the Obsidian
+# vault through ~/notes, so point ~/notes at the vault where it lives elsewhere.
+NOTES_VAULT="$HOME/Documents/vaults/personal"
+
+if [ ! -e "$HOME/notes" ] && [ -d "$NOTES_VAULT" ]; then
+    ln -s "$NOTES_VAULT" "$HOME/notes"
+    echo "+ Linked ~/notes -> $NOTES_VAULT"
+fi
+
 #############################
 ## Setup required for bash ##
 #############################
