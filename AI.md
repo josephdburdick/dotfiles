@@ -23,6 +23,7 @@ This is a concise playbook for AI agents working in this repo. It explains where
 
 - Every top-level directory corresponds to a tool. Inside, files mimic `$HOME` structure.
 - Use `stow --dotfiles --dir ~/.dotfiles --target ~ <package>` to link and `-D` to unlink.
+- `system/` is not a stow package: `system/linux/` mirrors `/` and is copied with sudo by `make system`.
 - When adding a new tool config, create a new top-level directory and mirror the target paths. Name files with `dot-` when they should be hidden in `$HOME`.
 
 ## Homebrew policy

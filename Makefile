@@ -1,4 +1,4 @@
-.PHONY := setup install update purge
+.PHONY: setup install update purge system
 
 .DEFAULT_GOAL := setup
 
@@ -32,6 +32,11 @@ update: check_stow
 	@echo
 	@bash -c $(DOT_SCRIPTS)/update
 	@bash -c $(DOT_SCRIPTS)/install
+
+system:
+	@echo "~>> [[ System config (sudo) ]] <<~"
+	@echo
+	@bash -c $(DOT_SCRIPTS)/system
 
 purge: check_stow
 	@echo "~>> [[ Purging ]] <<~"

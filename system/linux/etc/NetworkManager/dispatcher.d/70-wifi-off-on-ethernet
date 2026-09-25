@@ -1,0 +1,35 @@
+#!/bin/sh
+# Disconnect Wi-Fi while ethernet is up; reconnect it when ethernet goes down.
+# Run by NetworkManager-dispatcher as: <script> <interface> <action>
+
+IFACE="$1"
+ACTION="$2"
+
+case "$IFACE" in
+  en* | eth*) ;;
+  *) exit 0 ;;
+esac
+
+wifi_devices() {
+  nmcli -t -f DEVICE,TYPE device | awk -F: '$2 == "wifi" { print $1 }'
+}
+
+case "$ACTION" in
+  up)
+    # Only drop Wi-Fi once ethernet actually routes traffic, so a half-configured
+    # link never leaves the machine offline.
+    for i in 1 2 3 4 5; do
+      ip -4 route show default dev "$IFACE" | grep -q . && break
+      sleep 1
+    done
+    ip -4 route show default dev "$IFACE" | grep -q . || exit 0
+    for dev in $(wifi_devices); do
+      nmcli device disconnect "$dev" >/dev/null 2>&1
+    done
+    ;;
+  down)
+    for dev in $(wifi_devices); do
+      nmcli device connect "$dev" >/dev/null 2>&1
+    done
+    ;;
+esac
