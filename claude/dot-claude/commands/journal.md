@@ -6,7 +6,7 @@ allowed-tools: Bash, Read, Write, mcp__linear-server__list_issues, mcp__linear-s
 # Daily journal
 
 Turn a day's GitHub and Linear activity into a written entry in the Obsidian
-daily note at `/Users/joe/Documents/notes/03 - DAILY/`.
+daily note at `/Users/jb/Documents/vaults/personal/03 - DAILY/`.
 
 Arguments: `$ARGUMENTS`
 
@@ -27,11 +27,13 @@ Get today's date from `date +%Y-%m-%d` — never assume it.
 
 ## Step 1 — Collect
 
-Both scripts live in the vault repo, so the local run and the scheduled cloud
-routine share one implementation. Set this once, at the top of the run:
+Both scripts live in the vault repo, so every host that runs the journal (the
+Mac, the NUC) shares one implementation. `run-nightly.sh` exports
+`JOURNAL_SCRIPTS` for its own clone; a manual run on the Mac falls back to the
+vault's usual path. Set this once, at the top of the run:
 
 ```bash
-SCRIPTS="/Users/joe/Documents/notes/99 - META/scripts/daily-journal"
+SCRIPTS="${JOURNAL_SCRIPTS:-/Users/jb/Documents/vaults/personal/99 - META/scripts/daily-journal}"
 ```
 
 ```bash
@@ -49,6 +51,11 @@ jq -r '.days | to_entries[] | "\(.key) merged=\(.value.merged|length) opened=\(.
 ```
 
 Days absent from `.days` had no activity. Skip them — do not create empty notes.
+
+**Assembled is never fetched here.** `collect.sh` excludes `-org:assembledhq` by
+default, so the employer repo is never read through the API or CLI. Don't
+override `JOURNAL_EXCLUDE`, and don't search for Assembled activity any other way.
+Assembled sections are written by hand from the browser, and Step 3 keeps them.
 
 ## Step 2 — Enrich from Linear
 
@@ -83,12 +90,25 @@ cat > /tmp/journal-body.md <<'EOF'
 ...entry...
 EOF
 python3 "$SCRIPTS/upsert_note.py" \
-  --date <DATE> --body-file /tmp/journal-body.md --tags <TAGS>
+  --date <DATE> --body-file /tmp/journal-body.md --tags daily,project/cue-quest
 ```
 
-**Tags** — always `daily`, plus `project/assembled` and/or `project/cue-quest`, only
-for projects that actually had activity that day. Existing tags on the note are
-preserved and merged; you never need to repeat them.
+**Sections** — `present-day/app.cue.quest`, `present-day/cue.quest` (the marketing
+site) and `present-day/clock.cue.quest` go under **Cue Quest**.
+`present-day/pooltabl.es` goes under **PoolTabl.es**. Any other repo gets a section
+named after its project.
+
+**Tags** — one comma-separated argument, no spaces. Always `daily`, plus
+`project/cue-quest` for Cue Quest activity and `project/present-day` for PoolTabl.es
+or other `present-day` repos, but only when that project had activity that day.
+Existing tags on the note are preserved and merged; you never need to repeat them.
+
+**Keep an existing Assembled section.** Before writing a day, read its note under
+`03 - DAILY/YYYY/`. `upsert_note.py` replaces the whole region between the markers,
+so if that region already holds an **Assembled** section (added by hand from the
+browser), copy it into your body word for word. Order the body as: the
+`## Activity — …` header, then the Assembled section, then your sections. A re-run
+must never drop it.
 
 ### Format
 
@@ -127,7 +147,7 @@ Rules for the writing itself:
 - Prefer the effect over the mechanism: "stopped asking for location on every visit"
   beats "refactored the geolocation hook".
 - A PR title that already says it well can be used nearly verbatim. Don't pad.
-- If a day is mostly one project, don't force the other section.
+- If a day is mostly one project, don't force the other sections.
 - Never invent a ticket, a number, or an outcome. Everything comes from the JSON or Linear.
 
 ## What this must never do
