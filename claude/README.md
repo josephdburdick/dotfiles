@@ -29,6 +29,18 @@ in this repo, which is why `.gitignore` here is mostly a list of runtime noise t
 shipping a copy would make `stow` conflict on a fresh machine and block the whole package.
 Anything that must survive a reinstall belongs in `plugins.txt` or `CLAUDE.md` instead.
 
+## Commands
+
+`dot-claude/commands/*.md` are relative symlinks to specs in the Obsidian vault
+(`../../../../notes/...`, i.e. `~/notes/...` when the repo is at `~/.dotfiles`), so each
+machine runs the vault's current spec and nothing needs copying back into the repo. On
+macOS `make setup` links `~/notes` to `~/Documents/vaults/personal`; on Linux the vault is
+synced to `~/notes` directly.
+
+On Linux `~/.claude` already exists before stow runs, so stow links individual files and
+skill directories into it instead of folding the whole directory. Runtime data
+(`settings.json`, `projects/`, …) then stays out of the repo.
+
 ## Skills
 
 Three different provenances, kept deliberately separate:
