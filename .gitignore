@@ -45,6 +45,12 @@ bin/.local/bin/google-analytics-mcp
 # Claude Code runtime task/transcript data (machine-generated)
 claude/dot-claude/tasks/
 
+# Claude Code per-project local settings (machine-specific permissions, not shared config)
+.claude/settings.local.json
+
+# Claude Code skill auto-sync cache (mirrors plugin/marketplace skills locally, not authored here)
+claude/dot-claude/skills/synced/
+
 # Python bytecode cache — any script run or imported in place leaves one
 __pycache__/
 *.pyc
