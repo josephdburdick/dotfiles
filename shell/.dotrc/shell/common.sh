@@ -111,6 +111,12 @@ prlist() {
 prcheck() {
   gh pr checkout "$1" && gh pr diff
 }
+# Squash-merge and delete the branch for one or more PRs: ghmerge 91 92 93
+ghmerge() {
+  for pr in "$@"; do
+    gh pr merge "$pr" --squash --delete-branch || return 1
+  done
+}
 
 #####################
 # NETWORK           #
