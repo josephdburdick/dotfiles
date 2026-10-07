@@ -9,3 +9,4 @@
 # Plugins from anthropics/claude-plugins-official need no marketplace step.
 
 mattpocock-skills
+superpowers
