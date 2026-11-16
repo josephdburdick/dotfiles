@@ -65,6 +65,47 @@ riskiest goes last so it can be dropped without losing the rest.
 still pinning its own vite). The train reproduces what the original PR would have done; deduping
 is a separate `<pm> update <parent>` follow-up, not part of the train.
 
+## app.cue.quest
+
+The defaults don't work here: `bun run test` is vitest in watch mode and never exits. Pass
+`--no-default-verify` and list the checks yourself. Don't drop the build when you do: a bundle
+error (a package that lost its default export, a first-load budget) gets past types and the
+mocked unit tests, and only `next build` and the `route-smoke` job catch it.
+
+The build and the checks after it need the `route-smoke` job's dummy env from
+`.github/workflows/ci.yml`. Set it only on those commands. Exported for the whole run, it breaks
+`envSecret.test.ts`, which expects `AUTH_SECRET` to be missing. Write the env file to the scratchpad
+(`$SCRATCH` below), not the repo, so the tree stays clean:
+
+```bash
+sed -n '/^  route-smoke:/,/^    steps:/p' .github/workflows/ci.yml \
+  | grep -E '^      [A-Z_]+:' \
+  | sed -E "s/^ +([A-Z_]+): *'?([^']*)'?$/\1=\2/" > "$SCRATCH/ci-smoke.env"
+
+E="env \$(cat $SCRATCH/ci-smoke.env) SMOKE_PORT=3417 BROWSER_SMOKE_PORT=3418 BUDGET_PORT=3419"
+python3 scripts/merge_train.py --dry-run --no-default-verify \
+  --verify "bun install --frozen-lockfile" \
+  --verify "bun run lint" \
+  --verify "bun run test:run" \
+  --verify "$E bun run build" \
+  --verify "$E bun run smoke:routes" \
+  --verify "$E bun run check:browser" \
+  --verify "$E bun run check:first-load" \
+  2388 2392 2389
+```
+
+`lint` runs biome and the type check. The last four steps match the `route-smoke` job, in the
+same order. `check:first-load` checks each route's first-load JS against its gzip budget, so a
+train can push a route over even when no single PR does. Never push a train built with
+`--skip-verify`.
+
+Each of the last three starts its own `next start` and fetches from it, by default on ports
+3100, 3102 and 3101. Other worktrees run the same checks on the same ports. If one of their
+servers is already listening, the check reads that worktree's pages instead: the budget check then
+reports chunks that "aren't in .next/static". The `*_PORT` variables above move the checks off
+the defaults. Confirm they're free with `lsof -nP -iTCP:<port> -sTCP:LISTEN`. Port 3000 is
+Joe's dev server.
+
 ## Common mistakes
 
 | Mistake | Why it bites |
