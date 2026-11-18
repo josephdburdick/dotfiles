@@ -29,8 +29,11 @@ map({ "i", "x", "n", "s" }, "<D-z>", "<Cmd>undo<CR><Esc>", { desc = "Undo" })
 -- Shift + Command + z to redo
 map({ "i", "x", "n", "s" }, "<S-D-z>", "<Cmd>redo<CR><Esc>", { desc = "Redo" })
 
--- Command + w to close buffer
-map({ "i", "x", "n", "s" }, "<D-w>", "<Cmd>bd<CR><Esc>", { desc = "Close buffer" })
+-- Closes the tab but keeps the window layout, like a browser.
+map({ "i", "x", "n", "s" }, "<D-w>", function()
+  vim.cmd.stopinsert()
+  Snacks.bufdelete()
+end, { desc = "Close buffer" })
 
 -- Copy the current line or selection and paste it above/below
 -- directional keys
@@ -59,18 +62,9 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 map("n", "<A-j>", ":m .+1<CR>==", { silent = true })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true })
 
--- Open current file/selection on GitHub (Snacks gitbrowse).
--- The gitui extra deletes <leader>gl on User LazyVimKeymaps (fires right after
--- this file loads), so register the map on that same event to run after it.
-vim.api.nvim_create_autocmd("User", {
-  pattern = "LazyVimKeymaps",
-  once = true,
-  callback = function()
-    map({ "n", "v" }, "<Leader>gl", function()
-      Snacks.gitbrowse()
-    end, { desc = "Open Git link" })
-  end,
-})
+map({ "n", "v" }, "<Leader>gl", function()
+  Snacks.gitbrowse()
+end, { desc = "Open Git link" })
 
 -- Copy a GitHub permalink for the current line or visual selection.
 -- Pins to the newest commit of the file that exists on origin so the copied

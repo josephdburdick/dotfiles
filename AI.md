@@ -7,7 +7,7 @@ This is a concise playbook for AI agents working in this repo. It explains where
 - macOS-first dotfiles using GNU Stow, with Linux and Omarchy support. Files named `dot-*` become `.*` in `$HOME`.
 - `scripts/.dotscripts/lib` detects the platform (`darwin`, `omarchy`, `linux`); `packages.<os>` lists the stow packages for it (no list means every package).
 - Package management via Homebrew with a `Brewfile` and `brew bundle`.
-- Key areas: `zsh/`, `neovim/`, `tmux/`, `starship/`, `kitty/`, `wezterm/`, `git/`, `bin/`, `scripts/`.
+- Key areas: `zsh/`, `neovim/`, `tmux/`, `starship/`, `ghostty/`, `git/`, `bin/`, `scripts/`.
 - See `WARP.md` for terminal-oriented ops and commands.
 
 ## Ground rules for agents

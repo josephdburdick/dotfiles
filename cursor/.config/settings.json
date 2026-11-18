@@ -18,14 +18,6 @@
   "editor.formatOnSave": true,
   "prettier.semi": false,
   "workbench.editor.enablePreview": true,
-  "github.copilot.advanced": {},
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false,
-    "yaml": false
-  },
   "editor.inlayHints.enabled": "off",
   "workbench.colorCustomizations": {
     "editor.lineHighlightBackground": "#1073cf2d",

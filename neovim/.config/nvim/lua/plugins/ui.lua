@@ -1,5 +1,4 @@
 return {
-  -- image preview
   {
     "adelarsq/image_preview.nvim",
     event = "VeryLazy",
@@ -7,23 +6,17 @@ return {
       require("image_preview").setup()
     end,
   },
-  -- smooth scrolling
   {
     "karb94/neoscroll.nvim",
     config = function()
       local neoscroll = require("neoscroll")
 
       neoscroll.setup({
-        -- Default easing function used in any animation where
-        -- the `easing` argument has not been explicitly supplied
-        hide_cursor = false, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing = "quadratic", -- Default easing function
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
-        performance_mode = false, -- Disable "Performance Mode" on all buffers.
+        hide_cursor = false,
+        stop_eof = true,
+        respect_scrolloff = false,
+        cursor_scrolls_alone = true,
+        easing = "quadratic",
       })
       local keymap = {
         ["<C-u>"] = function()
@@ -60,7 +53,6 @@ return {
       end
     end,
   },
-  -- blur cursor on move
   { "sphamba/smear-cursor.nvim" },
   -- Colored marks in scrollbar (colors from the active nightfox palette).
   -- Loads the variant that is actually set rather than a hardcoded one, so
@@ -68,6 +60,9 @@ return {
   -- A non-nightfox scheme just fails the pcall and falls back to defaults.
   {
     "petertriho/nvim-scrollbar",
+    -- v2 rejects the handle/marks options below; migrate before unpinning.
+    -- https://github.com/petertriho/nvim-scrollbar/issues/121
+    branch = "v1",
     config = function()
       local ok, palette = pcall(function()
         return require("nightfox.palette").load(vim.g.colors_name)

@@ -66,7 +66,7 @@ Each tool/application has its own directory containing the configuration files i
 ### Package Organization
 - **Terminal/Shell**: `zsh/`, `starship/`, `tmux/`
 - **Editors**: `neovim/`, `cursor/`
-- **Terminal Emulators**: `kitty/`, `alacritty/`, `wezterm/`
+- **Terminal Emulator**: `ghostty/`
 - **Development Tools**: `git/`, `fd/`
 - **Scripts**: `bin/`, `scripts/`
 

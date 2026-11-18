@@ -1,5 +1,4 @@
 return {
-  -- sorting
   {
     "sQVe/sort.nvim",
     lazy = false,
@@ -70,21 +69,13 @@ return {
       },
     },
   },
-  --
-  --
-  -- Update imports when renaming files in nvim-tree
-  -- https://github.com/antosha417/nvim-lsp-file-operations
+  -- Update imports when renaming files from the explorer
   {
     "antosha417/nvim-lsp-file-operations",
     dependencies = { "nvim-lua/plenary.nvim" },
 
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
-
-    -- cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-
-    opts = function()
-      require("lsp-file-operations").setup()
-    end,
+    opts = {},
   },
 
   -- Precognition previews motion targets (b e w $ …) on a virtual line
@@ -125,64 +116,24 @@ return {
     },
   },
 
-  -- tests
   {
     "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-jest",
-      "zidhuss/neotest-minitest",
-    },
-
-    opts = function()
-      require("neotest").setup({
-        adapters = {
-          require("neotest-jest"),
-        },
-      })
-    end,
+    dependencies = { "nvim-neotest/neotest-jest" },
+    opts = { adapters = { "neotest-jest" } },
   },
 
-
-  -- Colorize codes
   {
-    "NvChad/nvim-colorizer.lua",
+    "catgoose/nvim-colorizer.lua",
     opts = {
       filetypes = { "*" },
       user_default_options = {
-        RGB = true,          -- #RGB hex codes
-        RRGGBB = true,       -- #RRGGBB hex codes
-        names = true,        -- "Name" codes like Blue or blue
-        RRGGBBAA = true,     -- #RRGGBBAA hex codes
-        AARRGGBB = false,    -- 0xAARRGGBB hex codes
-        rgb_fn = false,      -- CSS rgb() and rgba() functions
-        hsl_fn = false,      -- CSS hsl() and hsla() functions
-        css = true,          -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = false,      -- Enable all CSS *functions*: rgb_fn, hsl_fn
-        -- Available modes for `mode`: foreground, background,  virtualtext
-        mode = "background", -- Set the display mode.
-        -- Available methods are false / true / "normal" / "lsp" / "both"
-        -- True is same as normal
-        tailwind = true,                                -- Enable tailwind colors
-        -- parsers can contain values used in |user_default_options|
-        sass = { enable = false, parsers = { "css" } }, -- Enable sass colors
-        virtualtext = "■",
-        -- update color values even if buffer is not focused
-        -- example use: cmp_menu, cmp_docs
-        always_update = false,
+        names = true,
+        RRGGBBAA = true,
+        css = true,
+        tailwind = true,
+        mode = "background",
       },
-      -- all the sub-options of filetypes apply to buftypes
-      buftypes = {},
     },
-  },
-
-  -- Add Tailwind context window for definitions
-  {
-    "luckasRanarison/tailwind-tools.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = {}, -- your configuration
   },
 
   -- code actions with preview (snacks backend; telescope is no longer installed)

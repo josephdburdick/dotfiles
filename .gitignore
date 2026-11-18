@@ -57,3 +57,6 @@ __pycache__/
 
 # Cursor agent
 bin/.local/bin/cursor-agent
+
+# Neovim crash/debug log
+.nvimlog

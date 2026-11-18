@@ -16,7 +16,7 @@
 | --- | --- | --- |
 | macOS (Apple Silicon) | `darwin` | Every package. Apps and CLIs come from the [`Brewfile`](Brewfile). |
 | Omarchy (Arch + Hyprland) | `omarchy` | [`packages.omarchy`](packages.omarchy): `shell zsh git bin fd gitui claude scripts` |
-| Other Linux (e.g. plain Arch) | `linux` | [`packages.linux`](packages.linux): the above plus `starship tmux neovim kitty ghostty alacritty wezterm` |
+| Other Linux (e.g. plain Arch) | `linux` | [`packages.linux`](packages.linux): the above plus `starship tmux neovim ghostty` |
 
 Detection lives in [`scripts/.dotscripts/lib`](scripts/.dotscripts/lib). Override it with `OS=`, e.g. `make setup OS=linux`.
 
@@ -173,7 +173,7 @@ Each tool directory is a stow package whose contents mirror `$HOME`; files named
 | `neovim` | LazyVim-based Neovim config |
 | `tmux` | tmux config (prefix `Ctrl-Space`) |
 | `starship` | Prompt |
-| `kitty` `ghostty` `alacritty` `wezterm` `neovide` | Terminals / GUI editor |
+| `ghostty` `neovide` | Terminal / GUI editor |
 | `fd` `gitui` | Tool configs |
 | `cursor` | Cursor editor notes |
 | `scripts` | `make` helpers (`~/.dotscripts`) |
