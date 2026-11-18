@@ -265,7 +265,9 @@ def main():
     run(["git", "push", "-q", "--force-with-lease", "-u", remote, branch])
     title = f"chore(merge-train): land {len(merged)} PRs ({today})"
     body = pr_body(merged, dropped, base, args)
-    body_file = root / ".git" / "merge-train-body.md"
+    # In a linked worktree `.git` is a file pointing at the real git dir, so
+    # ask git where its directory is rather than assuming `root / ".git"`.
+    body_file = Path(out(["git", "rev-parse", "--absolute-git-dir"])) / "merge-train-body.md"
     body_file.write_text(body)
     existing = gh_json(["pr", "list", "--head", branch, "--state", "open", "--json", "number,url"])
     if existing:

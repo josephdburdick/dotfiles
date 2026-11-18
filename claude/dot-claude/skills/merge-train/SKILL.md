@@ -1,6 +1,6 @@
 ---
 name: merge-train
-description: Use when several open PRs against the same base branch should land as one merge instead of one at a time: a pile of dependabot bumps, "batch these PRs", "merge train", "land all the dependency PRs together", PRs that all touch package.json or the lockfile, or when merging one PR would make the rest go stale and need rebasing.
+description: 'Use when several open PRs against the same base branch should land as one merge instead of one at a time: a pile of dependabot bumps, "batch these PRs", "merge train", "land all the dependency PRs together", PRs that all touch package.json or the lockfile, or when merging one PR would make the rest go stale and need rebasing.'
 user_invocable: true
 argument-hint: '[PR numbers in order] [--dry-run] [--author app/dependabot] [--verify CMD]'
 ---
@@ -44,6 +44,12 @@ default scripts, it does not replace them. Dependabot's login for `--author` is 
 - Runs the repo's `lint`, `typecheck`/`type-check`, `test`, `build` scripts once on the result.
 
 ## Judgment calls the script leaves to you
+
+**Package age (Joe's rule).** Never train or merge a package version published less than 7
+days ago. Before building, look up each PR's target version in the npm registry
+(`curl -s https://registry.npmjs.org/<name> | jq -r '.time["<version>"]'`). Leave out any PR
+that's under a week old or carries the `cooldown` label, and report the date it can merge.
+In app.cue.quest the "Package age" check enforces this too.
 
 **Extra verification.** Read the workflows that run on push to the base branch. Anything they
 build that the default scripts do not (a Storybook or docs build, an e2e suite) goes in
