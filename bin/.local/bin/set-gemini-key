@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# Copy a Gemini API key from the clipboard into ~/.env locally and on the NUC.
+# The key is never printed. Usage: copy the key in AI Studio, then run set-gemini-key.
+set -eu
+
+key=$(pbpaste | tr -d '[:space:]')
+if [[ ! $key =~ '^(AIza[0-9A-Za-z_-]{35}|AQ\.[0-9A-Za-z_.-]{20,})$' ]]; then
+  echo "Clipboard doesn't hold a Gemini API key (expected AIza… or AQ.…)." >&2
+  exit 1
+fi
+
+# Replace any existing GEMINI_API_KEY line in an env file, reading the key from stdin.
+update_env='f=$HOME/.env; touch "$f"; chmod 600 "$f"; read -r k
+  grep -v "^\(export \)\?GEMINI_API_KEY=" "$f" > "$f.tmp" || true
+  printf "export GEMINI_API_KEY=%s\n" "$k" >> "$f.tmp"; mv "$f.tmp" "$f"'
+
+printf '%s\n' "$key" | sh -c "$update_env"
+echo "local: ~/.env updated"
+printf '%s\n' "$key" | ssh nuc "sh -c '$update_env'"
+echo "nuc:   ~/.env updated"
+
+check='code=$(curl -s -o /dev/null -w "%{http_code}" -H "x-goog-api-key: $GEMINI_API_KEY" https://generativelanguage.googleapis.com/v1beta/models); echo "$code"'
+echo "local API check: $(zsh -c ". ~/.env; $check")"
+echo "nuc   API check: $(ssh nuc "zsh -c '. ~/.env; $check'")"
+printf '' | pbcopy
+echo "Clipboard cleared. 200 = working. Open a new shell to pick up the key."

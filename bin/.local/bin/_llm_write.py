@@ -1,5 +1,6 @@
 """Generate boilerplate (tests, fixtures, configs, doc templates). Backend for `llm-write`."""
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -69,7 +70,17 @@ def main() -> int:
             {"role": "user", "content": user},
         ],
         temperature=0.2,
+        # Without a cap, OpenRouter reserves credit for the model's maximum
+        # output (65,536 tokens for Sonnet) before generating anything, so a
+        # low balance 402s every request even when the page would cost a
+        # fraction of that. A city guide is ~2,000 tokens.
+        max_tokens=int(os.environ.get("LLM_WRITE_MAX_TOKENS") or 8192),
     )
+    if resp.choices[0].finish_reason == "length":
+        print("error: output hit max_tokens and was cut off; nothing written. "
+              "Raise LLM_WRITE_MAX_TOKENS if the file is legitimately that long.",
+              file=sys.stderr)
+        return 1
     out = _strip_fences(resp.choices[0].message.content or "")
 
     if args.stdout:
